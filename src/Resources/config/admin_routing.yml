@@ -1,1 +1,12 @@
-# Define your own admin routes here
+sylius_admin_scheduled_command:
+    resource: |
+        alias: sylius.scheduled_command
+        templates: SyliusAdminBundle:Crud
+        section: admin
+        grid: sylius_admin_scheduled_command
+        except: ['show']
+        vars:
+            index:
+                icon: 'box'
+    type: sylius.resource
+    prefix: /admin
