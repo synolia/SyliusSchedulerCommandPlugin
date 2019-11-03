@@ -10,6 +10,7 @@ use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 use Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\CreatePageInterface;
 use Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\IndexPageInterface;
@@ -147,6 +148,28 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
+     * @Given there is a scheduled command in the store
+     */
+    public function thereIsAScheduledCommandInTheStore()
+    {
+        $schedule = $this->createSchedule();
+
+        $this->sharedStorage->set('schedule', $schedule);
+        $this->repository->add($schedule);
+    }
+
+    /**
+     * @When I delete this scheduled command
+     */
+    public function iDeleteThisScheduledCommand()
+    {
+        /** @var ScheduledCommand $schedule */
+        $schedule = $this->sharedStorage->get('schedule');
+
+        $this->indexPage->deleteResourceOnPage(['name' => $schedule->getName()]);
+    }
+
+    /**
      * @return IndexPageInterface|CreatePageInterface|UpdatePageInterface|SymfonyPageInterface
      */
     private function resolveCurrentPage(): SymfonyPageInterface
@@ -156,5 +179,14 @@ final class SchedulerCommandContext implements Context
             $this->createPage,
             $this->updatePage,
         ]);
+    }
+
+    private function createSchedule(): ScheduledCommand
+    {
+        $schedule = new ScheduledCommand();
+        $schedule->setName('Cache clear')
+            ->setCommand('cache:clear');
+
+        return $schedule;
     }
 }

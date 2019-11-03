@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Synolia\SchedulerCommandPlugin\Repository;
 
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 
 /**
@@ -12,6 +13,6 @@ use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
  * @method ScheduledCommand[]    findAll()
  * @method ScheduledCommand[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-interface ScheduledCommandRepositoryInterface
+interface ScheduledCommandRepositoryInterface extends RepositoryInterface
 {
 }
