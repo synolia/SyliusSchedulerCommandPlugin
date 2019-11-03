@@ -1,4 +1,8 @@
-# Put your Behat suites definitions here
-
 default:
     suites:
+        ui_managing_scheduled_command:
+            contexts:
+                - sylius.behat.context.setup.admin_security
+                - synolia_scheduler_command_plugin.behat.context.ui.admin.scheduled_command
+            filters:
+                tags: '@managing_scheduled_command && @ui'

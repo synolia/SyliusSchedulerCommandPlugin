@@ -1,0 +1,15 @@
+Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                min: 2
+        command:
+            - NotBlank: ~
+        cronExpression:
+            - NotBlank: ~
+            - Length:
+                min: 9
+        priority:
+            - NotBlank: ~
+            - PositiveOrZero: ~
