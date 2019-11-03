@@ -61,7 +61,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @When I go to the scheduler command page
      */
-    public function iGoToTheSchedulerCommandPage()
+    public function iGoToTheSchedulerCommandPage(): void
     {
         $this->indexPage->open();
     }
@@ -97,6 +97,45 @@ final class SchedulerCommandContext implements Context
     public function iUpdateIt(): void
     {
         $this->updatePage->saveChanges();
+    }
+
+    /**
+     * @When I update this scheduled command
+     */
+    public function iUpdateThisScheduledCommand(): void
+    {
+        /** @var ScheduledCommand $schedule */
+        $schedule = $this->sharedStorage->get('schedule');
+
+        $this->updatePage->open(['id' => $schedule->getId()]);
+    }
+
+    /**
+     * @Given I have an empty list of scheduled command
+     */
+    public function iHaveAnEmptyListOfScheduledCommand(): void
+    {
+        foreach ($this->repository->findAll() as $scheduledCommand) {
+            $this->repository->remove($scheduledCommand);
+        }
+    }
+
+    /**
+     * @Then I should see :numberOfProducts scheduled command in the list
+     */
+    public function iShouldSeeScheduledCommandInTheList(int $numberOfCommands): void
+    {
+        Assert::same($this->indexPage->countItems(), (int) $numberOfCommands);
+    }
+
+    /**
+     * @Then the first scheduled command on the list should have :field :value
+     */
+    public function theFirstScheduledCommandOnTheListShouldHaveName($field, $value)
+    {
+        $currentPage = $this->resolveCurrentPage();
+
+        Assert::same($currentPage->getColumnFields($field)[0], $value);
     }
 
     /**
@@ -150,7 +189,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @Given there is a scheduled command in the store
      */
-    public function thereIsAScheduledCommandInTheStore()
+    public function thereIsAScheduledCommandInTheStore(): void
     {
         $schedule = $this->createSchedule();
 
@@ -161,7 +200,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @When I delete this scheduled command
      */
-    public function iDeleteThisScheduledCommand()
+    public function iDeleteThisScheduledCommand(): void
     {
         /** @var ScheduledCommand $schedule */
         $schedule = $this->sharedStorage->get('schedule');

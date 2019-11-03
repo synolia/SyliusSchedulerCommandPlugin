@@ -6,6 +6,7 @@ Feature: Adding a new scheduled command
 
     Background:
         Given I am logged in as an administrator
+        And I have an empty list of scheduled command
 
     @ui
     Scenario: Adding a new scheduled command
@@ -14,6 +15,8 @@ Feature: Adding a new scheduled command
         And I fill "Command" with "debug:config"
         And I add it
         Then I should be notified that the scheduled command has been created
+        And I should see 1 scheduled command in the list
+        And the first scheduled command on the list should have name "Test command"
 
     @ui
     Scenario: Adding a new scheduled command with full data
@@ -28,3 +31,4 @@ Feature: Adding a new scheduled command
         And I fill "Disabled" with "1"
         And I add it
         Then I should be notified that the scheduled command has been created
+        And I should see 1 scheduled command in the list
