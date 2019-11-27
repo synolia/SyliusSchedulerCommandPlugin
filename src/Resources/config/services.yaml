@@ -15,3 +15,6 @@ services:
     Synolia\SchedulerCommandPlugin\Parser\CommandParser:
         arguments:
             $excludedNamespaces: ['_global']
+
+    Synolia\SchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand:
+        $logsDir: '%kernel.logs_dir%'

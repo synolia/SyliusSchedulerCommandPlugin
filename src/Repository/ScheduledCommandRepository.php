@@ -15,4 +15,11 @@ use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
  */
 class ScheduledCommandRepository extends EntityRepository implements ScheduledCommandRepositoryInterface
 {
+    /**
+     * @return ScheduledCommand[]
+     */
+    public function findEnabledCommand(): iterable
+    {
+        return $this->findBy(array('disabled' => false), array('priority' => 'DESC'));
+    }
 }

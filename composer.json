@@ -6,7 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "sylius/sylius": "^1.5"
+        "sylius/sylius": "^1.5",
+        "mtdowling/cron-expression": "^1.2"
     },
     "require-dev": {
         "behat/behat": "^3.4",

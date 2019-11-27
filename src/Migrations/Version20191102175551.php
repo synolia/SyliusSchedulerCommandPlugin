@@ -28,7 +28,7 @@ final class Version20191102175551 extends AbstractMigration
           command VARCHAR(255) NOT NULL, 
           arguments VARCHAR(255) DEFAULT NULL, 
           cronExpression VARCHAR(255) NOT NULL, 
-          lastExecution DATE DEFAULT NULL, 
+          lastExecution DATETIME DEFAULT NULL, 
           lastReturnCode INT DEFAULT NULL, 
           logFile VARCHAR(255) DEFAULT NULL, 
           priority INT NOT NULL, 
