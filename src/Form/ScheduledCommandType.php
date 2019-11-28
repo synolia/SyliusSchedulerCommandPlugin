@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ScheduledCommandType extends AbstractType
+final class ScheduledCommandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

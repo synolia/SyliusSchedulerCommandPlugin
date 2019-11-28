@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Synolia\SchedulerCommandPlugin\Entity;
 
 use PhpSpec\ObjectBehavior;

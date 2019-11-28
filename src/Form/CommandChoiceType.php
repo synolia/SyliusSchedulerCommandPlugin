@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Synolia\SchedulerCommandPlugin\Parser\CommandParserInterface;
 
-class CommandChoiceType extends AbstractType
+final class CommandChoiceType extends AbstractType
 {
     /**
      * @var CommandParserInterface
