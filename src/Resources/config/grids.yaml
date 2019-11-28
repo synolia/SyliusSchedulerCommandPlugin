@@ -21,7 +21,7 @@ sylius_grid:
                     type: string
                     label: sylius.ui.scheduled_command.last_return_code
                 logFile:
-                    type: string
+                    type: scheduledCommandUrl
                     label: sylius.ui.scheduled_command.log_file
                 priority:
                     type: string
