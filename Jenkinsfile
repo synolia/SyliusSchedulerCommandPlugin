@@ -12,7 +12,6 @@ binDir = "bin"
 applicationDir = "tests/Application"
 projectChannelName = "sylius-demo"
 lastStage = ""
-lastErrorMessage = ""
 
 // Docker
 phpDockerRegistry = "registry.synolia.com/php72dev:latest"
@@ -47,209 +46,139 @@ pipeline {
         durabilityHint('PERFORMANCE_OPTIMIZED')
     }
     stages {
-        stage('Preparing tools') {
-            agent {
-                docker {
-                    image phpDockerRegistry
-                    args "${PHP_BUILD_ARGS} -u 0:0 ${COMPOSER_ARGS} --link selenium_chrome:selenium_chrome"
-                    reuseNode true
-                }
-            }
-            steps {
-                script {
-                    lastStage = env.STAGE_NAME
-
-                    try {
-                        security.buildSshFolder()
-
-                        // Credentials for Github
-                        withCredentials([string(credentialsId: 'githubToken', variable: 'githubToken')]) {
-                            sh "composer config -g github-oauth.github.com ${githubToken}"
-                        }
-
-                        // Credentials for BitBucket
-                        withCredentials([usernamePassword(credentialsId: 'bitbucketToken', passwordVariable: 'token', usernameVariable: 'consumerKey')]) {
-                            sh "composer config -g bitbucket-oauth.bitbucket.org ${consumerKey} ${token}"
-                        }
-
-                        // Composer install package as global
-                        sh 'composer global require hirak/prestissimo ^0.3'
-                    } catch (Exception e) {
-                        lastErrorMessage = e.message
-                        throw e
-                    }
-                }
-            }
-        }
-
         stage('Creating MySQL container') {
             steps {
                 script {
                     lastStage = env.STAGE_NAME
-                    try {
-                        db = docker.image(dbDockerRegistry)
-                        db.run('--name db-'+BUILD_TAG)
-                    } catch (Exception e) {
-                        lastErrorMessage = e.message
-                        throw e
-                    }
+                    db = docker.image(dbDockerRegistry)
+                    db.run('--name db-'+BUILD_TAG)
                 }
             }
         }
-
-        stage('Application Installation') {
+        stage('Create Php Container') {
             agent {
                 docker {
                     image phpDockerRegistry
-                    args "${PHP_BUILD_ARGS} --link db-${BUILD_TAG}:db ${COMPOSER_ARGS}"
+                    args "${PHP_BUILD_ARGS} -u 0:0 ${COMPOSER_ARGS} --link selenium_chrome:selenium_chrome --link db-${BUILD_TAG}:db -e APP_ENV=test"
                     reuseNode true
                 }
             }
-            steps {
-                script {
-                    lastStage = env.STAGE_NAME
-
-                    try {
-                        security.buildSshFolder()
-
-                        //.env.test.local not working with behat
-                        sh "cp ${applicationDir}/.env ${applicationDir}/.env.test"
-
-                        // Set database to .env
-                        sh "echo DATABASE_URL=${DB_URL} >> ${applicationDir}/.env.test"
-
-                        // Composer install
-                        sshagent(['deploy_symfony']) {
-                            sh "php -d memory_limit=-1 /usr/local/bin/composer install --no-interaction --prefer-dist"
-                        }
-
-                        sh "cp behat.yml.dist behat.yml"
-                        sh "sed -i 's/localhost:8080/selenium_chrome:4444/g' behat.yml"
-                        sh "sed -i 's|{{DB_URL}}|${DB_URL}|g' phpunit.xml.dist"
-                        sh "cd ${applicationDir}; yarn install && yarn build"
-                        sh "cd ${applicationDir}; php bin/console doctrine:database:create --env=test"
-                        sh "cd ${applicationDir}; php bin/console doctrine:schema:create --env=test"
-                        sh "cd ${applicationDir}; php bin/console assets:install public --symlink"
-                        sh "cd ${applicationDir}; php bin/console cache:warmup --env=test"
-                    } catch (Exception e) {
-                        lastErrorMessage = e.message
-                        throw e
-                    }
-                }
-            }
-        }
-
-        stage('Quality Tools') {
-            parallel {
-                stage('Composer Validation') {
-                    agent {
-                        docker {
-                            image phpDockerRegistry
-                            args "${PHP_BUILD_ARGS}-composer ${COMPOSER_ARGS}"
-                            reuseNode true
-                        }
-                    }
+            stages {
+                stage('Preparing tools') {
                     steps {
                         script {
                             lastStage = env.STAGE_NAME
 
-                            try {
-                                sh "composer validate"
-                            } catch (Exception e) {
-                                lastErrorMessage = e.message
-                                throw e
+                            security.buildSshFolder()
+
+                            // Credentials for Github
+                            withCredentials([string(credentialsId: 'githubToken', variable: 'githubToken')]) {
+                                sh "composer config -g github-oauth.github.com ${githubToken}"
+                            }
+
+                            // Credentials for BitBucket
+                            withCredentials([usernamePassword(credentialsId: 'bitbucketToken', passwordVariable: 'token', usernameVariable: 'consumerKey')]) {
+                                sh "composer config -g bitbucket-oauth.bitbucket.org ${consumerKey} ${token}"
+                            }
+
+                            // Composer install package as global
+                            sh 'composer global require hirak/prestissimo ^0.3'
+                        }
+                    }
+                }
+
+                stage('Application Installation') {
+                    steps {
+                        script {
+                            lastStage = env.STAGE_NAME
+
+                            //.env.test.local not working with behat
+                            sh "cp ${applicationDir}/.env ${applicationDir}/.env.test"
+
+                            // Set database to .env
+                            sh "echo DATABASE_URL=${DB_URL} >> ${applicationDir}/.env.test"
+
+                            // Composer install
+                            sshagent(['deploy_symfony']) {
+                                sh "php -d memory_limit=-1 /usr/local/bin/composer install --no-interaction --prefer-dist"
+                            }
+
+                            sh "cp behat.yml.dist behat.yml"
+                            sh "sed -i 's/localhost:8080/selenium_chrome:4444/g' behat.yml"
+                            sh "sed -i 's|{{DB_URL}}|${DB_URL}|g' phpunit.xml.dist"
+                            sh "cd ${applicationDir}; yarn install && yarn build"
+                            sh "cd ${applicationDir}; php bin/console doctrine:database:create --env=test"
+                            sh "cd ${applicationDir}; php bin/console doctrine:schema:create --env=test"
+                            sh "cd ${applicationDir}; php bin/console assets:install public --symlink"
+                            sh "cd ${applicationDir}; php bin/console cache:warmup --env=test"
+                        }
+                    }
+                }
+
+                stage('Quality Tools') {
+                    parallel {
+                        stage('Composer Validation') {
+                            steps {
+                                script {
+                                    lastStage = env.STAGE_NAME
+
+                                    sh "composer validate"
+                                }
+                            }
+                        }
+
+                        stage('PhpStan') {
+                            steps {
+                                script {
+                                    lastStage = env.STAGE_NAME
+
+                                    sh "vendor/bin/phpstan analyse -c phpstan.neon -l max src/"
+                                }
                             }
                         }
                     }
                 }
 
-                stage('PhpStan') {
-                    agent {
-                        docker {
-                            image phpDockerRegistry
-                            args "${PHP_BUILD_ARGS}-phpstan ${COMPOSER_ARGS}"
-                            reuseNode true
-                        }
-                    }
-                    steps {
-                        script {
-                            lastStage = env.STAGE_NAME
+                stage('Testing') {
+                    parallel {
+                        stage('PhpUnit') {
+                            steps {
+                                script {
+                                    lastStage = env.STAGE_NAME
 
-                            try {
-                                sh "vendor/bin/phpstan analyse -c phpstan.neon -l max src/"
-                            } catch (Exception e) {
-                                lastErrorMessage = e.message
-                                throw e
+                                    try {
+                                        sh """
+                                            APP_ENV=test \
+                                            vendor/bin/phpunit -c phpunit.xml.dist \
+                                                --log-junit phpunit-junit.xml
+                                        """
+                                    } catch (Exception e) {
+                                        throw e
+                                    } finally {
+                                         junit "phpunit-junit.xml"
+                                    }
+                                }
                             }
                         }
-                    }
-                }
-            }
-        }
 
-        stage('Testing') {
-            parallel {
-                stage('PhpUnit') {
-                    agent {
-                        docker {
-                            image phpDockerRegistry
-                            args "${PHP_BUILD_ARGS}-phpunit ${COMPOSER_ARGS}"
-                            reuseNode true
-                        }
-                    }
-                    steps {
-                        script {
-                            lastStage = env.STAGE_NAME
+                        stage('PhpSpec') {
+                            steps {
+                                script {
+                                    lastStage = env.STAGE_NAME
 
-                            try {
-                                sh "vendor/bin/phpunit"
-                            } catch (Exception e) {
-                                lastErrorMessage = e.message
-                                throw e
+                                    sh "vendor/bin/phpspec run"
+                                }
                             }
                         }
-                    }
-                }
 
-                stage('PhpSpec') {
-                    agent {
-                        docker {
-                            image phpDockerRegistry
-                            args "${PHP_BUILD_ARGS}-phpspec ${COMPOSER_ARGS}"
-                            reuseNode true
-                        }
-                    }
-                    steps {
-                        script {
-                            lastStage = env.STAGE_NAME
+                        stage('Behat') {
+                            steps {
+                                script {
+                                    lastStage = env.STAGE_NAME
 
-                            try {
-                                sh "vendor/bin/phpspec run"
-                            } catch (Exception e) {
-                                lastErrorMessage = e.message
-                                throw e
-                            }
-                        }
-                    }
-                }
-
-                stage('Behat') {
-                    agent {
-                        docker {
-                            image phpDockerRegistry
-                            args "${PHP_BUILD_ARGS}-behat ${COMPOSER_ARGS} --link db-${BUILD_TAG}:db -e APP_ENV=test"
-                            reuseNode true
-                        }
-                    }
-                    steps {
-                        script {
-                            lastStage = env.STAGE_NAME
-
-                            try {
-                                sh "vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun"
-                            } catch (Exception e) {
-                                lastErrorMessage = e.message
-                                throw e
+                                    sh "vendor/bin/behat -f pretty -o pretty.out -f progress -o std -f junit -o testreports"
+                                    junit "testreports/*.xml"
+                                }
                             }
                         }
                     }
@@ -271,9 +200,6 @@ pipeline {
         unsuccessful {
             script {
                 def message = ":warning: ${currentBuild.result}: \n Build <${env.RUN_DISPLAY_URL}|#${env.BUILD_NUMBER}> failed at stage *${lastStage}* >> ${JOB_NAME}."
-                if ("" != lastErrorMessage && "script returned exit code 1" != lastErrorMessage) {
-                    message = message + "\n```\n${lastErrorMessage}\n```"
-                }
                 if (env.CHANGE_URL) {
                     message = message + "\n <${env.CHANGE_URL}|${env.BRANCH_NAME} (${CHANGE_BRANCH})> needs to be fixed."
                 }
