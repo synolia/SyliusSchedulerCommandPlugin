@@ -20,6 +20,6 @@ class ScheduledCommandRepository extends EntityRepository implements ScheduledCo
      */
     public function findEnabledCommand(): iterable
     {
-        return $this->findBy(array('disabled' => false), array('priority' => 'DESC'));
+        return $this->findBy(['disabled' => false], ['priority' => 'DESC']);
     }
 }

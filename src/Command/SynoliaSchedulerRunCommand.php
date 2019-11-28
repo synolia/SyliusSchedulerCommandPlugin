@@ -39,8 +39,7 @@ final class SynoliaSchedulerRunCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setDescription('Execute scheduled commands');
+        $this->setDescription('Execute scheduled commands');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
