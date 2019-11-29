@@ -11,7 +11,7 @@ srcDir = "src"
 binDir = "bin"
 applicationDir = "tests/Application"
 projectChannelName = "sylius-demo"
-lastStage = ""
+failedStage = "unknown"
 
 // Docker
 phpDockerRegistry = "registry.synolia.com/php72dev:latest"
@@ -29,37 +29,42 @@ DB_URL = "mysql://synbshop:Synolia01@db-" + BUILD_TAG + ":3306/sylius-scheduler-
 COMPOSER_ARGS = '-e COMPOSER_HOME=$HOME/.composer -v $HOME/.composer:$HOME/.composer'
 PHP_BUILD_ARGS = '--name=php-' + BUILD_TAG
 
-try {
-    echo "Installing Selenium container"
-    selenium = docker.image(seleniumRegistry)
-    // Use the same name for each process: "selenium_chrome" because we don't need multiple seleniums, we can keep it !
-    // I don't remove it cause it could be use by several apps...
-    selenium.run('--name selenium_chrome --volume /dev/shm:/dev/shm -p 4444:4444')
-} catch (Exception e) {
-    echo "Container probably already exists... but it's ok ;)"
-    echo e.getMessage()
-}
-
 pipeline {
     agent any
     options {
         durabilityHint('PERFORMANCE_OPTIMIZED')
     }
     stages {
+        stage('Creating Selenium container') {
+            steps {
+                script {
+                    try {
+                        echo "Installing Selenium container"
+                        selenium = docker.image(seleniumRegistry)
+                        // Use the same name for each process: "selenium_chrome" because we don't need multiple seleniums, we can keep it !
+                        // I don't remove it cause it could be use by several apps...
+                        selenium.run('--name selenium_chrome --volume /dev/shm:/dev/shm -p 4444:4444')
+                    } catch (Exception e) {
+                        echo "Container probably already exists... but it's ok ;)"
+                        echo e.getMessage()
+                    }
+                }
+            }
+        }
         stage('Creating MySQL container') {
             steps {
                 script {
-                    lastStage = env.STAGE_NAME
                     db = docker.image(dbDockerRegistry)
                     db.run('--name db-'+BUILD_TAG)
                 }
             }
+            post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
         }
         stage('Create Php Container') {
             agent {
                 docker {
                     image phpDockerRegistry
-                    args "${PHP_BUILD_ARGS} -u 0:0 ${COMPOSER_ARGS} --link selenium_chrome:selenium_chrome --link db-${BUILD_TAG}:db -e APP_ENV=test"
+                    args "${PHP_BUILD_ARGS} ${COMPOSER_ARGS} --link selenium_chrome:selenium_chrome --link db-${BUILD_TAG}:db -e APP_ENV=test"
                     reuseNode true
                 }
             }
@@ -67,8 +72,6 @@ pipeline {
                 stage('Preparing tools') {
                     steps {
                         script {
-                            lastStage = env.STAGE_NAME
-
                             security.buildSshFolder()
 
                             // Credentials for Github
@@ -85,16 +88,12 @@ pipeline {
                             sh 'composer global require hirak/prestissimo ^0.3'
                         }
                     }
+                    post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
                 }
 
                 stage('Application Installation') {
                     steps {
                         script {
-                            lastStage = env.STAGE_NAME
-
-                            //.env.test.local not working with behat
-                            sh "cp ${applicationDir}/.env ${applicationDir}/.env.test"
-
                             // Set database to .env
                             sh "echo DATABASE_URL=${DB_URL} >> ${applicationDir}/.env.test"
 
@@ -113,6 +112,7 @@ pipeline {
                             sh "cd ${applicationDir}; php bin/console cache:warmup --env=test"
                         }
                     }
+                    post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
                 }
 
                 stage('Quality Tools') {
@@ -120,21 +120,19 @@ pipeline {
                         stage('Composer Validation') {
                             steps {
                                 script {
-                                    lastStage = env.STAGE_NAME
-
                                     sh "composer validate"
                                 }
                             }
+                            post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
                         }
 
                         stage('PhpStan') {
                             steps {
                                 script {
-                                    lastStage = env.STAGE_NAME
-
                                     sh "vendor/bin/phpstan analyse -c phpstan.neon -l max src/"
                                 }
                             }
+                            post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
                         }
                     }
                 }
@@ -144,42 +142,37 @@ pipeline {
                         stage('PhpUnit') {
                             steps {
                                 script {
-                                    lastStage = env.STAGE_NAME
-
                                     try {
                                         sh """
                                             APP_ENV=test \
                                             vendor/bin/phpunit -c phpunit.xml.dist \
                                                 --log-junit phpunit-junit.xml
                                         """
-                                    } catch (Exception e) {
-                                        throw e
                                     } finally {
                                          junit "phpunit-junit.xml"
                                     }
                                 }
                             }
+                            post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
                         }
 
                         stage('PhpSpec') {
                             steps {
                                 script {
-                                    lastStage = env.STAGE_NAME
-
                                     sh "vendor/bin/phpspec run"
                                 }
                             }
+                            post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
                         }
 
                         stage('Behat') {
                             steps {
                                 script {
-                                    lastStage = env.STAGE_NAME
-
                                     sh "vendor/bin/behat -f pretty -o pretty.out -f progress -o std -f junit -o testreports"
                                     junit "testreports/*.xml"
                                 }
                             }
+                            post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
                         }
                     }
                 }
@@ -199,7 +192,7 @@ pipeline {
         }
         unsuccessful {
             script {
-                def message = ":warning: ${currentBuild.result}: \n Build <${env.RUN_DISPLAY_URL}|#${env.BUILD_NUMBER}> failed at stage *${lastStage}* >> ${JOB_NAME}."
+                def message = ":warning: ${currentBuild.result}: \n Build <${env.RUN_DISPLAY_URL}|#${env.BUILD_NUMBER}> failed at stage *${failedStage}* >> ${JOB_NAME}."
                 if (env.CHANGE_URL) {
                     message = message + "\n <${env.CHANGE_URL}|${env.BRANCH_NAME} (${CHANGE_BRANCH})> needs to be fixed."
                 }
@@ -208,8 +201,8 @@ pipeline {
         }
         always {
             cleanWs deleteDirs: true, notFailBuild: true
-            sh 'docker rm -f db-'+BUILD_TAG+' || true'
-            sh "rm -Rf *"
+            sh 'docker stop --time=1 db-' + BUILD_TAG + ' || true'
+            sh 'docker rm -f db-' + BUILD_TAG + ' || true'
         }
     }
 }
