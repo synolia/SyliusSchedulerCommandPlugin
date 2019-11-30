@@ -43,7 +43,7 @@
         }
     },
     "autoload-dev": {
-        "classmap": ["tests/Synolia/SchedulerCommandPlugin/Application/Kernel.php"]
+        "classmap": ["tests/Application/Kernel.php"]
     },
     "extra": {
         "branch-alias": {

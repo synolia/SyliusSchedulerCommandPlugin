@@ -1,4 +1,9 @@
 services:
+
+    Sylius\Behat\Service\SharedStorageInterface: '@sylius.behat.shared_storage'
+    Sylius\Behat\Service\Resolver\CurrentPageResolverInterface: '@sylius.behat.current_page_resolver'
+    Sylius\Behat\Service\NotificationCheckerInterface: '@sylius.behat.notification_checker'
+
     synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.index:
         class: Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\IndexPage
         parent: sylius.behat.page.admin.crud.index
@@ -23,11 +28,18 @@ services:
     synolia_scheduler_command_plugin.behat.context.ui.admin.scheduled_command:
         class: Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Ui\Admin\SchedulerCommandContext
         public: true
+        autowire: true
         arguments:
-            - '@sylius.behat.shared_storage'
-            - '@sylius.behat.current_page_resolver'
-            - '@sylius.behat.notification_checker'
-            - '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.index'
-            - '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.create'
-            - '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.update'
-            - '@sylius.repository.scheduled_command'
+            $indexPage: '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.index'
+            $createPage: '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.create'
+            $updatePage: '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.update'
+
+    synolia_scheduler_command_plugin.behat.context.cli.cli_context:
+        class: Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Cli\CliContext
+        public: true
+        autowire: true
+
+    sylius.behat.context.setup.command:
+        class: Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Setup\CommandContext
+        public: true
+        autowire: true

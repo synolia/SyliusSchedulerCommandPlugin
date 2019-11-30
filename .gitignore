@@ -9,6 +9,7 @@
 
 /behat.yml
 /phpspec.yml
+/.phpunit.result.cache
 
 /.idea/
 /.phpunit.result.cache
