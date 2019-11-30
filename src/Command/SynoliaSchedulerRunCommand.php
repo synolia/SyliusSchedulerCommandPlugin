@@ -139,18 +139,7 @@ final class SynoliaSchedulerRunCommand extends Command
             $input->setInteractive(false);
         }
 
-        // Use a StreamOutput or NullOutput to redirect write() and writeln() in a log file
-        if (false === $this->logsDir || empty($scheduledCommand->getLogFile())) {
-            $logOutput = new NullOutput();
-        } else {
-            $logOutput = new StreamOutput(
-                fopen(
-                    $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile(),
-                    'a',
-                    false
-                ), $io->getVerbosity()
-            );
-        }
+        $logOutput = $this->getLogOutput($scheduledCommand, $io);
 
         // Execute command and get return code
         try {
@@ -186,5 +175,23 @@ final class SynoliaSchedulerRunCommand extends Command
 
         unset($command);
         gc_collect_cycles();
+    }
+
+    private function getLogOutput(ScheduledCommand $scheduledCommand, SymfonyStyle $io): OutputInterface
+    {
+        // Use a StreamOutput or NullOutput to redirect write() and writeln() in a log file
+        if (false === $this->logsDir || empty($scheduledCommand->getLogFile())) {
+            $logOutput = new NullOutput();
+        } else {
+            $logOutput = new StreamOutput(
+                fopen(
+                    $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile(),
+                    'a',
+                    false
+                ), $io->getVerbosity()
+            );
+        }
+
+        return $logOutput;
     }
 }
