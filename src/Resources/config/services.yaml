@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Synolia\SchedulerCommandPlugin\:
+        resource: '../../*'
+        exclude: '../../{Entity,Migrations,SchedulerCommandPlugin.php}'
+
+    Synolia\SchedulerCommandPlugin\Menu\AdminMenuListener:
+        tags:
+            - { name: kernel.event_listener, event: sylius.menu.admin.main, method: addAdminMenuItems }
+
+    Synolia\SchedulerCommandPlugin\Parser\CommandParser:
+        arguments:
+            $excludedNamespaces: ['_global']

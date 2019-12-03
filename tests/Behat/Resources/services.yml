@@ -1,0 +1,33 @@
+services:
+    synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.index:
+        class: Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\IndexPage
+        parent: sylius.behat.page.admin.crud.index
+        public: false
+        arguments:
+            - 'sylius_admin_scheduled_command_index'
+
+    synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.create:
+        class: Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\CreatePage
+        parent: sylius.behat.page.admin.crud.create
+        public: false
+        arguments:
+            - 'sylius_admin_scheduled_command_create'
+
+    synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.update:
+        class: Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\UpdatePage
+        parent: sylius.behat.page.admin.crud.update
+        public: false
+        arguments:
+            - 'sylius_admin_scheduled_command_update'
+
+    synolia_scheduler_command_plugin.behat.context.ui.admin.scheduled_command:
+        class: Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Ui\Admin\SchedulerCommandContext
+        public: true
+        arguments:
+            - '@sylius.behat.shared_storage'
+            - '@sylius.behat.current_page_resolver'
+            - '@sylius.behat.notification_checker'
+            - '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.index'
+            - '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.create'
+            - '@synolia_scheduler_command_plugin.behat.page.admin.scheduled_command.update'
+            - '@sylius.repository.scheduled_command'

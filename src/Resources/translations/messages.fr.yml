@@ -1,0 +1,18 @@
+sylius:
+    ui:
+        scheduled_commands: Commandes planifiées
+        scheduled_command:
+            name: Nom
+            command: Commande
+            cron_expression: Expression de Cron
+            last_execution: Dernière exécution
+            last_return_code: Dernier code de retour
+            log_file: Fichier de log
+            priority: Priorité
+        edit_scheduled_command: Editer la commanda
+        new_scheduled_command: Créer une commande
+    menu:
+        admin:
+            main:
+                configuration:
+                    scheduler_command: Commandes planifiées

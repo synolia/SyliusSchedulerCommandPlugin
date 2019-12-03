@@ -1,0 +1,37 @@
+sylius_grid:
+    grids:
+        sylius_admin_scheduled_command:
+            driver:
+                options:
+                    class: Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand
+            fields:
+                name:
+                    type: string
+                    label: sylius.ui.scheduled_command.name
+                command:
+                    type: string
+                    label: sylius.ui.scheduled_command.command
+                cronExpression:
+                    type: string
+                    label: sylius.ui.scheduled_command.cron_expression
+                lastExecution:
+                    type: datetime
+                    label: sylius.ui.scheduled_command.last_execution
+                lastReturnCode:
+                    type: string
+                    label: sylius.ui.scheduled_command.last_return_code
+                logFile:
+                    type: string
+                    label: sylius.ui.scheduled_command.log_file
+                priority:
+                    type: string
+                    label: sylius.ui.scheduled_command.priority
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    update:
+                        type: update
+                    delete:
+                        type: delete
