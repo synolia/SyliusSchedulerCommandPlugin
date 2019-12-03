@@ -1,13 +1,12 @@
 {
-    "name": "sylius/plugin-skeleton",
+    "name": "synolia/scheduler-command-plugin",
     "type": "sylius-plugin",
-    "keywords": ["sylius", "sylius-plugin"],
-    "description": "Acme example plugin for Sylius.",
+    "keywords": ["sylius", "sylius-plugin", "scheduler", "command"],
+    "description": "Scheduler Command Plugin.",
     "license": "MIT",
     "require": {
         "php": "^7.2",
-
-        "sylius/sylius": "dev-master"
+        "sylius/sylius": "^1.5"
     },
     "require-dev": {
         "behat/behat": "^3.4",
@@ -37,8 +36,8 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Acme\\SyliusExamplePlugin\\": "src/",
-            "Tests\\Acme\\SyliusExamplePlugin\\": "tests/"
+            "Synolia\\SchedulerCommandPlugin\\": "src/",
+            "Tests\\Synolia\\SchedulerCommandPlugin\\": "tests/"
         }
     },
     "autoload-dev": {
