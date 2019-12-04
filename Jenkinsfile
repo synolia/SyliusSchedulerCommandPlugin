@@ -4,6 +4,7 @@
 
 import com.synolia.log.Slack;
 import com.synolia.system.Security;
+import com.synolia.quality.PhpStan;
 
 // Global
 projectName = "Sylius Scheduler Plugin"
@@ -129,7 +130,11 @@ pipeline {
                         stage('PhpStan') {
                             steps {
                                 script {
-                                    sh "vendor/bin/phpstan analyse -c phpstan.neon -l max src/"
+                                    def phpStan = new PhpStan(this, 'vendor/bin/phpstan')
+                                    phpStan.runOnDirectory(
+                                        srcDir,
+                                        "."
+                                    )
                                 }
                             }
                             post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
