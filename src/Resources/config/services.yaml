@@ -22,4 +22,4 @@ services:
     app.grid_field.scheduled_command.url:
         class: Synolia\SchedulerCommandPlugin\Grid\FieldType\ScheduledCommandUrlType
         tags:
-            - { name: sylius.grid_field, type: scheduledCommandUrl }
+            - { name: sylius.grid_field, type: scheduled_command_url }

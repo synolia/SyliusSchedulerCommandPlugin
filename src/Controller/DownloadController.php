@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Synolia\SchedulerCommandPlugin\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
-class DownloadController extends AbstractController
+final class DownloadController extends AbstractController
 {
     /**
      * @var ScheduledCommandRepository
@@ -20,11 +21,11 @@ class DownloadController extends AbstractController
         $this->scheduledCommandRepository = $scheduledCommandRepository;
     }
 
-    public function downloadLogFile(string $command)
+    public function downloadLogFile(string $command): BinaryFileResponse
     {
         /** @var ScheduledCommand $command */
         $scheduleCommand = $this->scheduledCommandRepository->find($command);
 
-        return $this->file($this->getParameter('kernel.project_dir') . '/var/log/' . $scheduleCommand->getLogFile());
+        return $this->file($this->getParameter('kernel.logs_dir') . DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile());
     }
 }

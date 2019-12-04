@@ -21,8 +21,10 @@ sylius_grid:
                     type: string
                     label: sylius.ui.scheduled_command.last_return_code
                 logFile:
-                    type: scheduledCommandUrl
+                    type: scheduled_command_url
                     label: sylius.ui.scheduled_command.log_file
+                    options:
+                        template: '@SchedulerCommandPlugin/Grid/Column/log_file.html.twig'
                 priority:
                     type: string
                     label: sylius.ui.scheduled_command.priority
