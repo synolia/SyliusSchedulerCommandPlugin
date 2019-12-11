@@ -164,7 +164,8 @@ pipeline {
                         stage('PhpSpec') {
                             steps {
                                 script {
-                                    sh "vendor/bin/phpspec run"
+                                    sh "vendor/bin/phpspec run --no-code-generation --format=junit > junit_phpspec.xml"
+                                    junit "junit_phpspec.xml"
                                 }
                             }
                             post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
