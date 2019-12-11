@@ -82,7 +82,7 @@ class CliContext implements Context
     public function iRunScheduledCommands()
     {
         $this->application->add(
-            new SynoliaSchedulerRunCommand(null, $this->scheduledCommandManager, '')
+            new SynoliaSchedulerRunCommand(null, $this->scheduledCommandManager, $this->kernel->getLogDir())
         );
         $this->command = $this->application->find('synolia:scheduler-run');
         $this->tester = new CommandTester($this->command);
@@ -98,5 +98,42 @@ class CliContext implements Context
         $command = $this->sharedStorage->get('command');
         $command->setExecuteImmediately(true);
         $this->scheduledCommandManager->flush();
+    }
+
+    /**
+     * @Given this scheduled command has :value in :attribute
+     */
+    public function thisScheduledCommandHasIn(string $value, string $attribute)
+    {
+        /** @var ScheduledCommand $schedule */
+        $schedule = $this->sharedStorage->get('command');
+        $setter = 'set' . \ucfirst($attribute);
+        $schedule->$setter($value);
+
+        $this->scheduledCommandRepository->add($schedule);
+    }
+
+    /**
+     * @Then the file of this command must contain :messagePart
+     */
+    public function theFileOfThisCommandMustContain(string $messagePart)
+    {
+        /** @var ScheduledCommand $schedule */
+        $schedule = $this->sharedStorage->get('command');
+        $logFile = $this->kernel->getLogDir() . \DIRECTORY_SEPARATOR . $schedule->getLogFile();
+
+        Assert::assertContains($messagePart, \file_get_contents($logFile));
+    }
+
+    /**
+     * @Given this file not exit yet
+     */
+    public function thisFileNotExitYet()
+    {
+        /** @var ScheduledCommand $schedule */
+        $schedule = $this->sharedStorage->get('command');
+        $logFile = $this->kernel->getLogDir() . \DIRECTORY_SEPARATOR . $schedule->getLogFile();
+
+        @\unlink($logFile);
     }
 }

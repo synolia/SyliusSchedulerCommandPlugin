@@ -209,6 +209,22 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
+     * @Then the first scheduled command shouldn't have log file
+     */
+    public function theFirstScheduledCommandShouldntHaveLogFile()
+    {
+        Assert::isEmpty($this->indexPage->getColumnFields('logFile')[0]);
+    }
+
+    /**
+     * @Then the second scheduled command should have a log file :filename
+     */
+    public function theSecondScheduledCommandShouldHaveALogFile(string $filename)
+    {
+        Assert::eq($this->indexPage->getColumnFields('logFile')[1], $filename);
+    }
+
+    /**
      * @return IndexPageInterface|CreatePageInterface|UpdatePageInterface|SymfonyPageInterface
      */
     private function resolveCurrentPage(): SymfonyPageInterface
@@ -223,8 +239,8 @@ final class SchedulerCommandContext implements Context
     private function createSchedule(): ScheduledCommand
     {
         $schedule = new ScheduledCommand();
-        $schedule->setName('Cache clear')
-            ->setCommand('cache:clear');
+        $schedule->setName('About project')
+            ->setCommand('about');
 
         return $schedule;
     }
