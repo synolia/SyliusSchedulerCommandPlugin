@@ -47,7 +47,7 @@ final class SchedulerCommandContext implements Context
         IndexPageInterface $indexPage,
         CreatePageInterface $createPage,
         UpdatePageInterface $updatePage,
-        ScheduledCommandRepositoryInterface $repository
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->currentPageResolver = $currentPageResolver;
@@ -55,7 +55,7 @@ final class SchedulerCommandContext implements Context
         $this->indexPage = $indexPage;
         $this->createPage = $createPage;
         $this->updatePage = $updatePage;
-        $this->repository = $repository;
+        $this->repository = $scheduledCommandRepository;
     }
 
     /**

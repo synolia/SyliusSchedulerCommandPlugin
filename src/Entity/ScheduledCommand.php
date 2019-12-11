@@ -47,7 +47,7 @@ class ScheduledCommand implements ResourceInterface
 
     /**
      * @var \DateTime|null
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastExecution;
 

@@ -15,4 +15,5 @@ use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
  */
 interface ScheduledCommandRepositoryInterface extends RepositoryInterface
 {
+    public function findEnabledCommand(): iterable;
 }
