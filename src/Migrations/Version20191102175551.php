@@ -12,12 +12,12 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20191102175551 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'create scheduled_command';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
@@ -38,7 +38,7 @@ final class Version20191102175551 extends AbstractMigration
         ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');

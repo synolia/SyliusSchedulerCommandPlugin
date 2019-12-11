@@ -40,6 +40,7 @@ class ScheduledCommand implements ResourceInterface
 
     /**
      * @see http://www.abunchofutils.com/utils/developer/cron-expression-helper/
+     *
      * @var string
      * @ORM\Column(type="string")
      */
@@ -66,7 +67,7 @@ class ScheduledCommand implements ResourceInterface
     private $logFile;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer")
      */
     private $priority = 0;

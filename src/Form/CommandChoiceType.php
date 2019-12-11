@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Synolia\SchedulerCommandPlugin\Form;
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Synolia\SchedulerCommandPlugin\Parser\CommandParserInterface;
 
 final class CommandChoiceType extends AbstractType
 {
-    /**
-     * @var CommandParserInterface
-     */
+    /** @var CommandParserInterface */
     private $commandParser;
 
     public function __construct(CommandParserInterface $commandParser)

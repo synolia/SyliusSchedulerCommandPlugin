@@ -25,8 +25,10 @@ final class SynoliaSchedulerRunCommand extends Command
 
     /** @var EntityManagerInterface */
     private $entityManager;
+
     /** @var string */
     private $logsDir;
+
     /** @var InputInterface */
     private $input;
 
@@ -52,7 +54,6 @@ final class SynoliaSchedulerRunCommand extends Command
 
         $this->input = $input;
     }
-
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -193,7 +194,7 @@ final class SynoliaSchedulerRunCommand extends Command
             return new NullOutput();
         }
 
-        try{
+        try {
             $filename = $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile();
             $logFile = fopen(
                 $filename,

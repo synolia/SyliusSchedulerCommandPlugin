@@ -94,6 +94,7 @@ before_script:
 
 script:
     - composer validate
+    - vendor/bin/ecs check src/ tests/Behat/ --no-progress-bar
     - vendor/bin/phpstan analyse -c phpstan.neon src/
 
     - vendor/bin/phpunit

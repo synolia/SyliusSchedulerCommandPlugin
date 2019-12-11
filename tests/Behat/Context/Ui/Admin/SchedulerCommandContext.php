@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
-use Sylius\Behat\NotificationType;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
+use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
