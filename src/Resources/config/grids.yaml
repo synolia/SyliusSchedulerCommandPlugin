@@ -50,6 +50,14 @@ sylius_grid:
                         type: update
                     delete:
                         type: delete
+                    emptyLogFile:
+                        type: emptyLogFile
+                        label: Empty log
+                        options:
+                            link:
+                                route: sylius_admin_scheduler_empty_log_file
+                                parameters:
+                                    command: resource.id
                     execute:
                         type: schedule_command_execute_immediate
                         label: sylius.ui.scheduled_command.execute_immediate
@@ -60,4 +68,5 @@ sylius_grid:
                                     command: resource.id
     templates:
         action:
+            emptyLogFile: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/empty_log_file.html.twig"
             schedule_command_execute_immediate: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"
