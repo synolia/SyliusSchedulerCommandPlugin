@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -21,6 +22,8 @@ use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterfac
 
 final class SynoliaSchedulerRunCommand extends Command
 {
+    use LockableTrait;
+
     protected static $defaultName = 'synolia:scheduler-run';
 
     /** @var EntityManagerInterface */
@@ -57,6 +60,12 @@ final class SynoliaSchedulerRunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->lock()) {
+            $output->writeln('The command is already running in another process.');
+
+            return 0;
+        }
+
         $io = new SymfonyStyle($input, $output);
 
         /** @var ScheduledCommandRepositoryInterface $scheduledCommandRepository */
@@ -113,6 +122,8 @@ final class SynoliaSchedulerRunCommand extends Command
         if (true === $noneExecution) {
             $io->success('Nothing to do.');
         }
+
+        $this->release();
 
         return 0;
     }
