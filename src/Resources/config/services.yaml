@@ -21,5 +21,7 @@ services:
 
     app.grid_field.scheduled_command.url:
         class: Synolia\SchedulerCommandPlugin\Grid\FieldType\ScheduledCommandUrlType
+        arguments:
+            $logsDir: '%kernel.logs_dir%'
         tags:
             - { name: sylius.grid_field, type: scheduled_command_url }

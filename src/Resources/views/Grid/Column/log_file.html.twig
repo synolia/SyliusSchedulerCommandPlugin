@@ -1,8 +1,29 @@
+{% macro bytesToSize(bytes) %}
+    {% spaceless %}
+        {% set kilobyte = 1024 %}
+        {% set megabyte = kilobyte * 1024 %}
+        {% set gigabyte = megabyte * 1024 %}
+        {% set terabyte = gigabyte * 1024 %}
+
+        {% if bytes < kilobyte %}
+            {{ bytes ~ ' B' }}
+        {% elseif bytes < megabyte %}
+            {{ (bytes / kilobyte)|number_format(2, '.') ~ ' KiB' }}
+        {% elseif bytes < gigabyte %}
+            {{ (bytes / megabyte)|number_format(2, '.') ~ ' MiB' }}
+        {% elseif bytes < terabyte %}
+            {{ (bytes / gigabyte)|number_format(2, '.') ~ ' GiB' }}
+        {% else %}
+            {{ (bytes / terabyte)|number_format(2, '.') ~ ' TiB' }}
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
 {% if schedulerCommand.logFile is not null %}
     <div class="ui buttons">
         <a class="ui labeled icon button " href="{{ url }}">
             <i class="icon download"></i>
-            {{ schedulerCommand.logFile }}
+            {{ schedulerCommand.logFile }} - {{ _self.bytesToSize(size) }}
         </a>
     </div>
 {% endif %}
