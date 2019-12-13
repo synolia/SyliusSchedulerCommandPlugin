@@ -8,17 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Webmozart\Assert\Assert;
 
 class CommandParser implements CommandParserInterface
 {
     /** @var KernelInterface */
     private $kernel;
 
-    /** @var array */
+    /** @var string[] */
     private $excludedNamespaces;
 
     public function __construct(KernelInterface $kernel, array $excludedNamespaces = [])
     {
+        Assert::allString($excludedNamespaces);
+
         $this->kernel = $kernel;
         $this->excludedNamespaces = $excludedNamespaces;
     }

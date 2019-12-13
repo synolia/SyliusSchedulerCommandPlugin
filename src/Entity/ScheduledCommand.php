@@ -39,7 +39,7 @@ class ScheduledCommand implements ResourceInterface
     private $arguments;
 
     /**
-     * @see http://www.abunchofutils.com/utils/developer/cron-expression-helper/
+     * @see https://abunchofutils.com/u/computing/cron-format-helper/
      *
      * @var string
      * @ORM\Column(type="string")
