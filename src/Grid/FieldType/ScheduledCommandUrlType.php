@@ -28,7 +28,7 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
     /**
      * {@inheritdoc}
      *
-     * @var ScheduledCommand
+     * @param ScheduledCommand $scheduleCommand
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
