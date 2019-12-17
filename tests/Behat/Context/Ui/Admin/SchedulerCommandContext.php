@@ -79,7 +79,9 @@ final class SchedulerCommandContext implements Context
      */
     public function iFillFields(string $field, string $value): void
     {
-        $this->resolveCurrentPage()->fillField($field, $value);
+        /** @var CreatePageInterface|UpdatePageInterface $currentPage */
+        $currentPage = $this->resolveCurrentPage();
+        $currentPage->fillField($field, $value);
     }
 
     /**
@@ -133,6 +135,7 @@ final class SchedulerCommandContext implements Context
      */
     public function theFirstScheduledCommandOnTheListShouldHaveName($field, $value)
     {
+        /** @var IndexPageInterface $currentPage */
         $currentPage = $this->resolveCurrentPage();
 
         Assert::same($currentPage->getColumnFields($field)[0], $value);
@@ -169,21 +172,6 @@ final class SchedulerCommandContext implements Context
             'Scheduled command has been successfully deleted.',
             NotificationType::success()
         );
-    }
-
-    /**
-     * @Then I should be notified that :fields fields cannot be blank
-     */
-    public function iShouldBeNotifiedThatCannotBeBlank(string $fields): void
-    {
-        $fields = explode(',', $fields);
-
-        foreach ($fields as $field) {
-            Assert::true($this->resolveCurrentPage()->containsErrorWithMessage(sprintf(
-                '%s cannot be blank.',
-                trim($field)
-            )));
-        }
     }
 
     /**

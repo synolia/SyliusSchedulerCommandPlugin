@@ -5,6 +5,7 @@
 import com.synolia.log.Slack;
 import com.synolia.system.Security;
 import com.synolia.quality.PhpStan;
+import com.synolia.quality.GrumPhp;
 
 // Global
 projectName = "Sylius Scheduler Plugin"
@@ -118,10 +119,11 @@ pipeline {
 
                 stage('Quality Tools') {
                     parallel {
-                        stage('Composer Validation') {
+                        stage('Grumphp') {
                             steps {
                                 script {
-                                    sh "composer validate"
+                                    def grumPhp = new GrumPhp(this, 'vendor/bin/grumphp')
+                                    grumPhp.run()
                                 }
                             }
                             post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
@@ -130,7 +132,7 @@ pipeline {
                         stage('Easy coding standard') {
                             steps {
                                 script {
-                                    sh "vendor/bin/ecs check src/ tests/Behat/ --no-progress-bar"
+                                    sh "vendor/bin/ecs check src/ tests/Behat/ --no-progress-bar --config=ruleset/easy-coding-standard.yml"
                                 }
                             }
                             post { unsuccessful { script { failedStage = env.STAGE_NAME } } }

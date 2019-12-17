@@ -172,6 +172,7 @@ final class SynoliaSchedulerRunCommand extends Command
             );
         }
 
+        /** @var ScheduledCommand $scheduledCommand */
         $scheduledCommand = $this->entityManager->merge($scheduledCommand);
         $scheduledCommand->setLastReturnCode($result);
         $scheduledCommand->setExecuteImmediately(false);

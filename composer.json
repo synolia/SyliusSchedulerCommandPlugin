@@ -19,12 +19,19 @@
         "friends-of-behat/suite-settings-extension": "^1.0",
         "friends-of-behat/symfony-extension": "^2.0",
         "friends-of-behat/variadic-extension": "^1.1",
+        "friendsoftwig/twigcs": "4.0-beta3 as 4.0.0",
+        "j13k/yaml-lint": "^1.1",
+        "jakub-onderka/php-parallel-lint": "^1.0",
         "lakion/mink-debug-extension": "^1.2.3",
+        "phpmd/phpmd": "^2.7",
+        "phpro/grumphp": "^0.17.0",
         "phpspec/phpspec": "^5.0",
         "phpstan/phpstan-doctrine": "^0.11",
-        "phpstan/phpstan-shim": "^0.11",
         "phpstan/phpstan-webmozart-assert": "^0.11",
         "phpunit/phpunit": "^8.0",
+        "povils/phpmnd": "^2.1",
+        "sebastian/phpcpd": "^4.1",
+        "seld/jsonlint": "^1.7",
         "sensiolabs/security-checker": "^5.0",
         "sylius-labs/coding-standard": "^3.1",
         "symfony/browser-kit": "^3.4|^4.3",
@@ -45,11 +52,6 @@
     },
     "autoload-dev": {
         "classmap": ["tests/Application/Kernel.php"]
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.6-dev"
-        }
     },
     "config": {
         "sort-packages": true

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -37,7 +37,7 @@ class CliContext implements Context
     /** @var RepositoryInterface */
     protected $scheduledCommandRepository;
 
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     protected $scheduledCommandManager;
 
     /** @var SharedStorageInterface */
@@ -50,7 +50,7 @@ class CliContext implements Context
         KernelInterface $kernel,
         RepositoryInterface $scheduledCommandRepository,
         ContainerInterface $container,
-        ObjectManager $scheduledCommandManager,
+        EntityManagerInterface $scheduledCommandManager,
         SharedStorageInterface $sharedStorage
     ) {
         $this->kernel = $kernel;
@@ -82,7 +82,10 @@ class CliContext implements Context
     public function iRunScheduledCommands()
     {
         $this->application->add(
-            new SynoliaSchedulerRunCommand(null, $this->scheduledCommandManager, $this->kernel->getLogDir())
+            new SynoliaSchedulerRunCommand(
+                null,
+                $this->scheduledCommandManager,
+                $this->kernel->getLogDir())
         );
         $this->command = $this->application->find('synolia:scheduler-run');
         $this->tester = new CommandTester($this->command);
