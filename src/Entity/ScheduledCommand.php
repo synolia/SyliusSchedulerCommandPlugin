@@ -14,6 +14,7 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 class ScheduledCommand implements ResourceInterface
 {
     /**
+     * @var int|null
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -86,8 +87,7 @@ class ScheduledCommand implements ResourceInterface
      */
     private $disabled = false;
 
-    /** @psalm-suppress MissingReturnType */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

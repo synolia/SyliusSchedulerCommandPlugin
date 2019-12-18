@@ -133,7 +133,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @Then the first scheduled command on the list should have :field :value
      */
-    public function theFirstScheduledCommandOnTheListShouldHaveName($field, $value)
+    public function theFirstScheduledCommandOnTheListShouldHaveName(string $field, string $value): void
     {
         /** @var IndexPageInterface $currentPage */
         $currentPage = $this->resolveCurrentPage();
@@ -199,7 +199,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @Then the first scheduled command shouldn't have log file
      */
-    public function theFirstScheduledCommandShouldntHaveLogFile()
+    public function theFirstScheduledCommandShouldntHaveLogFile(): void
     {
         Assert::isEmpty($this->indexPage->getColumnFields('logFile')[0]);
     }
@@ -207,7 +207,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @Then the second scheduled command should have a log file :filename
      */
-    public function theSecondScheduledCommandShouldHaveALogFile(string $filename)
+    public function theSecondScheduledCommandShouldHaveALogFile(string $filename): void
     {
         Assert::eq($this->indexPage->getColumnFields('logFile')[1], $filename);
     }

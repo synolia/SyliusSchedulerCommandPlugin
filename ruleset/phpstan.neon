@@ -5,18 +5,20 @@ includes:
 parameters:
     level: 7
     reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false
 
     excludes_analyse:
         # Makes PHPStan crash
-        - 'src/DependencyInjection/Configuration.php'
-        - 'src/Migrations/'
+        - ../src/DependencyInjection/Configuration.php
+        - ../src/Migrations/
 
         # Test dependencies
-        - 'tests/Application/app/**.php'
-        - 'tests/Application/src/**.php'
+        - ../tests/Application/app/**.php
+        - ../tests/Application/src/**.php
 
         # PHPSpec
-        - 'spec/'
+        - ../spec
 
     ignoreErrors:
         - '/Parameter #1 $configuration of method Symfony\Component\DependencyInjection\Extension\Extension::processConfiguration() expects Symfony\Component\Config\Definition\ConfigurationInterface, Symfony\Component\Config\Definition\ConfigurationInterface|null given./'
+        - '#^Method [\w\\]+Type::render\(\) has parameter \$[\w]+ with no typehint specified.$#'

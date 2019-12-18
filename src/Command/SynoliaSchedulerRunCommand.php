@@ -43,12 +43,12 @@ final class SynoliaSchedulerRunCommand extends Command
         $this->logsDir = $logsDir;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Execute scheduled commands');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
 
