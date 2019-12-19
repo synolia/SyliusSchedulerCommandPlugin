@@ -8,21 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Webmozart\Assert\Assert;
 
 class CommandParser implements CommandParserInterface
 {
-    /**
-     * @var KernelInterface
-     */
+    /** @var KernelInterface */
     private $kernel;
 
-    /**
-     * @var array
-     */
+    /** @var string[] */
     private $excludedNamespaces;
 
-    public function __construct(KernelInterface $kernel, array $excludedNamespaces = array())
+    public function __construct(KernelInterface $kernel, array $excludedNamespaces = [])
     {
+        Assert::allString($excludedNamespaces);
+
         $this->kernel = $kernel;
         $this->excludedNamespaces = $excludedNamespaces;
     }
@@ -33,10 +32,10 @@ class CommandParser implements CommandParserInterface
         $application->setAutoExit(false);
 
         $input = new ArrayInput(
-            array(
+            [
                 'command' => 'list',
-                '--format' => 'json'
-            )
+                '--format' => 'json',
+            ]
         );
 
         $stream = fopen('php://memory', 'w+');
@@ -55,11 +54,11 @@ class CommandParser implements CommandParserInterface
     private function extractCommandsFromJson(string $string): array
     {
         if ($string === '') {
-            return array();
+            return [];
         }
 
         $node = \json_decode($string);
-        $commandsList = array();
+        $commandsList = [];
 
         foreach ($node->namespaces as $namespace) {
             if (!in_array($namespace->id, $this->excludedNamespaces)) {

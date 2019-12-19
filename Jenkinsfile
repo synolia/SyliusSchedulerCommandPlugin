@@ -127,6 +127,15 @@ pipeline {
                             post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
                         }
 
+                        stage('Easy coding standard') {
+                            steps {
+                                script {
+                                    sh "vendor/bin/ecs check src/ tests/Behat/ --no-progress-bar"
+                                }
+                            }
+                            post { unsuccessful { script { failedStage = env.STAGE_NAME } } }
+                        }
+
                         stage('PhpStan') {
                             steps {
                                 script {

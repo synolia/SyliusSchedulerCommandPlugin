@@ -13,13 +13,10 @@ use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 
 final class ScheduledCommandUrlType implements FieldTypeInterface
 {
-    /**
-     * @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface
-     */
+    /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface */
     private $urlGenerator;
-    /**
-     * @var \Symfony\Component\Templating\EngineInterface
-     */
+
+    /** @var \Symfony\Component\Templating\EngineInterface */
     private $engine;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, EngineInterface $engine)
@@ -31,11 +28,11 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
     /**
      * {@inheritdoc}
      *
-     * @var ScheduledCommand $scheduleCommand
+     * @param ScheduledCommand $scheduleCommand
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
-        $url =  $this->urlGenerator->generate(
+        $url = $this->urlGenerator->generate(
             'download_schedule_log_file',
             [
                 'command' => $scheduleCommand->getId(),
@@ -46,7 +43,7 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
             $options['template'],
             [
                 'schedulerCommand' => $scheduleCommand,
-                'url' => $url
+                'url' => $url,
             ]
         );
     }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Synolia\SchedulerCommandPlugin\Form;
 
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 
 final class ScheduledCommandType extends AbstractType
 {
