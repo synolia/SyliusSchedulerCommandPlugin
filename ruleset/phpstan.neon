@@ -1,9 +1,5 @@
-includes:
-    - ../vendor/phpstan/phpstan-doctrine/extension.neon
-    - ../vendor/phpstan/phpstan-webmozart-assert/extension.neon
-
 parameters:
-    level: 7
+    level: max
     reportUnmatchedIgnoredErrors: false
     checkMissingIterableValueType: false
 
@@ -13,8 +9,7 @@ parameters:
         - ../src/Migrations/
 
         # Test dependencies
-        - ../tests/Application/app/**.php
-        - ../tests/Application/src/**.php
+        - ../tests/Application
 
         # PHPSpec
         - ../spec
@@ -22,3 +17,4 @@ parameters:
     ignoreErrors:
         - '/Parameter #1 $configuration of method Symfony\Component\DependencyInjection\Extension\Extension::processConfiguration() expects Symfony\Component\Config\Definition\ConfigurationInterface, Symfony\Component\Config\Definition\ConfigurationInterface|null given./'
         - '#^Method [\w\\]+Type::render\(\) has parameter \$[\w]+ with no typehint specified.$#'
+        - '#Variable method call on Synolia\\SchedulerCommandPlugin\\Entity\\ScheduledCommand.#'

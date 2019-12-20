@@ -101,9 +101,10 @@ final class SynoliaSchedulerRunCommand extends Command
 
             if ($nextRunDate < $now) {
                 $noneExecution = false;
+                $lastExecution = $command->getLastExecution() !== null ? $command->getLastExecution()->format('d/m/Y H:i:s') : 'never';
                 $io->note(
                     'Command ' . $command->getCommand() . ' should be executed - last execution : ' .
-                    $command->getLastExecution()->format('d/m/Y H:i:s') . '.'
+                    $lastExecution . '.'
                 );
 
                 $this->executeCommand($command, $io);
@@ -191,7 +192,7 @@ final class SynoliaSchedulerRunCommand extends Command
     private function getLogOutput(ScheduledCommand $scheduledCommand, SymfonyStyle $io): OutputInterface
     {
         // Use a StreamOutput or NullOutput to redirect write() and writeln() in a log file
-        if (empty($scheduledCommand->getLogFile())) {
+        if ($scheduledCommand->getLogFile() !== null && $scheduledCommand->getLogFile() !== '') {
             return new NullOutput();
         }
 

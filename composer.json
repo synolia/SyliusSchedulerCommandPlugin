@@ -26,6 +26,7 @@
         "phpmd/phpmd": "^2.7",
         "phpro/grumphp": "^0.17.0",
         "phpspec/phpspec": "^5.0",
+        "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.0",
         "phpstan/phpstan-doctrine": "^0.12.0",
         "phpstan/phpstan-strict-rules": "^0.12.0",

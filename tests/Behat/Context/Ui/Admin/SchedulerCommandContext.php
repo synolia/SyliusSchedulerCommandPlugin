@@ -127,7 +127,7 @@ final class SchedulerCommandContext implements Context
      */
     public function iShouldSeeScheduledCommandInTheList(int $numberOfCommands): void
     {
-        Assert::same($this->indexPage->countItems(), (int) $numberOfCommands);
+        Assert::same($this->indexPage->countItems(), $numberOfCommands);
     }
 
     /**

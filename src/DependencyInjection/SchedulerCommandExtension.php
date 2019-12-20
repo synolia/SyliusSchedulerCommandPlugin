@@ -13,8 +13,6 @@ final class SchedulerCommandExtension extends Extension
 {
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @param string[] $config
      */
     public function load(array $config, ContainerBuilder $container): void
     {
