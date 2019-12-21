@@ -192,7 +192,7 @@ final class SynoliaSchedulerRunCommand extends Command
     private function getLogOutput(ScheduledCommand $scheduledCommand, SymfonyStyle $io): OutputInterface
     {
         // Use a StreamOutput or NullOutput to redirect write() and writeln() in a log file
-        if ($scheduledCommand->getLogFile() !== null && $scheduledCommand->getLogFile() !== '') {
+        if ($scheduledCommand->getLogFile() === null || $scheduledCommand->getLogFile() === '') {
             return new NullOutput();
         }
 
