@@ -13,7 +13,7 @@ parameters:
                 - 'dump('
                 - 'print_r'
                 - 'die('
-                - 'console.'
+                - 'console\.'
             triggered_by: [php, twig, js]
         jsonlint:
             detect_key_conflicts: true

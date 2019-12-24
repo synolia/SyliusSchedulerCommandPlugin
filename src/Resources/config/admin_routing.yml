@@ -20,4 +20,4 @@ execute_immediate_schedule:
     path: /scheduled-commands/execute/immediate/{command}
     methods: [GET|PUT]
     defaults:
-        _controller: Synolia\SyliusSchedulerCommandPlugin\Controller\ScheduledCommandExecuteImmediateController::ExecuteImmediate
+        _controller: Synolia\SyliusSchedulerCommandPlugin\Controller\ScheduledCommandExecuteImmediateController::executeImmediate

@@ -12,7 +12,7 @@ sylius:
             priority: Priority
             enabled: Enabled
             command_execution_time: Execution time
-            execute_immediate: Execute immediate
+            execute_immediate: Execute immediately
         edit_scheduled_command: Edit command
         new_scheduled_command: Create command
     menu:

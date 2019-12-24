@@ -16,8 +16,10 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 {
     /** @var ScheduledCommandRepository */
     private $scheduledCommandRepository;
+
     /** @var EntityManagerInterface */
     private $entityManager;
+
     /** @var KernelInterface */
     private $kernel;
 
@@ -31,15 +33,15 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
         $this->kernel = $kernel;
     }
 
-    public function ExecuteImmediate(string $command): Response
+    public function executeImmediate(string $command): Response
     {
-        /** @var ScheduledCommand $command */
+        /** @var ScheduledCommand $scheduleCommand */
         $scheduleCommand = $this->scheduledCommandRepository->find($command);
         $scheduleCommand->setExecuteImmediately(true);
         $this->entityManager->flush();
 
         $rootDir = $this->kernel->getRootDir();
-        $process = new Process("cd $rootDir && bin/console synolia:scheduler-run --id=$command");
+        $process = new Process(["cd $rootDir && bin/console synolia:scheduler-run --id=$command"]);
         $process->start();
 
         return $this->redirectToRoute('sylius_admin_scheduled_command_index');
