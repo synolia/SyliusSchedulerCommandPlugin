@@ -11,6 +11,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,6 +51,7 @@ final class SynoliaSchedulerRunCommand extends Command
     protected function configure(): void
     {
         $this->setDescription('Execute scheduled commands');
+        $this->addOption('id', 'i', InputOption::VALUE_OPTIONAL, 'Command ID');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -72,6 +74,9 @@ final class SynoliaSchedulerRunCommand extends Command
         /** @var ScheduledCommandRepositoryInterface $scheduledCommandRepository */
         $scheduledCommandRepository = $this->entityManager->getRepository(ScheduledCommand::class);
         $commands = $scheduledCommandRepository->findEnabledCommand();
+        if ($input->getOption('id')) {
+            $commands = $scheduledCommandRepository->findBy(['id' => $input->getOption('id')]);
+        }
         $noneExecution = true;
 
         /** @var ScheduledCommandInterface $command */
