@@ -11,6 +11,7 @@ sylius:
             log_file: Fichier de log
             priority: Priorité
             enabled: Activé
+            command_execution_time: Temps d'execution
         edit_scheduled_command: Editer la commanda
         new_scheduled_command: Créer une commande
     menu:
