@@ -17,6 +17,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
 final class SynoliaSchedulerRunCommand extends Command
@@ -64,7 +65,7 @@ final class SynoliaSchedulerRunCommand extends Command
         $commands = $scheduledCommandRepository->findEnabledCommand();
         $noneExecution = true;
 
-        /** @var ScheduledCommand $command */
+        /** @var ScheduledCommandInterface $command */
         foreach ($commands as $command) {
             /** prevent update during running time */
             $this->entityManager->refresh($this->entityManager->merge($command));
@@ -94,7 +95,7 @@ final class SynoliaSchedulerRunCommand extends Command
                 continue;
             }
 
-            /** @var ScheduledCommand $command */
+            /** @var ScheduledCommandInterface $command */
             $cron = CronExpression::factory($command->getCronExpression());
             $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
             $now = new \DateTime();
@@ -118,7 +119,7 @@ final class SynoliaSchedulerRunCommand extends Command
         return 0;
     }
 
-    private function executeCommand(ScheduledCommand $scheduledCommand, SymfonyStyle $io): void
+    private function executeCommand(ScheduledCommandInterface $scheduledCommand, SymfonyStyle $io): void
     {
         $scheduledCommand->setLastExecution(new \DateTime());
         $this->entityManager->flush();
@@ -173,7 +174,7 @@ final class SynoliaSchedulerRunCommand extends Command
             );
         }
 
-        /** @var ScheduledCommand $scheduledCommand */
+        /** @var ScheduledCommandInterface $scheduledCommand */
         $scheduledCommand = $this->entityManager->merge($scheduledCommand);
         $scheduledCommand->setLastReturnCode($result);
         $scheduledCommand->setExecuteImmediately(false);
@@ -189,7 +190,7 @@ final class SynoliaSchedulerRunCommand extends Command
         gc_collect_cycles();
     }
 
-    private function getLogOutput(ScheduledCommand $scheduledCommand, SymfonyStyle $io): OutputInterface
+    private function getLogOutput(ScheduledCommandInterface $scheduledCommand, SymfonyStyle $io): OutputInterface
     {
         // Use a StreamOutput or NullOutput to redirect write() and writeln() in a log file
         if ($scheduledCommand->getLogFile() === null || $scheduledCommand->getLogFile() === '') {

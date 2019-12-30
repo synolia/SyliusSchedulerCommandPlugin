@@ -11,6 +11,7 @@ use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 use Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\CreatePageInterface;
 use Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\IndexPageInterface;
@@ -106,7 +107,7 @@ final class SchedulerCommandContext implements Context
      */
     public function iUpdateThisScheduledCommand(): void
     {
-        /** @var ScheduledCommand $schedule */
+        /** @var ScheduledCommandInterface $schedule */
         $schedule = $this->sharedStorage->get('schedule');
 
         $this->updatePage->open(['id' => $schedule->getId()]);
@@ -190,7 +191,7 @@ final class SchedulerCommandContext implements Context
      */
     public function iDeleteThisScheduledCommand(): void
     {
-        /** @var ScheduledCommand $schedule */
+        /** @var ScheduledCommandInterface $schedule */
         $schedule = $this->sharedStorage->get('schedule');
 
         $this->indexPage->deleteResourceOnPage(['name' => $schedule->getName()]);
@@ -224,7 +225,7 @@ final class SchedulerCommandContext implements Context
         ]);
     }
 
-    private function createSchedule(): ScheduledCommand
+    private function createSchedule(): ScheduledCommandInterface
     {
         $schedule = new ScheduledCommand();
         $schedule->setName('About project')
