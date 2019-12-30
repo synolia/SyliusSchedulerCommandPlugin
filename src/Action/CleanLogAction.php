@@ -19,7 +19,7 @@ final class CleanLogAction extends AbstractController
     ): Response {
         $scheduleCommand = $scheduledCommandRepository->find($command);
 
-        if(null === $scheduleCommand) {
+        if (null === $scheduleCommand) {
             $this->addFlash('error', $translator->trans('sylius.ui.scheduled_command_not_exists'));
 
             return $this->redirectToGrid();
@@ -33,7 +33,7 @@ final class CleanLogAction extends AbstractController
             return $this->redirectToGrid();
         }
 
-        $filePath = $this->getParameter('kernel.logs_dir') . DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
+        $filePath = $this->getParameter('kernel.logs_dir') . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
         if (!\file_exists($filePath)) {
             $this->addFlash('error', $translator->trans('sylius.ui.no_log_file_found'));
 
