@@ -14,6 +14,11 @@ sylius_grid:
                 cronExpression:
                     type: string
                     label: sylius.ui.scheduled_command.cron_expression
+                humanReadableExpression:
+                    type: scheduled_human_readable_expression
+                    label: sylius.ui.scheduled_command.human_readable_expression
+                    options:
+                        template: '@SchedulerCommandPlugin/Grid/Column/human_readable_expression.html.twig'
                 lastExecution:
                     type: datetime
                     label: sylius.ui.scheduled_command.last_execution

@@ -23,3 +23,7 @@ services:
         class: Synolia\SchedulerCommandPlugin\Grid\FieldType\ScheduledCommandUrlType
         tags:
             - { name: sylius.grid_field, type: scheduled_command_url }
+    app.grid_field.scheduled_command.humanReadableExpression:
+        class: Synolia\SchedulerCommandPlugin\Grid\FieldType\ScheduledCommandHumanReadableExpressionType
+        tags:
+            - { name: sylius.grid_field, type: scheduled_human_readable_expression }
