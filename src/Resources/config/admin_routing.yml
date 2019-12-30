@@ -9,7 +9,6 @@ sylius_admin_scheduled_command:
             index:
                 icon: 'box'
     type: sylius.resource
-    prefix: /admin
 
 download_schedule_log_file:
     path: /scheduled-commands/download/logfile/{command}

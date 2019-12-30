@@ -8,8 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 final class DummyTest extends TestCase
 {
-    public function testDummy()
+    public function testDummy(): void
     {
-        $this->markTestSkipped('dummy');
+        self::assertTrue(true);
     }
 }

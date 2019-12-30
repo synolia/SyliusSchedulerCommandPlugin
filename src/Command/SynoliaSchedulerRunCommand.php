@@ -43,12 +43,12 @@ final class SynoliaSchedulerRunCommand extends Command
         $this->logsDir = $logsDir;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Execute scheduled commands');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
 
@@ -101,9 +101,10 @@ final class SynoliaSchedulerRunCommand extends Command
 
             if ($nextRunDate < $now) {
                 $noneExecution = false;
+                $lastExecution = $command->getLastExecution() !== null ? $command->getLastExecution()->format('d/m/Y H:i:s') : 'never';
                 $io->note(
                     'Command ' . $command->getCommand() . ' should be executed - last execution : ' .
-                    $command->getLastExecution()->format('d/m/Y H:i:s') . '.'
+                    $lastExecution . '.'
                 );
 
                 $this->executeCommand($command, $io);
@@ -172,6 +173,7 @@ final class SynoliaSchedulerRunCommand extends Command
             );
         }
 
+        /** @var ScheduledCommand $scheduledCommand */
         $scheduledCommand = $this->entityManager->merge($scheduledCommand);
         $scheduledCommand->setLastReturnCode($result);
         $scheduledCommand->setExecuteImmediately(false);
@@ -190,7 +192,7 @@ final class SynoliaSchedulerRunCommand extends Command
     private function getLogOutput(ScheduledCommand $scheduledCommand, SymfonyStyle $io): OutputInterface
     {
         // Use a StreamOutput or NullOutput to redirect write() and writeln() in a log file
-        if (empty($scheduledCommand->getLogFile())) {
+        if ($scheduledCommand->getLogFile() === null || $scheduledCommand->getLogFile() === '') {
             return new NullOutput();
         }
 

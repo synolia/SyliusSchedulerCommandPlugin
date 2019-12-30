@@ -40,7 +40,7 @@ final class CommandContext implements Context
     /**
      * @Given I have command :code named :name
      */
-    public function iHaveCommandNamed(string $code, string $name)
+    public function iHaveCommandNamed(string $code, string $name): void
     {
         /** @var ScheduledCommand $command */
         $command = $this->scheduledCommandFactory->createNew();

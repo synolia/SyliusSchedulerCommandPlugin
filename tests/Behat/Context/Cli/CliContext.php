@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -37,7 +37,7 @@ class CliContext implements Context
     /** @var RepositoryInterface */
     protected $scheduledCommandRepository;
 
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     protected $scheduledCommandManager;
 
     /** @var SharedStorageInterface */
@@ -50,7 +50,7 @@ class CliContext implements Context
         KernelInterface $kernel,
         RepositoryInterface $scheduledCommandRepository,
         ContainerInterface $container,
-        ObjectManager $scheduledCommandManager,
+        EntityManagerInterface $scheduledCommandManager,
         SharedStorageInterface $sharedStorage
     ) {
         $this->kernel = $kernel;
@@ -63,7 +63,7 @@ class CliContext implements Context
     /**
      * @Given I have a working command-line interface
      */
-    public function iHaveAWorkingCommandLineInterface()
+    public function iHaveAWorkingCommandLineInterface(): void
     {
         $this->application = new Application($this->kernel);
     }
@@ -71,7 +71,7 @@ class CliContext implements Context
     /**
      * @Then I should see :messagePart in the output
      */
-    public function iShouldSeeInTheMessage($messagePart)
+    public function iShouldSeeInTheMessage(string $messagePart): void
     {
         Assert::assertContains($messagePart, $this->tester->getDisplay());
     }
@@ -79,10 +79,13 @@ class CliContext implements Context
     /**
      * @When I run scheduled commands
      */
-    public function iRunScheduledCommands()
+    public function iRunScheduledCommands(): void
     {
         $this->application->add(
-            new SynoliaSchedulerRunCommand(null, $this->scheduledCommandManager, $this->kernel->getLogDir())
+            new SynoliaSchedulerRunCommand(
+                null,
+                $this->scheduledCommandManager,
+                $this->kernel->getLogDir())
         );
         $this->command = $this->application->find('synolia:scheduler-run');
         $this->tester = new CommandTester($this->command);
@@ -92,7 +95,7 @@ class CliContext implements Context
     /**
      * @Given it is executed immediately
      */
-    public function itIsExecutedImmediately()
+    public function itIsExecutedImmediately(): void
     {
         /** @var ScheduledCommand $command */
         $command = $this->sharedStorage->get('command');
@@ -103,7 +106,7 @@ class CliContext implements Context
     /**
      * @Given this scheduled command has :value in :attribute
      */
-    public function thisScheduledCommandHasIn(string $value, string $attribute)
+    public function thisScheduledCommandHasIn(string $value, string $attribute): void
     {
         /** @var ScheduledCommand $schedule */
         $schedule = $this->sharedStorage->get('command');
@@ -116,7 +119,7 @@ class CliContext implements Context
     /**
      * @Then the file of this command must contain :messagePart
      */
-    public function theFileOfThisCommandMustContain(string $messagePart)
+    public function theFileOfThisCommandMustContain(string $messagePart): void
     {
         /** @var ScheduledCommand $schedule */
         $schedule = $this->sharedStorage->get('command');
@@ -128,7 +131,7 @@ class CliContext implements Context
     /**
      * @Given this file not exit yet
      */
-    public function thisFileNotExitYet()
+    public function thisFileNotExitYet(): void
     {
         /** @var ScheduledCommand $schedule */
         $schedule = $this->sharedStorage->get('command');

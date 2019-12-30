@@ -24,7 +24,8 @@ final class DownloadController extends AbstractController
         /** @var ScheduledCommand $command */
         $scheduleCommand = $this->scheduledCommandRepository->find($command);
 
-        if (null === $scheduleCommand->getLogFile() ||
+        if (null === $scheduleCommand ||
+            null === $scheduleCommand->getLogFile() ||
             null === $this->getParameter('kernel.logs_dir')
         ) {
             return new Response('', Response::HTTP_NOT_FOUND);

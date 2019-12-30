@@ -79,7 +79,9 @@ final class SchedulerCommandContext implements Context
      */
     public function iFillFields(string $field, string $value): void
     {
-        $this->resolveCurrentPage()->fillField($field, $value);
+        /** @var CreatePageInterface|UpdatePageInterface $currentPage */
+        $currentPage = $this->resolveCurrentPage();
+        $currentPage->fillField($field, $value);
     }
 
     /**
@@ -125,14 +127,15 @@ final class SchedulerCommandContext implements Context
      */
     public function iShouldSeeScheduledCommandInTheList(int $numberOfCommands): void
     {
-        Assert::same($this->indexPage->countItems(), (int) $numberOfCommands);
+        Assert::same($this->indexPage->countItems(), $numberOfCommands);
     }
 
     /**
      * @Then the first scheduled command on the list should have :field :value
      */
-    public function theFirstScheduledCommandOnTheListShouldHaveName($field, $value)
+    public function theFirstScheduledCommandOnTheListShouldHaveName(string $field, string $value): void
     {
+        /** @var IndexPageInterface $currentPage */
         $currentPage = $this->resolveCurrentPage();
 
         Assert::same($currentPage->getColumnFields($field)[0], $value);
@@ -172,21 +175,6 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
-     * @Then I should be notified that :fields fields cannot be blank
-     */
-    public function iShouldBeNotifiedThatCannotBeBlank(string $fields): void
-    {
-        $fields = explode(',', $fields);
-
-        foreach ($fields as $field) {
-            Assert::true($this->resolveCurrentPage()->containsErrorWithMessage(sprintf(
-                '%s cannot be blank.',
-                trim($field)
-            )));
-        }
-    }
-
-    /**
      * @Given there is a scheduled command in the store
      */
     public function thereIsAScheduledCommandInTheStore(): void
@@ -211,7 +199,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @Then the first scheduled command shouldn't have log file
      */
-    public function theFirstScheduledCommandShouldntHaveLogFile()
+    public function theFirstScheduledCommandShouldntHaveLogFile(): void
     {
         Assert::isEmpty($this->indexPage->getColumnFields('logFile')[0]);
     }
@@ -219,7 +207,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @Then the second scheduled command should have a log file :filename
      */
-    public function theSecondScheduledCommandShouldHaveALogFile(string $filename)
+    public function theSecondScheduledCommandShouldHaveALogFile(string $filename): void
     {
         Assert::eq($this->indexPage->getColumnFields('logFile')[1], $filename);
     }

@@ -11,7 +11,10 @@ use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 
 final class ScheduledCommandType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
@@ -25,7 +28,7 @@ final class ScheduledCommandType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ScheduledCommand::class,

@@ -61,7 +61,7 @@ class CommandParser implements CommandParserInterface
         $commandsList = [];
 
         foreach ($node->namespaces as $namespace) {
-            if (!in_array($namespace->id, $this->excludedNamespaces)) {
+            if (!in_array($namespace->id, $this->excludedNamespaces, true)) {
                 foreach ($namespace->commands as $command) {
                     $commandsList[$namespace->id][$command] = $command;
                 }

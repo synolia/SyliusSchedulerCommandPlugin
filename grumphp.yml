@@ -1,0 +1,44 @@
+parameters:
+    git_dir: .
+    bin_dir: vendor/bin
+    ascii:
+        failed: ~
+        succeeded: ~
+    tasks:
+        composer:
+            no_check_all: true
+        git_blacklist:
+            keywords:
+                - 'var_dump'
+                - 'dump('
+                - 'print_r'
+                - 'die('
+                - 'console.'
+            triggered_by: [php, twig, js]
+        jsonlint:
+            detect_key_conflicts: true
+        phpcpd:
+            directory:
+                - src
+        phplint:
+            exclude: ['vendor']
+            triggered_by: ['php']
+        phpmd:
+            ruleset: ['ruleset/.php_md.xml']
+        phpstan:
+            level: ~
+            configuration: 'ruleset/phpstan.neon'
+        securitychecker: ~
+        yamllint: ~
+        ecs:
+            whitelist_patterns:
+                - src
+                - tests/Behat
+            config: 'ruleset/easy-coding-standard.yml'
+            no-progress-bar: true
+            level: strict
+        phpmnd:
+            directory: src
+        twigcs:
+            path: 'src/'
+            severity: error
