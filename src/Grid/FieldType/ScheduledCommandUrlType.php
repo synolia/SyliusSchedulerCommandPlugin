@@ -13,17 +13,13 @@ use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 
 final class ScheduledCommandUrlType implements FieldTypeInterface
 {
-    /**
-     * @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface
-     */
+    /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface */
     private $urlGenerator;
-    /**
-     * @var \Symfony\Component\Templating\EngineInterface
-     */
+
+    /** @var \Symfony\Component\Templating\EngineInterface */
     private $engine;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     private $logsDir;
 
     public function __construct(
@@ -45,14 +41,14 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
     {
         $size = 0;
 
-        $url =  $this->urlGenerator->generate(
+        $url = $this->urlGenerator->generate(
             'download_schedule_log_file',
             [
                 'command' => $scheduleCommand->getId(),
             ]
         );
 
-        $filePath = $this->logsDir . DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
+        $filePath = $this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
         if (\file_exists($filePath)) {
             $size = filesize($filePath);
         }
