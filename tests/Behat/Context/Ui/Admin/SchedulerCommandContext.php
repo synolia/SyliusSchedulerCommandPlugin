@@ -221,7 +221,7 @@ final class SchedulerCommandContext implements Context
      */
     public function theSecondScheduledCommandShouldHaveALogFile(string $filename)
     {
-        Assert::eq($this->indexPage->getColumnFields('logFile')[1], $filename);
+        Assert::startsWith($this->indexPage->getColumnFields('logFile')[1], $filename);
     }
 
     /**
