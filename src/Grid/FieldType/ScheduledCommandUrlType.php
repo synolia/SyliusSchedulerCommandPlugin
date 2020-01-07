@@ -19,10 +19,17 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
     /** @var \Symfony\Component\Templating\EngineInterface */
     private $engine;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, EngineInterface $engine)
-    {
+    /** @var string */
+    private $logsDir;
+
+    public function __construct(
+        UrlGeneratorInterface $urlGenerator,
+        EngineInterface $engine,
+        string $logsDir
+    ) {
         $this->urlGenerator = $urlGenerator;
         $this->engine = $engine;
+        $this->logsDir = $logsDir;
     }
 
     /**
@@ -32,6 +39,8 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
+        $size = 0;
+
         $url = $this->urlGenerator->generate(
             'download_schedule_log_file',
             [
@@ -39,11 +48,17 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
             ]
         );
 
+        $filePath = $this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
+        if (\file_exists($filePath)) {
+            $size = filesize($filePath);
+        }
+
         return $this->engine->render(
             $options['template'],
             [
                 'schedulerCommand' => $scheduleCommand,
                 'url' => $url,
+                'size' => $size,
             ]
         );
     }

@@ -2,7 +2,7 @@
     <div class="ui buttons">
         <a class="ui labeled icon button " href="{{ url }}">
             <i class="icon download"></i>
-            {{ schedulerCommand.logFile }}
+            {{ schedulerCommand.logFile }} - {{ size|format_bytes }}
         </a>
     </div>
 {% endif %}
