@@ -4,45 +4,23 @@ declare(strict_types=1);
 
 namespace Synolia\SchedulerCommandPlugin\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Process\Process;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
-use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 
 class ScheduledCommandExecuteImmediateController extends AbstractController
 {
-    /** @var ScheduledCommandRepository */
-    private $scheduledCommandRepository;
+    /** @var ExecuteScheduleCommand */
+    private $executeScheduleCommand;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var KernelInterface */
-    private $kernel;
-
-    public function __construct(
-        ScheduledCommandRepository $scheduledCommandRepository,
-        EntityManagerInterface $entityManager,
-        KernelInterface $kernel
-    ) {
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->entityManager = $entityManager;
-        $this->kernel = $kernel;
+    public function __construct(ExecuteScheduleCommand $executeScheduleCommand)
+    {
+        $this->executeScheduleCommand = $executeScheduleCommand;
     }
 
-    public function executeImmediate(string $command): Response
+    public function executeImmediate(string $commandId): Response
     {
-        /** @var ScheduledCommand $scheduleCommand */
-        $scheduleCommand = $this->scheduledCommandRepository->find($command);
-        $scheduleCommand->setExecuteImmediately(true);
-        $this->entityManager->flush();
-
-        $rootDir = $this->kernel->getRootDir();
-        $process = new Process(["cd $rootDir && bin/console synolia:scheduler-run --id=$command"]);
-        $process->start();
+        $this->executeScheduleCommand->executeImmediate($commandId);
 
         return $this->redirectToRoute('sylius_admin_scheduled_command_index');
     }

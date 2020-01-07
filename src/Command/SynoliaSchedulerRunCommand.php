@@ -83,7 +83,7 @@ final class SynoliaSchedulerRunCommand extends Command
         foreach ($commands as $command) {
             /** prevent update during running time */
             $this->entityManager->refresh($this->entityManager->merge($command));
-            if (!$command->isEnabled()) {
+            if ($command->isDisabled()) {
                 continue;
             }
 
