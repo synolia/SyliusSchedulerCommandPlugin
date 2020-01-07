@@ -28,6 +28,11 @@ sylius_grid:
                 priority:
                     type: string
                     label: sylius.ui.scheduled_command.priority
+                enabled:
+                    type: twig
+                    label: sylius.ui.scheduled_command.enabled
+                    options:
+                        template: SyliusUiBundle:Grid/Field:enabled.html.twig
             actions:
                 main:
                     create:

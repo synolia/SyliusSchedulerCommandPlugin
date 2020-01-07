@@ -85,7 +85,7 @@ class ScheduledCommand implements ResourceInterface
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $disabled = false;
+    private $enabled = true;
 
     public function getId(): ?int
     {
@@ -200,14 +200,14 @@ class ScheduledCommand implements ResourceInterface
         return $this;
     }
 
-    public function isDisabled(): bool
+    public function isEnabled(): bool
     {
-        return $this->disabled;
+        return $this->enabled;
     }
 
-    public function setDisabled(bool $disabled): self
+    public function setEnabled(bool $enabled): self
     {
-        $this->disabled = $disabled;
+        $this->enabled = $enabled;
 
         return $this;
     }

@@ -24,7 +24,7 @@ final class ScheduledCommandType extends AbstractType
             ->add('logFile')
             ->add('priority')
             ->add('executeImmediately')
-            ->add('disabled')
+            ->add('enabled')
         ;
     }
 
