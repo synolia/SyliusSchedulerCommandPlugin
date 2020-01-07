@@ -16,8 +16,8 @@ projectChannelName = "sylius-demo"
 failedStage = "unknown"
 
 // Docker
-phpDockerRegistry = "registry.synolia.com/php72dev:latest"
-dbDockerRegistry = "registry.synolia.com/percona57dev:latest"
+phpDockerRegistry = "registry.synocloud.com/php72dev:latest"
+dbDockerRegistry = "registry.synocloud.com/percona57dev:latest"
 seleniumRegistry = "selenium/standalone-chrome:3.141.59-europium"
 
 // Get Slack Client
