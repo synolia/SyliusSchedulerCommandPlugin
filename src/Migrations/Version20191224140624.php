@@ -14,7 +14,7 @@ final class Version20191224140624 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add command end datetime';
     }
 
     public function up(Schema $schema): void

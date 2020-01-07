@@ -222,8 +222,10 @@ class ScheduledCommand implements ScheduledCommandInterface
         return $this->commandEndTime;
     }
 
-    public function setCommandEndTime(?\DateTime $commandEndTime): void
+    public function setCommandEndTime(?\DateTime $commandEndTime): self
     {
         $this->commandEndTime = $commandEndTime;
+
+        return $this;
     }
 }
