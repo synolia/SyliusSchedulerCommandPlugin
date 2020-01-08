@@ -28,7 +28,7 @@ Feature: Adding a new scheduled command
         And I fill "Log file" with "debug_config.log"
         And I fill "Priority" with "1"
         And I fill "Execute immediately" with "1"
-        And I fill "Disabled" with "1"
+        And I fill "Enabled" with "1"
         And I add it
         Then I should be notified that the scheduled command has been created
         And I should see 1 scheduled command in the list

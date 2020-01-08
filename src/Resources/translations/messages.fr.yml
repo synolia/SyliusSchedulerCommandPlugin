@@ -9,6 +9,7 @@ sylius:
             last_return_code: Dernier code de retour
             log_file: Fichier de log
             priority: Priorité
+            enabled: Activé
         edit_scheduled_command: Editer la commanda
         new_scheduled_command: Créer une commande
     menu:

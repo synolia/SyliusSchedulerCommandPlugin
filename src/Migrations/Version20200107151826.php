@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191102175551 extends AbstractMigration
+final class Version20200107151826 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -33,9 +33,9 @@ final class Version20191102175551 extends AbstractMigration
           logFile VARCHAR(255) DEFAULT NULL, 
           priority INT NOT NULL, 
           executeImmediately TINYINT(1) NOT NULL, 
-          disabled TINYINT(1) NOT NULL, 
+          enabled TINYINT(1) NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
