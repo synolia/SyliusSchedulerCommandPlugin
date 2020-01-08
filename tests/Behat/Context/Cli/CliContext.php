@@ -15,7 +15,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Synolia\SchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 class CliContext implements Context
 {
@@ -97,7 +97,7 @@ class CliContext implements Context
      */
     public function itIsExecutedImmediately(): void
     {
-        /** @var ScheduledCommand $command */
+        /** @var ScheduledCommandInterface $command */
         $command = $this->sharedStorage->get('command');
         $command->setExecuteImmediately(true);
         $this->scheduledCommandManager->flush();
@@ -108,7 +108,7 @@ class CliContext implements Context
      */
     public function thisScheduledCommandHasIn(string $value, string $attribute): void
     {
-        /** @var ScheduledCommand $schedule */
+        /** @var ScheduledCommandInterface $schedule */
         $schedule = $this->sharedStorage->get('command');
         $setter = 'set' . \ucfirst($attribute);
         $schedule->$setter($value);
@@ -121,7 +121,7 @@ class CliContext implements Context
      */
     public function theFileOfThisCommandMustContain(string $messagePart): void
     {
-        /** @var ScheduledCommand $schedule */
+        /** @var ScheduledCommandInterface $schedule */
         $schedule = $this->sharedStorage->get('command');
         $logFile = $this->kernel->getLogDir() . \DIRECTORY_SEPARATOR . $schedule->getLogFile();
 
@@ -133,7 +133,7 @@ class CliContext implements Context
      */
     public function thisFileNotExitYet(): void
     {
-        /** @var ScheduledCommand $schedule */
+        /** @var ScheduledCommandInterface $schedule */
         $schedule = $this->sharedStorage->get('command');
         $logFile = $this->kernel->getLogDir() . \DIRECTORY_SEPARATOR . $schedule->getLogFile();
 

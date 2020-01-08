@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Synolia\SchedulerCommandPlugin\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Sylius\Component\Resource\Model\ResourceInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository")
  * @ORM\Table("scheduled_command")
  */
-class ScheduledCommand implements ResourceInterface
+class ScheduledCommand implements ScheduledCommandInterface
 {
     /**
      * @var int|null
@@ -97,7 +96,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): ScheduledCommandInterface
     {
         $this->name = $name;
 
@@ -109,7 +108,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->command;
     }
 
-    public function setCommand(string $command): self
+    public function setCommand(string $command): ScheduledCommandInterface
     {
         $this->command = $command;
 
@@ -121,7 +120,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->arguments;
     }
 
-    public function setArguments(?string $arguments): self
+    public function setArguments(?string $arguments): ScheduledCommandInterface
     {
         $this->arguments = $arguments;
 
@@ -133,7 +132,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->cronExpression;
     }
 
-    public function setCronExpression(string $cronExpression): self
+    public function setCronExpression(string $cronExpression): ScheduledCommandInterface
     {
         $this->cronExpression = $cronExpression;
 
@@ -145,7 +144,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->lastExecution;
     }
 
-    public function setLastExecution(?\DateTime $lastExecution): self
+    public function setLastExecution(?\DateTime $lastExecution): ScheduledCommandInterface
     {
         $this->lastExecution = $lastExecution;
 
@@ -157,7 +156,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->lastReturnCode;
     }
 
-    public function setLastReturnCode(?int $lastReturnCode): self
+    public function setLastReturnCode(?int $lastReturnCode): ScheduledCommandInterface
     {
         $this->lastReturnCode = $lastReturnCode;
 
@@ -169,7 +168,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->logFile;
     }
 
-    public function setLogFile(?string $logFile): self
+    public function setLogFile(?string $logFile): ScheduledCommandInterface
     {
         $this->logFile = $logFile;
 
@@ -181,7 +180,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->priority;
     }
 
-    public function setPriority(int $priority): self
+    public function setPriority(int $priority): ScheduledCommandInterface
     {
         $this->priority = $priority;
 
@@ -193,7 +192,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->executeImmediately;
     }
 
-    public function setExecuteImmediately(bool $executeImmediately): self
+    public function setExecuteImmediately(bool $executeImmediately): ScheduledCommandInterface
     {
         $this->executeImmediately = $executeImmediately;
 
@@ -205,7 +204,7 @@ class ScheduledCommand implements ResourceInterface
         return $this->enabled;
     }
 
-    public function setEnabled(bool $enabled): self
+    public function setEnabled(bool $enabled): ScheduledCommandInterface
     {
         $this->enabled = $enabled;
 

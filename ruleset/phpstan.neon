@@ -9,7 +9,7 @@ parameters:
         - ../src/Migrations/
 
         # Test dependencies
-        - ../tests/Application
+        - ../tests
 
         # PHPSpec
         - ../spec

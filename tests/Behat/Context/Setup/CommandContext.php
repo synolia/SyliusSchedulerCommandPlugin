@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 final class CommandContext implements Context
 {
@@ -42,7 +42,7 @@ final class CommandContext implements Context
      */
     public function iHaveCommandNamed(string $code, string $name): void
     {
-        /** @var ScheduledCommand $command */
+        /** @var ScheduledCommandInterface $command */
         $command = $this->scheduledCommandFactory->createNew();
         $command->setCommand($code)
             ->setName($name);

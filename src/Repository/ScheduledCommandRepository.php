@@ -6,6 +6,7 @@ namespace Synolia\SchedulerCommandPlugin\Repository;
 
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 /**
  * @method ScheduledCommand|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,7 +17,7 @@ use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
 class ScheduledCommandRepository extends EntityRepository implements ScheduledCommandRepositoryInterface
 {
     /**
-     * @return ScheduledCommand[]
+     * @return ScheduledCommandInterface[]
      */
     public function findEnabledCommand(): iterable
     {
