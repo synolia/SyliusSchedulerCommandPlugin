@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Synolia\SchedulerCommandPlugin\Entity;
 
 use Sylius\Component\Resource\Model\ResourceInterface;
@@ -10,41 +12,41 @@ interface ScheduledCommandInterface extends ResourceInterface
 
     public function getName(): string;
 
-    public function setName(string $name): ScheduledCommandInterface;
+    public function setName(string $name): self;
 
     public function getCommand(): string;
 
-    public function setCommand(string $command): ScheduledCommandInterface;
+    public function setCommand(string $command): self;
 
     public function getArguments(): ?string;
 
-    public function setArguments(?string $arguments): ScheduledCommandInterface;
+    public function setArguments(?string $arguments): self;
 
     public function getCronExpression(): string;
 
-    public function setCronExpression(string $cronExpression): ScheduledCommandInterface;
+    public function setCronExpression(string $cronExpression): self;
 
     public function getLastExecution(): ?\DateTime;
 
-    public function setLastExecution(?\DateTime $lastExecution): ScheduledCommandInterface;
+    public function setLastExecution(?\DateTime $lastExecution): self;
 
     public function getLastReturnCode(): ?int;
 
-    public function setLastReturnCode(?int $lastReturnCode): ScheduledCommandInterface;
+    public function setLastReturnCode(?int $lastReturnCode): self;
 
     public function getLogFile(): ?string;
 
-    public function setLogFile(?string $logFile): ScheduledCommandInterface;
+    public function setLogFile(?string $logFile): self;
 
     public function getPriority(): int;
 
-    public function setPriority(int $priority): ScheduledCommandInterface;
+    public function setPriority(int $priority): self;
 
     public function isExecuteImmediately(): bool;
 
-    public function setExecuteImmediately(bool $executeImmediately): ScheduledCommandInterface;
+    public function setExecuteImmediately(bool $executeImmediately): self;
 
-    public function isDisabled(): bool;
+    public function isEnabled(): bool;
 
-    public function setDisabled(bool $disabled): ScheduledCommandInterface;
+    public function setEnabled(bool $enabled): self;
 }
