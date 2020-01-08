@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Synolia\SchedulerCommandPlugin\Application\src\Service;
+namespace Tests\Synolia\SyliusSchedulerCommandPlugin\Application\src\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
-use Synolia\SchedulerCommandPlugin\Service\ExecuteScheduleCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 
 class ExecuteScheduleCommandTest extends WebTestCase
 {

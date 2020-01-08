@@ -13,4 +13,4 @@ sylius_fixtures:
                                 cronExpression: '*****'
                                 priority: 1
                                 executeImmediately: false
-                                disabled: false
+                                enabled: true

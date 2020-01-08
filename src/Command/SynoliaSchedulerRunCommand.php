@@ -71,19 +71,14 @@ final class SynoliaSchedulerRunCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
 
-        /** @var ScheduledCommandRepositoryInterface $scheduledCommandRepository */
-        $scheduledCommandRepository = $this->entityManager->getRepository(ScheduledCommand::class);
-        $commands = $scheduledCommandRepository->findEnabledCommand();
-        if ($input->getOption('id')) {
-            $commands = $scheduledCommandRepository->findBy(['id' => $input->getOption('id')]);
-        }
+        $commands = $this->getCommands($input);
         $noneExecution = true;
 
         /** @var ScheduledCommandInterface $command */
         foreach ($commands as $command) {
             /** prevent update during running time */
             $this->entityManager->refresh($this->entityManager->merge($command));
-            if ($command->isDisabled()) {
+            if (!$command->isEnabled()) {
                 continue;
             }
 
@@ -234,5 +229,17 @@ final class SynoliaSchedulerRunCommand extends Command
         }
 
         return $logOutput;
+    }
+
+    private function getCommands(InputInterface $input): iterable
+    {
+        /** @var ScheduledCommandRepositoryInterface $scheduledCommandRepository */
+        $scheduledCommandRepository = $this->entityManager->getRepository(ScheduledCommand::class);
+        $commands = $scheduledCommandRepository->findEnabledCommand();
+        if ($input->getOption('id')) {
+            $commands = $scheduledCommandRepository->findBy(['id' => $input->getOption('id')]);
+        }
+
+        return $commands;
     }
 }

@@ -60,4 +60,4 @@ sylius_grid:
                                     command: resource.id
     templates:
         action:
-            schedule_command_execute_immediate: "@SchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"
+            schedule_command_execute_immediate: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"

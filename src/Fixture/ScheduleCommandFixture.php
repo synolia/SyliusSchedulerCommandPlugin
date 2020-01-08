@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Fixture;
+namespace Synolia\SyliusSchedulerCommandPlugin\Fixture;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,7 +10,7 @@ use Sylius\Bundle\FixturesBundle\Fixture\AbstractFixture;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 
 class ScheduleCommandFixture extends AbstractFixture
 {
@@ -47,7 +47,7 @@ class ScheduleCommandFixture extends AbstractFixture
                 ->setPriority($option['priority'])
                 ->setCronExpression($option['cronExpression'])
                 ->setExecuteImmediately($option['executeImmediately'])
-                ->setDisabled($option['disabled'])
+                ->setEnabled($option['enabled'])
             ;
 
             $this->manager->persist($scheduleCommand);
@@ -76,7 +76,7 @@ class ScheduleCommandFixture extends AbstractFixture
             ->scalarNode('cronExpression')->isRequired()->end()
             ->integerNode('priority')->isRequired()->end()
             ->booleanNode('executeImmediately')->isRequired()->end()
-            ->booleanNode('disabled')->isRequired()->end()
+            ->booleanNode('enabled')->isRequired()->end()
             ->end()
         ;
     }

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Service;
+namespace Synolia\SyliusSchedulerCommandPlugin\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
-use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 class ExecuteScheduleCommand
 {
@@ -31,10 +31,10 @@ class ExecuteScheduleCommand
         $this->kernel = $kernel;
     }
 
-    public function executeImmediate(string $command): bool
+    public function executeImmediate(string $commandId): bool
     {
         /** @var ScheduledCommand $scheduleCommand */
-        $scheduleCommand = $this->scheduledCommandRepository->find($command);
+        $scheduleCommand = $this->scheduledCommandRepository->find($commandId);
         if ($scheduleCommand === null) {
             return false;
         }
@@ -43,7 +43,7 @@ class ExecuteScheduleCommand
         $this->entityManager->flush();
 
         $rootDir = $this->kernel->getRootDir();
-        $process = new Process(["cd $rootDir && bin/console synolia:scheduler-run --id=$command"]);
+        $process = new Process(["cd $rootDir && bin/console synolia:scheduler-run --id=$commandId"]);
         $process->start();
 
         return true;

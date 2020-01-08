@@ -6,7 +6,7 @@ services:
 
     Synolia\SyliusSchedulerCommandPlugin\:
         resource: '../../*'
-        exclude: '../../{Entity,Migrations,SchedulerCommandPlugin.php}'
+        exclude: '../../{Entity,Migrations,SynoliaSyliusSchedulerCommandPlugin.php}'
 
     Synolia\SyliusSchedulerCommandPlugin\Menu\AdminMenuListener:
         tags:

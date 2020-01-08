@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Controller;
+namespace Synolia\SyliusSchedulerCommandPlugin\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Synolia\SchedulerCommandPlugin\Service\ExecuteScheduleCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 
 class ScheduledCommandExecuteImmediateController extends AbstractController
 {
