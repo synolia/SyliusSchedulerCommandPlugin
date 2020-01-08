@@ -5,6 +5,7 @@ sylius:
             name: Nom
             command: Commande
             cron_expression: Expression de Cron
+            human_readable_expression: Expression humanisée
             last_execution: Dernière exécution
             last_return_code: Dernier code de retour
             log_file: Fichier de log
