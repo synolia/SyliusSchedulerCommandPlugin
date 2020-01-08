@@ -4,28 +4,28 @@ services:
         autoconfigure: true
         public: false
 
-    Synolia\SchedulerCommandPlugin\:
+    Synolia\SyliusSchedulerCommandPlugin\:
         resource: '../../*'
         exclude: '../../{Entity,Migrations,SchedulerCommandPlugin.php}'
 
-    Synolia\SchedulerCommandPlugin\Menu\AdminMenuListener:
+    Synolia\SyliusSchedulerCommandPlugin\Menu\AdminMenuListener:
         tags:
             - { name: kernel.event_listener, event: sylius.menu.admin.main, method: addAdminMenuItems }
 
-    Synolia\SchedulerCommandPlugin\Parser\CommandParser:
+    Synolia\SyliusSchedulerCommandPlugin\Parser\CommandParser:
         arguments:
             $excludedNamespaces: ['_global']
 
-    Synolia\SchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand:
+    Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand:
         $logsDir: '%kernel.logs_dir%'
 
     app.grid_field.scheduled_command.url:
-        class: Synolia\SchedulerCommandPlugin\Grid\FieldType\ScheduledCommandUrlType
+        class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandUrlType
         arguments:
             $logsDir: '%kernel.logs_dir%'
         tags:
             - { name: sylius.grid_field, type: scheduled_command_url }
     app.grid_field.scheduled_command.humanReadableExpression:
-        class: Synolia\SchedulerCommandPlugin\Grid\FieldType\ScheduledCommandHumanReadableExpressionType
+        class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandHumanReadableExpressionType
         tags:
             - { name: sylius.grid_field, type: scheduled_human_readable_expression }

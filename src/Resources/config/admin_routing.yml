@@ -14,4 +14,4 @@ download_schedule_log_file:
     path: /scheduled-commands/download/logfile/{command}
     methods: [GET]
     defaults:
-        _controller: Synolia\SchedulerCommandPlugin\Controller\DownloadController::downloadLogFile
+        _controller: Synolia\SyliusSchedulerCommandPlugin\Controller\DownloadController::downloadLogFile

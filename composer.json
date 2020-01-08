@@ -51,8 +51,8 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Synolia\\SchedulerCommandPlugin\\": "src/",
-            "Tests\\Synolia\\SchedulerCommandPlugin\\": "tests/"
+            "Synolia\\SyliusSchedulerCommandPlugin\\": "src/",
+            "Tests\\Synolia\\SyliusSchedulerCommandPlugin\\": "tests/"
         }
     },
     "autoload-dev": {

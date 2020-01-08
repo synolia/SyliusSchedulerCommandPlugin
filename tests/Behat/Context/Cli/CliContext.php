@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Cli;
+namespace Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,8 +14,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Synolia\SchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 class CliContext implements Context
 {

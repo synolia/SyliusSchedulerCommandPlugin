@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Command;
+namespace Synolia\SyliusSchedulerCommandPlugin\Command;
 
 use Cron\CronExpression;
 use Doctrine\ORM\EntityManager;
@@ -17,9 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
-use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
 final class SynoliaSchedulerRunCommand extends Command
 {

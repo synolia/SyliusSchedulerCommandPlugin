@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Grid\FieldType;
+namespace Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType;
 
 use Sivaschenko\Utility\Cron\ExpressionFactory;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Templating\EngineInterface;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 
 final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInterface
 {

@@ -3,7 +3,7 @@ sylius_grid:
         sylius_admin_scheduled_command:
             driver:
                 options:
-                    class: Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand
+                    class: Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand
             fields:
                 name:
                     type: string
@@ -18,7 +18,7 @@ sylius_grid:
                     type: scheduled_human_readable_expression
                     label: sylius.ui.scheduled_command.human_readable_expression
                     options:
-                        template: '@SchedulerCommandPlugin/Grid/Column/human_readable_expression.html.twig'
+                        template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/human_readable_expression.html.twig'
                 lastExecution:
                     type: datetime
                     label: sylius.ui.scheduled_command.last_execution
@@ -29,7 +29,7 @@ sylius_grid:
                     type: scheduled_command_url
                     label: sylius.ui.scheduled_command.log_file
                     options:
-                        template: '@SchedulerCommandPlugin/Grid/Column/log_file.html.twig'
+                        template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/log_file.html.twig'
                 priority:
                     type: string
                     label: sylius.ui.scheduled_command.priority

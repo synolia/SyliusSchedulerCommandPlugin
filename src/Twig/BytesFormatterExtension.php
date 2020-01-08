@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Twig;
+namespace Synolia\SyliusSchedulerCommandPlugin\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

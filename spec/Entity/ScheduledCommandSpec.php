@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Synolia\SchedulerCommandPlugin\Entity;
+namespace spec\Synolia\SyliusSchedulerCommandPlugin\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 
 class ScheduledCommandSpec extends ObjectBehavior
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Entity;
+namespace Synolia\SyliusSchedulerCommandPlugin\Entity;
 
 use Sylius\Component\Resource\Model\ResourceInterface;
 

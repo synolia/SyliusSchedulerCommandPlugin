@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Synolia\SchedulerCommandPlugin\Factory;
+namespace Tests\Synolia\SyliusSchedulerCommandPlugin\Factory;
 
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Resource\Factory\Factory;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
-use Synolia\SchedulerCommandPlugin\Factory\SchedulerFactory;
-use Synolia\SchedulerCommandPlugin\Factory\SchedulerFactoryInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Factory\SchedulerFactory;
+use Synolia\SyliusSchedulerCommandPlugin\Factory\SchedulerFactoryInterface;
 
 final class SchedulerFactoryTest extends TestCase
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Entity;
+namespace Synolia\SyliusSchedulerCommandPlugin\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository")
+ * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository")
  * @ORM\Table("scheduled_command")
  */
 class ScheduledCommand implements ScheduledCommandInterface

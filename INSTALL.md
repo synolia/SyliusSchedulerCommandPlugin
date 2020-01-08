@@ -8,7 +8,7 @@ Import required config in your `config/packages/_sylius.yaml` file:
 imports:
     ...
     
-    - { resource: "@SynoliaSchedulerCommandPlugin/Resources/config/config.yml" }
+    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/config.yml" }
 ```
 
 Import routing in your `config/routes.yaml` file:
@@ -19,7 +19,7 @@ Import routing in your `config/routes.yaml` file:
 ...
 
 synolia_scheduled_command:
-    resource: "@SchedulerCommandPlugin/Resources/config/admin_routing.yml"
+    resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yml"
     prefix: /admin
 ```
 
