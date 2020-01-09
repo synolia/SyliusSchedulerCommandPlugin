@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Form;
+namespace Synolia\SyliusSchedulerCommandPlugin\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 
 final class ScheduledCommandType extends AbstractType
 {

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Synolia\SchedulerCommandPlugin\Parser;
+namespace spec\Synolia\SyliusSchedulerCommandPlugin\Parser;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Synolia\SchedulerCommandPlugin\Parser\CommandParser;
+use Synolia\SyliusSchedulerCommandPlugin\Parser\CommandParser;
 
 class CommandParserSpec extends ObjectBehavior
 {

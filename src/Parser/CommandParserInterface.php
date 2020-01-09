@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Parser;
+namespace Synolia\SyliusSchedulerCommandPlugin\Parser;
 
 interface CommandParserInterface
 {

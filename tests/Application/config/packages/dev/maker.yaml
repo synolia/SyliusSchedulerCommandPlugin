@@ -1,2 +1,2 @@
 maker:
-    root_namespace: 'Synolia\SchedulerCommandPlugin'
+    root_namespace: 'Synolia\SyliusSchedulerCommandPlugin'

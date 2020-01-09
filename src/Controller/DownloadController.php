@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Controller;
+namespace Synolia\SyliusSchedulerCommandPlugin\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
-use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 final class DownloadController extends AbstractController
 {

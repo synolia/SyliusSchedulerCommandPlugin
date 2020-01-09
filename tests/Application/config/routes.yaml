@@ -1,3 +1,3 @@
 synolia_scheduled_command:
-    resource: "@SchedulerCommandPlugin/Resources/config/admin_routing.yml"
+    resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yml"
     prefix: /admin

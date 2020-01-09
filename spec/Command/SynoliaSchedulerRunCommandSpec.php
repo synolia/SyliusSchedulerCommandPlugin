@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Synolia\SchedulerCommandPlugin\Command;
+namespace spec\Synolia\SyliusSchedulerCommandPlugin\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Command\Command;
-use Synolia\SchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
 
 class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
 {

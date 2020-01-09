@@ -3,6 +3,6 @@ sylius_resource:
         sylius.scheduled_command:
             driver: doctrine/orm
             classes:
-                model: Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand
-                form: Synolia\SchedulerCommandPlugin\Form\ScheduledCommandType
-                repository: Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository
+                model: Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand
+                form: Synolia\SyliusSchedulerCommandPlugin\Form\ScheduledCommandType
+                repository: Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository

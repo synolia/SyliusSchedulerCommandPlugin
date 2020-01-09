@@ -1,4 +1,4 @@
-Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand:
+Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand:
     properties:
         name:
             - NotBlank: ~

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Synolia\SchedulerCommandPlugin;
+namespace Tests\Synolia\SyliusSchedulerCommandPlugin;
 
 use PHPUnit\Framework\TestCase;
 

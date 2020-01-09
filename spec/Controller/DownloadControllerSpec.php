@@ -1,14 +1,12 @@
 <?php
 
-namespace spec\Synolia\SchedulerCommandPlugin\Controller;
+namespace spec\Synolia\SyliusSchedulerCommandPlugin\Controller;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use spec\Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandSpec;
 use Symfony\Component\HttpFoundation\Response;
-use Synolia\SchedulerCommandPlugin\Controller\DownloadController;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
-use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Controller\DownloadController;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 class DownloadControllerSpec extends ObjectBehavior
 {

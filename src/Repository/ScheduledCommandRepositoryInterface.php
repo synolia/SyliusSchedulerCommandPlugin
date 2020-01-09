@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Repository;
+namespace Synolia\SyliusSchedulerCommandPlugin\Repository;
 
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 
 /**
  * @method ScheduledCommand|null find($id, $lockMode = null, $lockVersion = null)

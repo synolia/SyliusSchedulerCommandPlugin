@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Synolia\SchedulerCommandPlugin\Behat\Context\Ui\Admin;
+namespace Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
@@ -10,12 +10,12 @@ use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommand;
-use Synolia\SchedulerCommandPlugin\Entity\ScheduledCommandInterface;
-use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
-use Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\CreatePageInterface;
-use Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\IndexPageInterface;
-use Tests\Synolia\SchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\UpdatePageInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
+use Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\CreatePageInterface;
+use Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\IndexPageInterface;
+use Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\UpdatePageInterface;
 use Webmozart\Assert\Assert;
 
 final class SchedulerCommandContext implements Context

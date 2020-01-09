@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Synolia\SchedulerCommandPlugin\Form;
+namespace spec\Synolia\SyliusSchedulerCommandPlugin\Form;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Synolia\SchedulerCommandPlugin\Form\CommandChoiceType;
-use Synolia\SchedulerCommandPlugin\Parser\CommandParserInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Form\CommandChoiceType;
+use Synolia\SyliusSchedulerCommandPlugin\Parser\CommandParserInterface;
 
 class CommandChoiceTypeSpec extends ObjectBehavior
 {
