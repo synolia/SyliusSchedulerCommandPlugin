@@ -12,10 +12,10 @@
 
 * See the list of planned command
 * Add, edit, enable/disable or delete scheduled commands
-* For each command, you define :
+* For each command, you have to define :
   * Name
   * Selected Command from the list of Symfony commands
-  * Based on Cron schedule expression (see https://abunchofutils.com/u/computing/cron-format-helper/)
+  * Based on Cron schedule expression see [Cron formats](https://abunchofutils.com/u/computing/cron-format-helper/)
   * Output Log file (optional)
   * Priority (highest is priority)
 * Run the Command immediately
@@ -24,15 +24,15 @@
 
 ## Installation
 
-Run `$ composer require synolia/scheduler-command-plugin`.
-Register `Synolia\SchedulerCommandPlugin\SchedulerCommandPlugin::class => ['all' => true],` in your `config/bundles.php` file.
+Run `$ composer require synolia/sylius-scheduler-command-plugin`.
+Register `SchedulerCommandPlugin\SynoliaSchedulerCommandPlugin::class => ['all' => true],` in your `config/bundles.php` file.
 Import required config in your `config/packages/_sylius.yaml` file:
 
 ```yaml
 # config/packages/_sylius.yaml
 
 imports:
-    - { resource: "@SynoliaSchedulerCommandPlugin/Resources/config/config.yml" }
+    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/config.yml" }
 ```
 
 Import routing in your `config/routes.yaml` file:
@@ -41,7 +41,7 @@ Import routing in your `config/routes.yaml` file:
 # config/routes.yaml
 
 synolia_scheduled_command:
-    resource: "@SchedulerCommandPlugin/Resources/config/admin_routing.yml"
+    resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yml"
     prefix: /admin
 ```
 

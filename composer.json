@@ -1,5 +1,5 @@
 {
-    "name": "synolia/scheduler-command-plugin",
+    "name": "synolia/sylius-scheduler-command-plugin",
     "type": "sylius-plugin",
     "keywords": ["sylius", "sylius-plugin", "scheduler", "command"],
     "description": "Scheduler Command Plugin.",
