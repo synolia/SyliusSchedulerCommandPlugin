@@ -86,6 +86,12 @@ class ScheduledCommand implements ScheduledCommandInterface
      */
     private $enabled = true;
 
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $commandEndTime;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -207,6 +213,18 @@ class ScheduledCommand implements ScheduledCommandInterface
     public function setEnabled(bool $enabled): ScheduledCommandInterface
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getCommandEndTime(): ?\DateTime
+    {
+        return $this->commandEndTime;
+    }
+
+    public function setCommandEndTime(\DateTime $commandEndTime): ScheduledCommandInterface
+    {
+        $this->commandEndTime = $commandEndTime;
 
         return $this;
     }

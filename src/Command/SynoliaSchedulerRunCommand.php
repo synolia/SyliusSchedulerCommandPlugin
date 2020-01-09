@@ -171,6 +171,7 @@ final class SynoliaSchedulerRunCommand extends Command
                 . ' ' . $scheduledCommand->getArguments() . '</comment>'
             );
             $result = $command->run($input, $logOutput);
+            $scheduledCommand->setCommandEndTime(new \DateTime());
         } catch (\Exception $e) {
             $logOutput->writeln($e->getMessage());
             $logOutput->writeln($e->getTraceAsString());

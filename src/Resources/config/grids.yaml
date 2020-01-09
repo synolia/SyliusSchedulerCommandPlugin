@@ -22,6 +22,9 @@ sylius_grid:
                 lastExecution:
                     type: datetime
                     label: sylius.ui.scheduled_command.last_execution
+                commandExecutionTime:
+                    type: scheduled_command_execution_time
+                    label: sylius.ui.scheduled_command.command_execution_time
                 lastReturnCode:
                     type: string
                     label: sylius.ui.scheduled_command.last_return_code

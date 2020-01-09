@@ -198,6 +198,14 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
+     * @Then the scheduled command should have an execution time
+     */
+    public function theScheduledCommandShouldHaveAnExecutionTime(): void
+    {
+        Assert::notEmpty($this->indexPage->getColumnFields('commandExecutionTime')[0]);
+    }
+
+    /**
      * @Then the first scheduled command shouldn't have log file
      */
     public function theFirstScheduledCommandShouldntHaveLogFile(): void

@@ -25,7 +25,13 @@ services:
             $logsDir: '%kernel.logs_dir%'
         tags:
             - { name: sylius.grid_field, type: scheduled_command_url }
+
     app.grid_field.scheduled_command.humanReadableExpression:
         class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandHumanReadableExpressionType
         tags:
             - { name: sylius.grid_field, type: scheduled_human_readable_expression }
+
+    app.grid_field.scheduled_command.execution_time:
+        class: Synolia\SchedulerCommandPlugin\Grid\FieldType\ScheduledCommandExecutionTimeType
+        tags:
+            - { name: sylius.grid_field, type: scheduled_command_execution_time }
