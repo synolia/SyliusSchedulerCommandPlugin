@@ -49,4 +49,8 @@ interface ScheduledCommandInterface extends ResourceInterface
     public function isEnabled(): bool;
 
     public function setEnabled(bool $enabled): self;
+
+    public function getCommandEndTime(): ?\DateTime;
+
+    public function setCommandEndTime(\DateTime $executeImmediately): self;
 }

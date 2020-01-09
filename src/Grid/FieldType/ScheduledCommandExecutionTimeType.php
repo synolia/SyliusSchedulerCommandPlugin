@@ -36,10 +36,11 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
-        $time = 0;
-        if ($scheduleCommand->getCommandEndTime() !== null) {
-            $time = $scheduleCommand->getCommandEndTime()->getTimestamp() - $scheduleCommand->getLastExecution()->getTimestamp();
+        if ($scheduleCommand->getCommandEndTime() === null) {
+            return '';
         }
+
+        $time = $scheduleCommand->getCommandEndTime()->getTimestamp() - $scheduleCommand->getLastExecution()->getTimestamp();
 
         if ($time > self::HOUR_IN_SECONDES) {
             $hours = (int) ($time / self::HOUR_IN_SECONDES) . 'h ';
