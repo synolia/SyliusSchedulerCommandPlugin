@@ -7,7 +7,6 @@
     "require": {
         "php": "^7.2",
         "mtdowling/cron-expression": "^1.2",
-        "sivaschenko/utility-cron": "dev-master",
         "sylius/sylius": "^1.5"
     },
     "require-dev": {
@@ -37,16 +36,20 @@
         "sebastian/phpcpd": "^4.1",
         "seld/jsonlint": "^1.7",
         "sensiolabs/security-checker": "^5.0",
+        "sivaschenko/utility-cron": "^1.0",
         "sylius-labs/coding-standard": "^3.1",
         "symfony/browser-kit": "^3.4|^4.3",
         "symfony/debug-bundle": "^3.4|^4.3",
         "symfony/dotenv": "^4.3",
         "symfony/intl": "^3.4|^4.3",
-        "symfony/maker-bundle": "^1.14",
         "symfony/lock": "^3.4|^4.3",
+        "symfony/maker-bundle": "^1.14",
         "symfony/web-profiler-bundle": "^3.4|^4.3",
         "symfony/web-server-bundle": "^3.4|^4.3",
         "symplify/easy-coding-standard": "^6.1"
+    },
+    "suggest": {
+        "sivaschenko/utility-cron": "Allow showing humanized cron expression."
     },
     "prefer-stable": true,
     "autoload": {
