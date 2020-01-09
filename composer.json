@@ -7,7 +7,6 @@
     "require": {
         "php": "^7.2",
         "mtdowling/cron-expression": "^1.2",
-        "sivaschenko/utility-cron": "dev-master",
         "sylius/sylius": "^1.5"
     },
     "require-dev": {

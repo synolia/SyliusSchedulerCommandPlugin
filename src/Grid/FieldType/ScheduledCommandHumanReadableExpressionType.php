@@ -28,7 +28,7 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
-        if ('' === $scheduleCommand->getCronExpression()) {
+        if (!\class_exists(ExpressionFactory::class) || '' === $scheduleCommand->getCronExpression()) {
             return '';
         }
 
