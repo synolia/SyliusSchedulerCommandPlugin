@@ -176,6 +176,17 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
+     * @Then I should be notified that the scheduled command log file has been cleaned
+     */
+    public function iShouldBeNotifiedThatNewScheduledCommandLogFileHasBeenCleaned(): void
+    {
+        $this->notificationChecker->checkNotification(
+            'Log file successfully emptied.',
+            NotificationType::success()
+        );
+    }
+
+    /**
      * @Given there is a scheduled command in the store
      */
     public function thereIsAScheduledCommandInTheStore(): void
@@ -240,5 +251,25 @@ final class SchedulerCommandContext implements Context
             ->setCommand('about');
 
         return $schedule;
+    }
+
+    /**
+     * @When /^I clean log file for this scheduled command for scheduled command named "([^"]*)"$/
+     */
+    public function iCleanLogFileForThisScheduledCommandForScheduledCommandNamed(string $scheduledCommandName)
+    {
+        $actions = $this->indexPage->getActionsForResource(['name' => $scheduledCommandName]);
+        $actions->pressButton('Empty log');
+    }
+
+    /**
+     * @Then /^I should be notified that the scheduled command log file has not been defined$/
+     */
+    public function iShouldBeNotifiedThatTheScheduledCommandLogFileHasNotBeenDefined()
+    {
+        $this->notificationChecker->checkNotification(
+            'Scheduled command has no defined log file.',
+            NotificationType::failure()
+        );
     }
 }

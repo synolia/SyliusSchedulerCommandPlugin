@@ -15,6 +15,11 @@ sylius:
             execute_immediate: Execute immediately
         edit_scheduled_command: Edit command
         new_scheduled_command: Create command
+        log_file_undefined: Scheduled command has no defined log file.
+        no_log_file_found: No log file found.
+        error_emptying_log_file: There was an error while trying to empty the log file.
+        log_file_successfully_emptied: Log file successfully emptied.
+        scheduled_command_not_exists: Scheduled Command does not exists.
     menu:
         admin:
             main:
