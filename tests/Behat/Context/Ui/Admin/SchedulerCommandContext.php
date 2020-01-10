@@ -209,11 +209,13 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
-     * @Then the scheduled command should have an execution time
+     * @Then the scheduled command field :field should not be empty on the line :index
      */
-    public function theScheduledCommandShouldHaveAnExecutionTime(): void
+    public function theScheduledCommandFieldShouldNotBeEmptyOnTheLine(string $field, int $index): void
     {
-        Assert::notEmpty($this->indexPage->getColumnFields('commandExecutionTime')[0]);
+        if ($this->indexPage->getColumnFields($field)[$index] !== '0') {
+            Assert::notEmpty($this->indexPage->getColumnFields($field)[$index]);
+        }
     }
 
     /**

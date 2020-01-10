@@ -110,8 +110,19 @@ class CliContext implements Context
     {
         /** @var ScheduledCommandInterface $schedule */
         $schedule = $this->sharedStorage->get('command');
+        $getter = 'get' . \ucfirst($attribute);
+        $attributeType = gettype($schedule->$getter());
         $setter = 'set' . \ucfirst($attribute);
-        $schedule->$setter($value);
+
+        if ($attributeType === 'double') {
+            $schedule->$setter((float) $value);
+        }
+        if ($attributeType === 'integer') {
+            $schedule->$setter((int) $value);
+        }
+        if ($schedule->$getter() === null || $schedule->$getter() === '') {
+            $schedule->$setter($value);
+        }
 
         $this->scheduledCommandRepository->add($schedule);
     }
