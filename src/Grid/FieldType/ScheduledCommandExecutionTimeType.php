@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Grid\FieldType;
+namespace Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType;
 
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;

@@ -32,6 +32,6 @@ services:
             - { name: sylius.grid_field, type: scheduled_human_readable_expression }
 
     app.grid_field.scheduled_command.execution_time:
-        class: Synolia\SchedulerCommandPlugin\Grid\FieldType\ScheduledCommandExecutionTimeType
+        class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandExecutionTimeType
         tags:
             - { name: sylius.grid_field, type: scheduled_command_execution_time }

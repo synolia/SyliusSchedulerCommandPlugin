@@ -4,90 +4,61 @@
     </a>
 </p>
 
-<h1 align="center">Plugin Skeleton</h1>
+<h1 align="center">Scheduler Command Plugin</h1>
 
-<p align="center">Skeleton for starting Sylius plugins.</p>
+<p align="center">Schedule Symfony Commands in your Sylius admin panel.</p>
 
-## Documentation
+## Features
 
-For a comprehensive guide on Sylius Plugins development please go to Sylius documentation,
-there you will find the <a href="https://docs.sylius.com/en/latest/plugin-development-guide/index.html">Plugin Development Guide</a>, that is full of examples.
+* See the list of planned command
+* Add, edit, enable/disable or delete scheduled commands
+* For each command, you have to define :
+  * Name
+  * Selected Command from the list of Symfony commands
+  * Based on Cron schedule expression see [Cron formats](https://abunchofutils.com/u/computing/cron-format-helper/)
+  * Output Log file (optional)
+  * Priority (highest is priority)
+* Run the Command immediately
+* Download, show file size, empty log files directly from the admin panel
+* Define commands with a Factory (from a Doctrine migration, for example)
 
-## Quickstart Installation
+## Installation
 
-1. Run `composer create-project sylius/plugin-skeleton ProjectName`.
+Run `$ composer require synolia/sylius-scheduler-command-plugin`.
+Register `SchedulerCommandPlugin\SynoliaSchedulerCommandPlugin::class => ['all' => true],` in your `config/bundles.php` file.
+Import required config in your `config/packages/_sylius.yaml` file:
 
-2. From the plugin skeleton root directory, run the following commands:
+```yaml
+# config/packages/_sylius.yaml
 
-    ```bash
-    $ (cd tests/Application && yarn install)
-    $ (cd tests/Application && yarn build)
-    $ (cd tests/Application && bin/console assets:install public -e test)
-    
-    $ (cd tests/Application && bin/console doctrine:database:create -e test)
-    $ (cd tests/Application && bin/console doctrine:schema:create -e test)
-    ```
+imports:
+    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/config.yml" }
+```
 
-To be able to setup a plugin's database, remember to configure you database credentials in `tests/Application/.env` and `tests/Application/.env.test`.
+Import routing in your `config/routes.yaml` file:
+
+```yaml
+# config/routes.yaml
+
+synolia_scheduled_command:
+    resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yml"
+    prefix: /admin
+```
 
 ## Usage
 
-### Running plugin tests
+* Log into admin panel
+* Click on `Scheduled commands` in the Configuration section in main menu
+* Manage your Scheduled commands
 
-  - PHPUnit
+## Development
 
-    ```bash
-    $ vendor/bin/phpunit
-    ```
+See [How to contribute](CONTRIBUTING.md).
 
-  - PHPSpec
+License
+-------
+This library is under the MIT license.
 
-    ```bash
-    $ vendor/bin/phpspec run
-    ```
-
-  - Behat (non-JS scenarios)
-
-    ```bash
-    $ vendor/bin/behat --tags="~@javascript"
-    ```
-
-  - Behat (JS scenarios)
- 
-    1. Download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/)
-    
-    2. Download [Selenium Standalone Server](https://www.seleniumhq.org/download/).
-    
-    2. Run Selenium server with previously downloaded Chromedriver:
-    
-        ```bash
-        $ java -Dwebdriver.chrome.driver=chromedriver -jar selenium-server-standalone.jar
-        ```
-        
-    3. Run test application's webserver on `localhost:8080`:
-    
-        ```bash
-        $ (cd tests/Application && bin/console server:run localhost:8080 -d public -e test)
-        ```
-    
-    4. Run Behat:
-    
-        ```bash
-        $ vendor/bin/behat --tags="@javascript"
-        ```
-
-### Opening Sylius with your plugin
-
-- Using `test` environment:
-
-    ```bash
-    $ (cd tests/Application && bin/console sylius:fixtures:load -e test)
-    $ (cd tests/Application && bin/console server:run -d public -e test)
-    ```
-    
-- Using `dev` environment:
-
-    ```bash
-    $ (cd tests/Application && bin/console sylius:fixtures:load -e dev)
-    $ (cd tests/Application && bin/console server:run -d public -e dev)
-    ```
+Credits
+-------
+Developed by [Synolia](https://synolia.com/).
