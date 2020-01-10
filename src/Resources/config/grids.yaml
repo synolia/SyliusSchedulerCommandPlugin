@@ -7,9 +7,11 @@ sylius_grid:
             fields:
                 name:
                     type: string
+                    sortable: ~
                     label: sylius.ui.scheduled_command.name
                 command:
                     type: string
+                    sortable: ~
                     label: sylius.ui.scheduled_command.command
                 cronExpression:
                     type: string
@@ -21,26 +23,60 @@ sylius_grid:
                         template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/human_readable_expression.html.twig'
                 lastExecution:
                     type: datetime
+                    sortable: ~
                     label: sylius.ui.scheduled_command.last_execution
                 commandExecutionTime:
                     type: scheduled_command_execution_time
                     label: sylius.ui.scheduled_command.command_execution_time
                 lastReturnCode:
                     type: string
+                    sortable: ~
                     label: sylius.ui.scheduled_command.last_return_code
                 logFile:
                     type: scheduled_command_url
+                    sortable: ~
                     label: sylius.ui.scheduled_command.log_file
                     options:
                         template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/log_file.html.twig'
                 priority:
                     type: string
+                    sortable: ~
                     label: sylius.ui.scheduled_command.priority
                 enabled:
                     type: twig
+                    sortable: ~
                     label: sylius.ui.scheduled_command.enabled
                     options:
                         template: SyliusUiBundle:Grid/Field:enabled.html.twig
+            sorting:
+                name: asc
+                command: asc
+                lastExecution: asc
+                lastReturnCode: asc
+                priority: asc
+                logFile: asc
+                enabled: asc
+            filters:
+                name:
+                    label: sylius.ui.scheduled_command.name
+                    type: string
+                    enabled: true
+                command:
+                    label: sylius.ui.scheduled_command.command
+                    type: string
+                    enabled: true
+                cronExpression:
+                    label: sylius.ui.scheduled_command.cron_expression
+                    type: string
+                    enabled: true
+                priority:
+                    label: sylius.ui.scheduled_command.priority
+                    type: string
+                    enabled: true
+                enabled:
+                    label: sylius.ui.scheduled_command.enabled
+                    type: boolean
+                    enabled: true
             actions:
                 main:
                     create:
