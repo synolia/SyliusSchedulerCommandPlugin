@@ -1,0 +1,2 @@
+imports:
+    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/test/sylius_fixtures.yaml" }

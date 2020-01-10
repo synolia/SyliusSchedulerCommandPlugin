@@ -50,3 +50,14 @@ sylius_grid:
                         type: update
                     delete:
                         type: delete
+                    execute:
+                        type: schedule_command_execute_immediate
+                        label: sylius.ui.scheduled_command.execute_immediate
+                        options:
+                            link:
+                                route: execute_immediate_schedule
+                                parameters:
+                                    command: resource.id
+    templates:
+        action:
+            schedule_command_execute_immediate: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"

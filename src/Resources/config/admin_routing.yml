@@ -15,3 +15,9 @@ download_schedule_log_file:
     methods: [GET]
     defaults:
         _controller: Synolia\SyliusSchedulerCommandPlugin\Controller\DownloadController::downloadLogFile
+
+execute_immediate_schedule:
+    path: /scheduled-commands/execute/immediate/{command}
+    methods: [GET|PUT]
+    defaults:
+        _controller: Synolia\SyliusSchedulerCommandPlugin\Controller\ScheduledCommandExecuteImmediateController::executeImmediate

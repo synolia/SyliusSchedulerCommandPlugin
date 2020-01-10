@@ -1,0 +1,16 @@
+sylius_fixtures:
+    suites:
+        schedule_command:
+            listeners:
+                orm_purger: ~
+                logger: ~
+            fixtures:
+                schedule_command:
+                    options:
+                        custom:
+                            -   name: "test command"
+                                command: 'testestest'
+                                cronExpression: '*****'
+                                priority: 1
+                                executeImmediately: false
+                                enabled: true

@@ -222,7 +222,7 @@ class ScheduledCommand implements ScheduledCommandInterface
         return $this->commandEndTime;
     }
 
-    public function setCommandEndTime(\DateTime $commandEndTime): ScheduledCommandInterface
+    public function setCommandEndTime(?\DateTime $commandEndTime): ScheduledCommandInterface
     {
         $this->commandEndTime = $commandEndTime;
 

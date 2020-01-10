@@ -106,10 +106,11 @@ pipeline {
 
                             sh "cp behat.yml.dist behat.yml"
                             sh "sed -i 's/localhost:8080/selenium_chrome:4444/g' behat.yml"
-                            sh "sed -i 's|{{DB_URL}}|${DB_URL}|g' phpunit.xml.dist"
+                            sh "sed -i 's|DB_URL|${DB_URL}|g' phpunit.xml.dist"
                             sh "cd ${applicationDir}; yarn install && yarn build"
                             sh "cd ${applicationDir}; php bin/console doctrine:database:create --env=test"
                             sh "cd ${applicationDir}; php bin/console doctrine:schema:create --env=test"
+                            sh "cd ${applicationDir}; php bin/console sylius:fixtures:load schedule_command --env=test"
                             sh "cd ${applicationDir}; php bin/console assets:install public --symlink"
                             sh "cd ${applicationDir}; php bin/console cache:warmup --env=test"
                         }
