@@ -57,7 +57,7 @@ sylius_grid:
                             link:
                                 route: execute_immediate_schedule
                                 parameters:
-                                    command: resource.id
+                                    commandId: resource.id
     templates:
         action:
             schedule_command_execute_immediate: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"
