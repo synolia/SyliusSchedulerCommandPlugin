@@ -12,7 +12,7 @@ projectName = "Sylius Scheduler Plugin"
 srcDir = "src"
 binDir = "bin"
 applicationDir = "tests/Application"
-projectChannelName = "sylius-demo"
+projectChannelName = "sylius-plugins"
 failedStage = "unknown"
 
 // Docker
