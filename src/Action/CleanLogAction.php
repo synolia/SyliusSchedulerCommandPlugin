@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SchedulerCommandPlugin\Action;
+namespace Synolia\SyliusSchedulerCommandPlugin\Action;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Synolia\SchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 final class CleanLogAction extends AbstractController
 {
