@@ -65,7 +65,7 @@ sylius_grid:
                             link:
                                 route: execute_immediate_schedule
                                 parameters:
-                                    command: resource.id
+                                    commandId: resource.id
     templates:
         action:
             emptyLogFile: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/empty_log_file.html.twig"
