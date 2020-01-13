@@ -219,6 +219,14 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
+     * @Then the scheduled command field :field should be empty on the line :index
+     */
+    public function theScheduledCommandFieldShouldBeEmptyOnTheLine(string $field, int $index): void
+    {
+        Assert::isEmpty($this->indexPage->getColumnFields($field)[$index]);
+    }
+
+    /**
      * @Then the first scheduled command shouldn't have log file
      */
     public function theFirstScheduledCommandShouldntHaveLogFile(): void

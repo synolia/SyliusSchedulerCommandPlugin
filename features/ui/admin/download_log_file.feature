@@ -16,5 +16,5 @@ Feature: Downloading log file
     Scenario: Downloading log file
         When I run scheduled commands
         And I go to the scheduler command page
-        Then the first scheduled command shouldn't have log file
-        And the second scheduled command should have a log file "logfile.txt"
+        Then the scheduled command field "logFile" should not be empty on the line "0"
+        And the scheduled command field "logFile" should be empty on the line "1"
