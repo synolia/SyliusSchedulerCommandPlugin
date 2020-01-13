@@ -8,6 +8,8 @@
 
 <p align="center">Schedule Symfony Commands in your Sylius admin panel.</p>
 
+![Capture](/etc/capture.png "Capture")
+
 ## Features
 
 * See the list of planned command
@@ -24,26 +26,46 @@
 
 ## Installation
 
-Run `$ composer require synolia/sylius-scheduler-command-plugin`.
-Register `SchedulerCommandPlugin\SynoliaSchedulerCommandPlugin::class => ['all' => true],` in your `config/bundles.php` file.
-Import required config in your `config/packages/_sylius.yaml` file:
+1. Add the bundle and dependencies in your composer.json :
+    ```shell script
+    $ composer require synolia/sylius-scheduler-command-plugin
+    ```
+2. Enable the plugin in your `config/bundles.php` file by add
+    ```php
+    SchedulerCommandPlugin\SynoliaSchedulerCommandPlugin::class => ['all' => true],
+    ```
+3. Import required config in your `config/packages/_sylius.yaml` file:
 
-```yaml
-# config/packages/_sylius.yaml
+    ```yaml
+    imports:
+        - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/config.yml" }
+    ```
 
-imports:
-    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/config.yml" }
-```
+4. Import routing in your `config/routes.yaml` file:
 
-Import routing in your `config/routes.yaml` file:
+    ```yaml
+    synolia_scheduled_command:
+        resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yml"
+        prefix: /admin
+    ```
+5. Copy plugin migrations to your migrations directory (e.g. `src/Migrations`) and apply them to your database:
 
-```yaml
-# config/routes.yaml
+    ```shell script
+    cp -R vendor/synolia/sylius-scheduler-command-plugin/Migrations/* src/Migrations
+    bin/console doctrine:migrations:migrate
+    ```
 
-synolia_scheduled_command:
-    resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yml"
-    prefix: /admin
-```
+6. Launch Run command in your Crontab
+
+    ```shell script
+   * * * * * /_PROJECT_DIRECTORY_/bin/console synolia:scheduler-run
+   ```
+
+7. (optional) Showing humanized cron expression
+
+    ```
+    composer require sivaschenko/utility-cron
+   ```
 
 ## Usage
 
@@ -55,10 +77,10 @@ synolia_scheduled_command:
 
 See [How to contribute](CONTRIBUTING.md).
 
-License
--------
+## License
+
 This library is under the MIT license.
 
-Credits
--------
+## Credits
+
 Developed by [Synolia](https://synolia.com/).
