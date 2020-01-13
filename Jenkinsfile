@@ -110,7 +110,7 @@ pipeline {
                             sh "cd ${applicationDir}; yarn install && yarn build"
                             sh "cd ${applicationDir}; php bin/console doctrine:database:create --env=test"
                             sh "cd ${applicationDir}; php bin/console doctrine:schema:create --env=test"
-                            sh "cd ${applicationDir}; php bin/console sylius:fixtures:load schedule_command --env=test"
+                            sh "cd ${applicationDir}; php bin/console sylius:fixtures:load schedule_command -n --env=test"
                             sh "cd ${applicationDir}; php bin/console assets:install public --symlink"
                             sh "cd ${applicationDir}; php bin/console cache:warmup --env=test"
                         }

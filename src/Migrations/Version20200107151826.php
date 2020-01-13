@@ -34,6 +34,7 @@ final class Version20200107151826 extends AbstractMigration
           priority INT NOT NULL, 
           executeImmediately TINYINT(1) NOT NULL, 
           enabled TINYINT(1) NOT NULL, 
+          commandEndTime DATETIME DEFAULT NULL, 
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
     }
