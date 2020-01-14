@@ -8,9 +8,9 @@ php:
 
 env:
     jobs:
-        - DEPENDENCY_VERSIONS="sylius/sylius:1.5.*
-        - DEPENDENCY_VERSIONS="sylius/sylius:1.6.*
-        - DEPENDENCY_VERSIONS="sylius/sylius:dev-master
+        - DEPENDENCY_VERSIONS="sylius/sylius:1.5.*"
+        - DEPENDENCY_VERSIONS="sylius/sylius:1.6.*"
+        - DEPENDENCY_VERSIONS="sylius/sylius:dev-master"
     global:
         - APP_ENV=test
         - SYLIUS_CACHE_DIR=$HOME/.sylius-cache
