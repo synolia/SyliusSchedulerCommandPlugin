@@ -213,8 +213,8 @@ final class SchedulerCommandContext implements Context
      */
     public function theScheduledCommandFieldShouldNotBeEmptyOnTheLine(string $field, int $index): void
     {
-        if ($this->indexPage->getColumnFields($field)[$index] !== '0') {
-            Assert::notEmpty($this->indexPage->getColumnFields($field)[$index]);
+        if ($this->indexPage->getColumnFields($field)[$index - 1] !== '0') {
+            Assert::notEmpty($this->indexPage->getColumnFields($field)[$index - 1]);
         }
     }
 
@@ -223,23 +223,9 @@ final class SchedulerCommandContext implements Context
      */
     public function theScheduledCommandFieldShouldBeEmptyOnTheLine(string $field, int $index): void
     {
-        Assert::isEmpty($this->indexPage->getColumnFields($field)[$index]);
-    }
-
-    /**
-     * @Then the first scheduled command shouldn't have log file
-     */
-    public function theFirstScheduledCommandShouldntHaveLogFile(): void
-    {
-        Assert::isEmpty($this->indexPage->getColumnFields('logFile')[0]);
-    }
-
-    /**
-     * @Then the second scheduled command should have a log file :filename
-     */
-    public function theSecondScheduledCommandShouldHaveALogFile(string $filename): void
-    {
-        Assert::startsWith($this->indexPage->getColumnFields('logFile')[1], $filename);
+        if ($this->indexPage->getColumnFields($field)[$index - 1] !== '0') {
+            Assert::isEmpty($this->indexPage->getColumnFields($field)[$index - 1]);
+        }
     }
 
     /**
