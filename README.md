@@ -51,7 +51,7 @@
 5. Copy plugin migrations to your migrations directory (e.g. `src/Migrations`) and apply them to your database:
 
     ```shell script
-    cp -R vendor/synolia/sylius-scheduler-command-plugin/Migrations/* src/Migrations
+    cp -R vendor/synolia/sylius-scheduler-command-plugin/src/Migrations/* src/Migrations
     bin/console doctrine:migrations:migrate
     ```
 
