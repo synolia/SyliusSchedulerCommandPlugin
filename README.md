@@ -32,7 +32,7 @@
     ```
 2. Enable the plugin in your `config/bundles.php` file by add
     ```php
-    SchedulerCommandPlugin\SynoliaSchedulerCommandPlugin::class => ['all' => true],
+    Synolia\SyliusSchedulerCommandPlugin\SynoliaSyliusSchedulerCommandPlugin::class => ['all' => true],
     ```
 3. Import required config in your `config/packages/_sylius.yaml` file:
 
