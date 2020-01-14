@@ -7,7 +7,8 @@
     "require": {
         "php": "^7.2",
         "mtdowling/cron-expression": "^1.2",
-        "sylius/sylius": "^1.5"
+        "sylius/sylius": "^1.5",
+        "symfony/lock": "^5.0"
     },
     "require-dev": {
         "behat/behat": "^3.4",
@@ -42,7 +43,6 @@
         "symfony/debug-bundle": "^3.4|^4.3",
         "symfony/dotenv": "^4.3",
         "symfony/intl": "^3.4|^4.3",
-        "symfony/lock": "^3.4|^4.3",
         "symfony/web-profiler-bundle": "^3.4|^4.3",
         "symfony/web-server-bundle": "^3.4|^4.3",
         "symplify/easy-coding-standard": "^6.1"
