@@ -20,6 +20,10 @@ final class BytesFormatterExtension extends AbstractExtension
 
     public function formatBytes(int $bytes): string
     {
+        if (self::EMPTY_FILE_SIZE === $bytes) {
+            return '0B';
+        }
+
         try {
             $number = floor(log($bytes, 1024));
 
