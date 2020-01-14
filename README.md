@@ -32,7 +32,7 @@
     ```
 2. Enable the plugin in your `config/bundles.php` file by add
     ```php
-    SchedulerCommandPlugin\SynoliaSchedulerCommandPlugin::class => ['all' => true],
+    Synolia\SyliusSchedulerCommandPlugin\SynoliaSyliusSchedulerCommandPlugin::class => ['all' => true],
     ```
 3. Import required config in your `config/packages/_sylius.yaml` file:
 
@@ -51,7 +51,7 @@
 5. Copy plugin migrations to your migrations directory (e.g. `src/Migrations`) and apply them to your database:
 
     ```shell script
-    cp -R vendor/synolia/sylius-scheduler-command-plugin/Migrations/* src/Migrations
+    cp -R vendor/synolia/sylius-scheduler-command-plugin/src/Migrations/* src/Migrations
     bin/console doctrine:migrations:migrate
     ```
 
