@@ -38,14 +38,14 @@
 
     ```yaml
     imports:
-        - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/config.yml" }
+        - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/config.yaml" }
     ```
 
 4. Import routing in your `config/routes.yaml` file:
 
     ```yaml
     synolia_scheduled_command:
-        resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yml"
+        resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yaml"
         prefix: /admin
     ```
 5. Copy plugin migrations to your migrations directory (e.g. `src/Migrations`) and apply them to your database:
