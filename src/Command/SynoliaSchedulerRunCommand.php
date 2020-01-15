@@ -156,11 +156,7 @@ final class SynoliaSchedulerRunCommand extends Command
         );
         $command->mergeApplicationDefinition();
         $input->bind($command->getDefinition());
-
-        // Disable interactive mode if the current command has no-interaction flag
-        if (true === $input->hasParameterOption(['--no-interaction', '-n'])) {
-            $input->setInteractive(false);
-        }
+        $input->setInteractive(false);
 
         $logOutput = $this->getLogOutput($scheduledCommand, $io);
 
