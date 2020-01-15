@@ -73,6 +73,31 @@
 * Click on `Scheduled commands` in the Configuration section in main menu
 * Manage your Scheduled commands
 
+## Fixtures
+Inside sylius fixture file `config/packages/sylius_fixtures.yaml` you can add scheduled command fixtures to your suite.
+```yaml
+sylius_fixtures:
+    suites:
+        my_fixture_suite:
+            fixtures:
+                scheduler_command:
+                    options:
+                        scheduled_commands:
+                            -
+                                name: 'Reset Sylius'
+                                command: 'sylius:fixtures:load'
+                                cronExpression: '0 0 * * *'
+                                logFile: 'reset.log'
+                                priority: 0
+                                enabled: true
+                            -
+                                name: 'Cancel Unpaid Orders'
+                                command: 'sylius:cancel-unpaid-orders'
+                                cronExpression: '0 0 * * *'
+                                priority: 1
+                                enabled: false
+```
+
 ## Development
 
 See [How to contribute](CONTRIBUTING.md).

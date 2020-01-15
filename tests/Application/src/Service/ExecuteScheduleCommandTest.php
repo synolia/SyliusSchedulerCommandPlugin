@@ -46,7 +46,7 @@ class ExecuteScheduleCommandTest extends WebTestCase
     public function testExecuteImmediteWithGoodCommand(): void
     {
         /** @var ScheduledCommand $result */
-        $result = $this->entityManager->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'test command']);
+        $result = $this->entityManager->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'Reset Sylius']);
 
         $commandResult = $this->excecuteScheduleCommand->executeImmediate((string) $result->getId());
 
