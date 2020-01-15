@@ -1,8 +1,6 @@
-{% if schedulerCommand.logFile is not null %}
-    <div class="ui buttons">
-        <a class="ui labeled icon button " href="{{ url }}">
-            <i class="icon download"></i>
-            {{ schedulerCommand.logFile }} - {{ size|format_bytes }}
-        </a>
-    </div>
+{% if schedulerCommand.logFile is not null and schedulerCommand.logFile is not empty %}
+    <a class="ui labeled icon button " href="{{ url }}">
+        <i class="icon download"></i>
+        {{ schedulerCommand.logFile }} - {{ size|format_bytes }}
+    </a>
 {% endif %}
