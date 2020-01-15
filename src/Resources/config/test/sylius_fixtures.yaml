@@ -1,16 +1,17 @@
 sylius_fixtures:
     suites:
-        schedule_command:
+        scheduler_command:
             listeners:
                 orm_purger: ~
                 logger: ~
             fixtures:
-                schedule_command:
+                scheduler_command:
                     options:
-                        custom:
-                            -   name: "test command"
-                                command: 'testestest'
-                                cronExpression: '*****'
-                                priority: 1
-                                executeImmediately: false
-                                enabled: true
+                        scheduled_commands:
+                            -
+                                name: 'Reset Sylius'
+                                command: 'sylius:fixtures:load'
+                                cronExpression: '0 0 * * *'
+                                logFile: 'reset.log'
+                                priority: 0
+                                enabled: false
