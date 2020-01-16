@@ -5,7 +5,22 @@
 </p>
 
 <h1 align="center">Scheduler Command Plugin</h1>
-
+<p align="center">
+    <a href="https://packagist.org/packages/synolia/sylius-scheduler-command-plugin" title="License" target="_blank">
+        <img src="https://img.shields.io/packagist/l/synolia/sylius-scheduler-command-plugin.svg" />
+    </a>
+    <a href="https://packagist.org/packages/synolia/sylius-scheduler-command-plugin" title="Version" target="_blank">
+        <img src="https://img.shields.io/packagist/v/synolia/sylius-scheduler-command-plugin.svg" />
+    </a>
+    <a href="https://travis-ci.com/synolia/SyliusSchedulerCommandPlugin" title="Build status" target="_blank">
+        <img src="https://api.travis-ci.com/synolia/SyliusSchedulerCommandPlugin.svg" />
+    </a>
+    <a href="https://packagist.org/packages/synolia/sylius-scheduler-command-plugin" title="Total Downloads" target="_blank">
+        <img src="https://poser.pugx.org/synolia/sylius-scheduler-command-plugin/downloads" />
+    </a>
+    <br />
+    <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
+</p>
 <p align="center">Schedule Symfony Commands in your Sylius admin panel.</p>
 
 ![Capture](/etc/capture.png "Capture")
