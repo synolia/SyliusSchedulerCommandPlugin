@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class SchedulerCommandExtension extends Extension implements PrependExtensionInterface
+final class SynoliaSyliusSchedulerCommandExtension extends Extension implements PrependExtensionInterface
 {
     private const GRID_KEY = 'sylius_admin_scheduled_command';
 
