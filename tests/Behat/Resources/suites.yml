@@ -5,8 +5,8 @@ default:
                 - sylius.behat.context.setup.command
                 - sylius.behat.context.setup.admin_security
 
-                - synolia_scheduler_command_plugin.behat.context.ui.admin.scheduled_command
-                - synolia_scheduler_command_plugin.behat.context.cli.cli_context
+                - synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.scheduled_command
+                - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context
             filters:
                 tags: '@managing_scheduled_command && @ui'
 
@@ -16,6 +16,6 @@ default:
                 - sylius.behat.context.hook.doctrine_orm
                 - sylius.behat.context.cli.installer
 
-                - synolia_scheduler_command_plugin.behat.context.cli.cli_context
+                - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context
             filters:
                 tags: "@cli && @cli_run_commad"
