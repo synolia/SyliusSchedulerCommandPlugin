@@ -17,7 +17,7 @@ Feature: Cleaning a log file
         Given there is a scheduled command in the store
         When I run scheduled commands
         And I go to the scheduler command page
-        Then the first scheduled command shouldn't have log file
+        Then the scheduled command field "logFile" should be empty on the line "1"
         When I clean log file for this scheduled command for scheduled command named "Displays project information without logs"
         Then I should be notified that the scheduled command log file has not been defined
 
@@ -26,7 +26,7 @@ Feature: Cleaning a log file
         Given there is a scheduled command in the store
         When I run scheduled commands
         And I go to the scheduler command page
-        Then the first scheduled command shouldn't have log file
-        And the second scheduled command should have a log file "logfile.txt"
+        Then the scheduled command field "logFile" should be empty on the line "1"
+        And the scheduled command field "logFile" should not be empty on the line "2"
         When I clean log file for this scheduled command for scheduled command named "Displays project information with log"
         Then I should be notified that the scheduled command log file has been cleaned
