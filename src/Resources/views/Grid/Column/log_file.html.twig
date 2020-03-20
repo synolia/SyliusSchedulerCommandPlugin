@@ -1,4 +1,9 @@
 {% if schedulerCommand.logFile is not null and schedulerCommand.logFile is not empty %}
+    <a class="ui labeled icon button " href="{{ viewUrl }}" target="_blank">
+        <i class="icon play"></i>
+        {{ 'sylius.ui.live_view'|trans }}
+    </a>
+    <hr />
     <a class="ui labeled icon button " href="{{ url }}">
         <i class="icon download"></i>
         {{ schedulerCommand.logFile }} - {{ size|format_bytes }}

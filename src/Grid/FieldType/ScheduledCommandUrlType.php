@@ -41,6 +41,13 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
     {
         $size = 0;
 
+        $viewUrl = $this->urlGenerator->generate(
+            'sylius_admin_scheduler_view_log_file',
+            [
+                'command' => $scheduleCommand->getId(),
+            ]
+        );
+
         $url = $this->urlGenerator->generate(
             'download_schedule_log_file',
             [
@@ -58,6 +65,7 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
             [
                 'schedulerCommand' => $scheduleCommand,
                 'url' => $url,
+                'viewUrl' => $viewUrl,
                 'size' => $size,
             ]
         );

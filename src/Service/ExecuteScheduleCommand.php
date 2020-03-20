@@ -35,7 +35,7 @@ class ExecuteScheduleCommand
     {
         /** @var ScheduledCommand|null $scheduleCommand */
         $scheduleCommand = $this->scheduledCommandRepository->find($commandId);
-        if ($scheduleCommand === null) {
+        if (!$scheduleCommand instanceof ScheduledCommand) {
             return false;
         }
 
