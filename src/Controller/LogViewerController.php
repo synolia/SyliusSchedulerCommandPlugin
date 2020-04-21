@@ -14,7 +14,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 final class LogViewerController extends AbstractController
 {
-    /** @var int */
+    /** @var int The time in milliseconds between two AJAX requests to the server. */
     private $updateTime;
 
     /** @var \Synolia\SyliusSchedulerCommandPlugin\DataRetriever\LogDataRetriever */
@@ -23,9 +23,6 @@ final class LogViewerController extends AbstractController
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository */
     private $scheduledCommandRepository;
 
-    /**
-     * @param int $updateTime The time between AJAX requests to the server.
-     */
     public function __construct(
         ScheduledCommandRepository $scheduledCommandRepository,
         LogDataRetriever $logDataRetriever,
@@ -45,7 +42,7 @@ final class LogViewerController extends AbstractController
             null === $scheduleCommand->getLogFile() ||
             null === $this->getParameter('kernel.logs_dir')
         ) {
-            return new JsonResponse('', Response::HTTP_NOT_FOUND);
+            return new JsonResponse('', Response::HTTP_NO_CONTENT);
         }
 
         $baseLogDir = __DIR__ . '/../../tests/Application/var/log';

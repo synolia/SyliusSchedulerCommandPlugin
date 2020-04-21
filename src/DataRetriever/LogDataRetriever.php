@@ -9,9 +9,7 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 final class LogDataRetriever
 {
     /**
-     * This variable holds the maximum amount of bytes this application can load into memory (in bytes). Default is 2 Megabyte = 2097152 byte
-     *
-     * @var int
+     * @var int Maximum amount of bytes this application can load into memory. Default is 2 Megabyte = 2097152 byte
      */
     private $maxSizeToLoad = 2097152;
 
@@ -21,10 +19,8 @@ final class LogDataRetriever
         string $grepKeyword = '',
         bool $invertGrep = false
     ): array {
-        /**
-         * Clear the stat cache to get the latest results
-         */
-        \clearstatcache();
+        /** Clear the stat cache to get the latest results */
+        \clearstatcache(true, $filePath);
 
         $filesize = \filesize($filePath);
         if (!is_numeric($filesize)) {
