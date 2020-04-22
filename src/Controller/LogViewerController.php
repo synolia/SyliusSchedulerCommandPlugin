@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Synolia\SyliusSchedulerCommandPlugin\DataRetriever\LogDataRetriever;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
@@ -23,14 +24,19 @@ final class LogViewerController extends AbstractController
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository */
     private $scheduledCommandRepository;
 
+    /** @var \Symfony\Contracts\Translation\TranslatorInterface */
+    private $translator;
+
     public function __construct(
         ScheduledCommandRepository $scheduledCommandRepository,
         LogDataRetriever $logDataRetriever,
+        TranslatorInterface $translator,
         int $updateTime = 2000
     ) {
         $this->logDataRetriever = $logDataRetriever;
         $this->updateTime = $updateTime;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
+        $this->translator = $translator;
     }
 
     public function getLogs(Request $request, string $command): JsonResponse
@@ -45,7 +51,7 @@ final class LogViewerController extends AbstractController
             return new JsonResponse('', Response::HTTP_NO_CONTENT);
         }
 
-        $baseLogDir = __DIR__ . '/../../tests/Application/var/log';
+        $baseLogDir = $this->getParameter('kernel.logs_dir');
 
         if (true === (bool) $request->get('refresh')) {
             $result = $this->logDataRetriever->getLog(
@@ -78,7 +84,8 @@ final class LogViewerController extends AbstractController
             null === $scheduledCommand->getLogFile() ||
             null === $this->getParameter('kernel.logs_dir')
         ) {
-            //TODO : Create error flashbag
+            $this->addFlash($this->translator->trans('sylius.ui.does_not_exists_or_missing_log_file'), 'error');
+
             return $this->redirectToRoute('sylius_admin_scheduled_command_index');
         }
 
