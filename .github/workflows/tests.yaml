@@ -46,9 +46,7 @@ jobs:
               if: steps.cache-composer.outputs.cache-hit != 'true'
 
             - name: Composer - Self Update
-              run: |
-                  mkdir -p /home/runner/.composer/
-                  sudo composer self-update
+              run: sudo composer self-update
 
             - name: Composer - Validate composer.json and composer.lock
               run: composer validate --strict
@@ -59,29 +57,35 @@ jobs:
             - name: Composer - Update dependencies
               run: composer update ${{ matrix.prefer }} --no-progress --no-scripts
 
+            - name: ECS - Run
+              run: (test -f ruleset/easy-coding-standard.yml && vendor/bin/ecs check src/ tests/Behat/ --no-progress-bar -c ruleset/easy-coding-standard.yml) || echo Ecs does not config, skipping step
+
+            - name: PHPStan - Run
+              run: (test -f ruleset/phpstan.neon && vendor/bin/phpstan analyse -c ruleset/phpstan.neon src/) || echo PHPStan does not config, skipping step
+
             - name: GrumPHP - Run
-              run: vendor/bin/grumphp run
+              run: (test -f grumphp.yml && vendor/bin/grumphp run) || echo Grumphp does not config, skipping step
 
 
     sylius:
         runs-on: ubuntu-latest
-#        continue-on-error: ${{ matrix.experimental }}
+        #continue-on-error: ${{ matrix.experimental }}
         strategy:
             fail-fast: false
             matrix:
                 php: [7.2, 7.3, 7.4]
-                sylius: ['~1.4', '~1.5', '~1.6', '~1.7']
-                experimental: [false]
-#                include:
-#                    - php: 7.3
-#                      sylius: 'dev-master'
-#                      experimental: true
-#                    - php: 7.4
-#                      sylius: 'dev-master'
-#                      experimental: true
+                sylius: ['~1.5.0', '~1.6.0', '~1.7.0']
+                #experimental: [false]
+                #include:
+                #    - php: 7.3
+                #      sylius: 'dev-master'
+                #      experimental: true
+                #    - php: 7.4
+                #      sylius: 'dev-master'
+                #      experimental: true
                 exclude:
                     - php: 7.2
-                      sylius: '~1.7'
+                      sylius: '~1.7.0'
 
         env:
             APP_ENV: test
@@ -93,10 +97,7 @@ jobs:
               if: matrix.sylius == 1.3 || matrix.sylius == 1.4
 
             - name: PHP - Switch
-              run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
-
-            - name: PHP - Show version
-              run: php -v
+              run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }} && php -v
 
             - name: PHP - Setup timezone
               run: |
@@ -140,9 +141,6 @@ jobs:
 
             - name: Composer - Install plugin
               working-directory: ./sylius
-              env:
-                  # Run staging server while PR https://github.com/symfony/recipes-contrib/pull/913 not merged
-                  SYMFONY_ENDPOINT: https://flex.symfony.com/r/github.com/symfony/recipes-contrib/913
               run: composer req "${{ env.package-name }}:^1" --prefer-source
 
             - name: Sylius - Init database
