@@ -1,0 +1,231 @@
+name: Tests
+
+on:
+    push:
+        branches: [ master ]
+        paths-ignore:
+            - README.md
+    pull_request:
+        branches: [ master ]
+        paths-ignore:
+            - README.md
+
+jobs:
+
+    php:
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [7.2, 7.3, 7.4]
+                prefer: ["--prefer-lowest", ""]
+
+        env:
+            package-name: synolia/sylius-scheduler-command-plugin
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: PHP - Switch
+              run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
+
+            - name: Composer - Get Cache Directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - uses: actions/cache@v1
+              id: cache-composer
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: composer-php.${{ matrix.php }}-prefer.${{ matrix.prefer }}-${{ github.sha }}
+                  restore-keys: composer-php.${{ matrix.php }}-prefer.${{ matrix.prefer }}-
+
+            - name: Composer - Create cache directory
+              run: mkdir -p /home/runner/.composer/cache
+              if: steps.cache-composer.outputs.cache-hit != 'true'
+
+            - name: Composer - Self Update
+              run: |
+                  mkdir -p /home/runner/.composer/
+                  sudo composer self-update
+
+            - name: Composer - Validate composer.json and composer.lock
+              run: composer validate --strict
+
+            - name: Composer - Github Auth
+              run: composer config -g github-oauth.github.com ${{ github.token }}
+
+            - name: Composer - Update dependencies
+              run: composer update ${{ matrix.prefer }} --no-progress --no-scripts
+
+            - name: GrumPHP - Run
+              run: vendor/bin/grumphp run
+
+
+    sylius:
+        runs-on: ubuntu-latest
+#        continue-on-error: ${{ matrix.experimental }}
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [7.2, 7.3, 7.4]
+                sylius: ['~1.4', '~1.5', '~1.6', '~1.7']
+                experimental: [false]
+#                include:
+#                    - php: 7.3
+#                      sylius: 'dev-master'
+#                      experimental: true
+#                    - php: 7.4
+#                      sylius: 'dev-master'
+#                      experimental: true
+                exclude:
+                    - php: 7.2
+                      sylius: '~1.7'
+
+        env:
+            APP_ENV: test
+            package-name: synolia/sylius-scheduler-command-plugin
+
+        steps:
+            - name: HHVM - Remove
+              run: sudo apt-get remove --auto-remove -y hhvm
+              if: matrix.sylius == 1.3 || matrix.sylius == 1.4
+
+            - name: PHP - Switch
+              run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
+
+            - name: PHP - Show version
+              run: php -v
+
+            - name: PHP - Setup timezone
+              run: |
+                  echo "date.timezone=UTC" >> /tmp/timezone.ini; \
+                  sudo mv /tmp/timezone.ini /etc/php/${{ matrix.php }}/cli/conf.d/timezone.ini
+
+            - uses: actions/checkout@v2
+              with:
+                  path: plugin
+
+            - uses: actions/cache@v1
+              id: cache-composer
+              with:
+                  path: /home/runner/.composer/cache
+                  key: composer-php.${{ matrix.php }}-sylius.${{ matrix.sylius }}-${{ github.sha }}
+                  restore-keys: composer-php.${{ matrix.php }}-sylius.${{ matrix.sylius }}-
+
+            - name: Composer - Create cache directory
+              run: mkdir -p /home/runner/.composer/cache
+              if: steps.cache-composer.outputs.cache-hit != 'true'
+
+            - name: Composer - Self Update
+              run: |
+                  mkdir -p /home/runner/.composer/
+                  sudo composer self-update
+
+            - name: Composer - Github Auth
+              run: composer config -g github-oauth.github.com ${{ github.token }}
+
+            - name: Composer - Install Sylius-Standard
+              run: composer create-project --no-scripts --no-progress sylius/sylius-standard sylius "${{ matrix.sylius }}"
+
+            - name: Composer - Add path repository
+              working-directory: ./sylius
+              run: |
+                  composer config repositories.plugin '{"type": "path", "url": "../plugin/"}'
+
+            - name: Composer - Allow contrib recipes
+              working-directory: ./sylius
+              run: composer config extra.symfony.allow-contrib true
+
+            - name: Composer - Install plugin
+              working-directory: ./sylius
+              env:
+                  # Run staging server while PR https://github.com/symfony/recipes-contrib/pull/913 not merged
+                  SYMFONY_ENDPOINT: https://flex.symfony.com/r/github.com/symfony/recipes-contrib/913
+              run: composer req "${{ env.package-name }}:^1" --prefer-source
+
+            - name: Sylius - Init database
+              working-directory: ./sylius
+              run: php bin/console doctrine:database:create --if-not-exists
+
+            - name: Sylius - Update database schema
+              working-directory: ./sylius
+              run: php bin/console doctrine:migr:migr -n
+
+            - name: Sylius - Copy fixtures
+              working-directory: ./sylius
+              run: cp ../plugin/src/Resources/config/test/sylius_fixtures.yaml config/packages
+
+            - name: Sylius - Install
+              working-directory: ./sylius
+              run: php bin/console sylius:install -n -s scheduler_command
+
+            - name: Plugin - Update dependencies
+              working-directory: ./plugin
+              run: composer update --no-progress
+
+            - name: PHPUnit - Configure
+              working-directory: ./sylius
+              run: |
+                  cp vendor/${{ env.package-name }}/phpunit.xml.dist phpunit.xml
+                  sed -i "s#tests/Application/config/bootstrap.php#config/bootstrap.php#g" phpunit.xml
+                  sed -i "s#<directory>tests</directory>#<directory>./vendor/${{ env.package-name }}</directory>#g" phpunit.xml
+                  sed -i "s#/tests/Application/AppKernel.php#src/Kernel.php#g" phpunit.xml
+
+            - name: PHPunit
+              working-directory: ./sylius
+              run: ./vendor/bin/phpunit
+
+            - name: Behat - Configure display
+              working-directory: ./sylius
+              run: |
+                  /sbin/start-stop-daemon --start --quiet --pidfile /tmp/xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1680x1050x16
+                  export DISPLAY=:99
+
+            - name: Behat - Download and configure ChromeDriver
+              working-directory: ./sylius
+              run: |
+                  if [ ! -f chromedriver ] || [ "$(chromedriver --version | grep -c 2.34)" = "0" ]; then
+                      curl http://chromedriver.storage.googleapis.com/2.34/chromedriver_linux64.zip > chromedriver.zip
+                      unzip chromedriver.zip
+                      chmod +x chromedriver
+                  fi
+
+            - name: Behat - Run ChromeDriver
+              working-directory: ./sylius
+              run: chromedriver > /dev/null 2>&1 &
+
+            - name: Behat - Download and configure Selenium
+              working-directory: ./sylius
+              run: |
+                  if [ ! -f selenium.jar ] || [ "$(java -jar selenium.jar --version | grep -c 3.4.0)" = "0" ]; then
+                      curl http://selenium-release.storage.googleapis.com/3.4/selenium-server-standalone-3.4.0.jar > selenium.jar
+                  fi
+
+            - name: Behat - Run Selenium
+              working-directory: ./sylius
+              run: java -Dwebdriver.chrome.driver=chromedriver -jar selenium.jar > /dev/null 2>&1 &
+
+            - name: Behat - Run webserver
+              working-directory: ./sylius
+              run: bin/console server:run 127.0.0.1:8080 --quiet > /dev/null 2>&1 &
+
+            - name: Behat - Config Suite
+              working-directory: ./sylius
+              run: |
+                  sed -i "s#vendor/sylius/sylius/src/Sylius/Behat/Resources/config/suites.yml#vendor/${{ env.package-name }}/tests/Behat/Resources/suites.yml#g" behat.yml.dist
+                  sed -i "s#vendor/sylius/sylius/features#vendor/${{ env.package-name }}/features#g" behat.yml.dist
+                  echo '    - { resource: "../vendor/${{ env.package-name }}/tests/Behat/Resources/services.yml" }' >> config/services_test.yaml
+
+            - name: Behat - Run Behat tests
+              working-directory: ./sylius
+              run: vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun
+
+        services:
+            mariadb:
+                image: mariadb:latest
+                ports:
+                    - 3306:3306
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: true
