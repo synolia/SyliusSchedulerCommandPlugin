@@ -12,9 +12,7 @@
     <a href="https://packagist.org/packages/synolia/sylius-scheduler-command-plugin" title="Version" target="_blank">
         <img src="https://img.shields.io/packagist/v/synolia/sylius-scheduler-command-plugin.svg" />
     </a>
-    <a href="https://travis-ci.com/synolia/SyliusSchedulerCommandPlugin" title="Build status" target="_blank">
-        <img src="https://api.travis-ci.com/synolia/SyliusSchedulerCommandPlugin.svg" />
-    </a>
+    ![Tests](https://github.com/synolia/SyliusSchedulerCommandPlugin/workflows/Tests/badge.svg?branch=master)
     <a href="https://packagist.org/packages/synolia/sylius-scheduler-command-plugin" title="Total Downloads" target="_blank">
         <img src="https://poser.pugx.org/synolia/sylius-scheduler-command-plugin/downloads" />
     </a>

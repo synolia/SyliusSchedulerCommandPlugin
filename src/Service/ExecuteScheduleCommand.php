@@ -33,7 +33,7 @@ class ExecuteScheduleCommand
 
     public function executeImmediate(string $commandId): bool
     {
-        /** @var ScheduledCommand $scheduleCommand */
+        /** @var ScheduledCommand|null $scheduleCommand */
         $scheduleCommand = $this->scheduledCommandRepository->find($commandId);
         if ($scheduleCommand === null) {
             return false;
