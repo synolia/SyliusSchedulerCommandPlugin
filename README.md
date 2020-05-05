@@ -1,3 +1,8 @@
+[![License](https://img.shields.io/packagist/l/synolia/sylius-scheduler-command-plugin.svg)](https://github.com/synolia/SyliusSchedulerCommandPlugin/blob/master/LICENSE)
+![Tests](https://github.com/synolia/SyliusSchedulerCommandPlugin/workflows/Tests/badge.svg?branch=master)
+[![Version](https://img.shields.io/packagist/v/synolia/sylius-scheduler-command-plugin.svg)](https://packagist.org/packages/synolia/sylius-scheduler-command-plugin)
+[![Total Downloads](https://poser.pugx.org/synolia/sylius-scheduler-command-plugin/downloads)](https://packagist.org/packages/synolia/sylius-scheduler-command-plugin)
+
 <p align="center">
     <a href="https://sylius.com" target="_blank">
         <img src="https://demo.sylius.com/assets/shop/img/logo.png" />
@@ -6,17 +11,6 @@
 
 <h1 align="center">Scheduler Command Plugin</h1>
 <p align="center">
-    <a href="https://packagist.org/packages/synolia/sylius-scheduler-command-plugin" title="License" target="_blank">
-        <img src="https://img.shields.io/packagist/l/synolia/sylius-scheduler-command-plugin.svg" />
-    </a>
-    <a href="https://packagist.org/packages/synolia/sylius-scheduler-command-plugin" title="Version" target="_blank">
-        <img src="https://img.shields.io/packagist/v/synolia/sylius-scheduler-command-plugin.svg" />
-    </a>
-    ![Tests](https://github.com/synolia/SyliusSchedulerCommandPlugin/workflows/Tests/badge.svg?branch=master)
-    <a href="https://packagist.org/packages/synolia/sylius-scheduler-command-plugin" title="Total Downloads" target="_blank">
-        <img src="https://poser.pugx.org/synolia/sylius-scheduler-command-plugin/downloads" />
-    </a>
-    <br />
     <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
 </p>
 <p align="center">Schedule Symfony Commands in your Sylius admin panel.</p>
@@ -40,13 +34,24 @@
 ## Installation
 
 1. Add the bundle and dependencies in your composer.json :
-    ```shell script
-    $ composer require synolia/sylius-scheduler-command-plugin
-    ```
+
+    With **Symfony Flex** :
+    
+        composer config extra.symfony.allow-contrib true
+        composer req synolia/sylius-scheduler-command-plugin
+    
+    Yon can now go to step 5.
+    
+    Or **manually** :
+    
+        composer require synolia/sylius-scheduler-command-plugin
+
 2. Enable the plugin in your `config/bundles.php` file by add
+
     ```php
     Synolia\SyliusSchedulerCommandPlugin\SynoliaSyliusSchedulerCommandPlugin::class => ['all' => true],
     ```
+
 3. Import required config in your `config/packages/_sylius.yaml` file:
 
     ```yaml
@@ -61,24 +66,25 @@
         resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yaml"
         prefix: /admin
     ```
+
 5. Copy plugin migrations to your migrations directory (e.g. `src/Migrations`) and apply them to your database:
 
-    ```shell script
+    ```shell
     cp -R vendor/synolia/sylius-scheduler-command-plugin/src/Migrations/* src/Migrations
     bin/console doctrine:migrations:migrate
     ```
 
 6. Launch Run command in your Crontab
 
-    ```shell script
-   * * * * * /_PROJECT_DIRECTORY_/bin/console synolia:scheduler-run
-   ```
+    ```shell
+    * * * * * /_PROJECT_DIRECTORY_/bin/console synolia:scheduler-run
+    ```
 
 7. (optional) Showing humanized cron expression
 
-    ```
+    ```shell
     composer require sivaschenko/utility-cron
-   ```
+    ```
 
 ## Usage
 
