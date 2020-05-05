@@ -20,6 +20,9 @@ sylius:
         error_emptying_log_file: There was an error while trying to empty the log file.
         log_file_successfully_emptied: Log file successfully emptied.
         scheduled_command_not_exists: Scheduled Command does not exists.
+        live_view: Live view
+        live_view_of_scheduled_command: 'Live view of scheduled command "%scheduledCommandName%"'
+        does_not_exists_or_missing_log_file: 'Scheduler Command does not exists or has no log file.'
     menu:
         admin:
             main:

@@ -10,6 +10,7 @@ use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
@@ -41,6 +42,9 @@ final class SchedulerCommandContext implements Context
     /** @var ScheduledCommandRepositoryInterface */
     private $repository;
 
+    /** @var \Symfony\Contracts\Translation\TranslatorInterface */
+    private $translator;
+
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CurrentPageResolverInterface $currentPageResolver,
@@ -48,7 +52,8 @@ final class SchedulerCommandContext implements Context
         IndexPageInterface $indexPage,
         CreatePageInterface $createPage,
         UpdatePageInterface $updatePage,
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        TranslatorInterface $translator
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->currentPageResolver = $currentPageResolver;
@@ -57,6 +62,7 @@ final class SchedulerCommandContext implements Context
         $this->createPage = $createPage;
         $this->updatePage = $updatePage;
         $this->repository = $scheduledCommandRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -239,7 +245,10 @@ final class SchedulerCommandContext implements Context
      */
     public function theSecondScheduledCommandShouldHaveALogFile(string $filename): void
     {
-        Assert::startsWith($this->indexPage->getColumnFields('logFile')[1], $filename);
+        Assert::startsWith(
+            $this->indexPage->getColumnFields('logFile')[1],
+            \sprintf('%s %s', $this->translator->trans('sylius.ui.live_view'), $filename)
+        );
     }
 
     /**
