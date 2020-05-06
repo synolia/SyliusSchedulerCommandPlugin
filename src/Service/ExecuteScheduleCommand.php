@@ -43,7 +43,14 @@ class ExecuteScheduleCommand
         $this->entityManager->flush();
 
         $rootDir = $this->kernel->getProjectDir();
-        $process = Process::fromShellCommandline("bin/console synolia:scheduler-run --id=$commandId", $rootDir);
+        $process = Process::fromShellCommandline(
+            sprintf(
+                'bin/console synolia:scheduler-run --id=%s %s',
+                $commandId,
+                $scheduleCommand->getArguments() ?? ''
+            ),
+            $rootDir
+        );
         $process->start();
 
         return true;

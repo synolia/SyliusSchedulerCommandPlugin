@@ -12,12 +12,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
@@ -146,31 +143,36 @@ final class SynoliaSchedulerRunCommand extends Command
             return;
         }
 
-        $input = new StringInput(
-            \sprintf(
-                '%s %s --env=%s',
-                $scheduledCommand->getCommand(),
-                $scheduledCommand->getArguments(),
-                $this->input->getOption('env')
-            )
-        );
-        $command->mergeApplicationDefinition();
-        $input->bind($command->getDefinition());
-        $input->setInteractive(false);
-
-        $logOutput = $this->getLogOutput($scheduledCommand, $io);
-
         // Execute command and get return code
         try {
             $io->writeln(
                 '<info>Execute</info> : <comment>' . $scheduledCommand->getCommand()
                 . ' ' . $scheduledCommand->getArguments() . '</comment>'
             );
-            $result = $command->run($input, $logOutput);
+
+            $commandLine = sprintf(
+                'bin/console %s %s',
+                $scheduledCommand->getCommand(),
+                $scheduledCommand->getArguments() ?? ''
+            );
+
+            $logOutput = $this->getLogOutput($scheduledCommand);
+            if (null !== $logOutput) {
+                $commandLine = sprintf(
+                    'bin/console %s %s >> %s 2>> %s',
+                    $scheduledCommand->getCommand(),
+                    $scheduledCommand->getArguments() ?? '',
+                    $logOutput,
+                    $logOutput
+                );
+            }
+
+            $process = Process::fromShellCommandline($commandLine);
+            $process->start();
+            $result = $process->getExitCodeText();
             $scheduledCommand->setCommandEndTime(new \DateTime());
         } catch (\Exception $e) {
-            $logOutput->writeln($e->getMessage());
-            $logOutput->writeln($e->getTraceAsString());
+            $io->warning($e->getMessage());
             $result = -1;
         }
 
@@ -198,33 +200,13 @@ final class SynoliaSchedulerRunCommand extends Command
         gc_collect_cycles();
     }
 
-    private function getLogOutput(ScheduledCommandInterface $scheduledCommand, SymfonyStyle $io): OutputInterface
+    private function getLogOutput(ScheduledCommandInterface $scheduledCommand): ?string
     {
-        // Use a StreamOutput or NullOutput to redirect write() and writeln() in a log file
         if ($scheduledCommand->getLogFile() === null || $scheduledCommand->getLogFile() === '') {
-            return new NullOutput();
+            return null;
         }
 
-        try {
-            $filename = $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile();
-            $logFile = fopen(
-                $filename,
-                'a',
-                false
-            );
-            if (false === $logFile) {
-                throw new FileNotFoundException(null, 0, null, $filename);
-            }
-            $logOutput = new StreamOutput(
-                $logFile,
-                $io->getVerbosity()
-            );
-        } catch (\Throwable $exception) {
-            $io->warning($exception->getMessage());
-            $logOutput = new NullOutput();
-        }
-
-        return $logOutput;
+        return $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile();
     }
 
     private function getCommands(InputInterface $input): iterable
