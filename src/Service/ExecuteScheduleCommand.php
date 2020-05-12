@@ -53,6 +53,11 @@ class ExecuteScheduleCommand
         $scheduledCommand->setLastExecution(new \DateTime());
         $process->run();
         $result = $process->getExitCode();
+
+        if (null === $result) {
+            $result = 0;
+        }
+
         $scheduledCommand->setLastReturnCode($result);
         $scheduledCommand->setCommandEndTime(new \DateTime());
         $this->entityManager->flush();
@@ -60,12 +65,16 @@ class ExecuteScheduleCommand
         return true;
     }
 
-    public function executeFromCron(ScheduledCommandInterface $scheduledCommand): ?int
+    public function executeFromCron(ScheduledCommandInterface $scheduledCommand): int
     {
         $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
         $process->run();
         $result = $process->getExitCode();
         $scheduledCommand->setCommandEndTime(new \DateTime());
+
+        if (null === $result) {
+            $result = 0;
+        }
 
         return $result;
     }

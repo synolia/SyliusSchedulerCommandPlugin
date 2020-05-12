@@ -17,12 +17,12 @@ Feature: Check schedule command fields
     Scenario: Check execution time field
         When I run scheduled commands
         And I go to the scheduler command page
-        Then the scheduled command field "name" should not be empty on the line "0"
-        And the scheduled command field "command" should not be empty on the line "0"
-        And the scheduled command field "cronExpression" should not be empty on the line "0"
+        Then the scheduled command field "name" should have value "Displays project information logs" on the line "0"
+        And the scheduled command field "command" should have value "about" on the line "0"
+        And the scheduled command field "cronExpression" should have value "* * * * *" on the line "0"
         And the scheduled command field "lastExecution" should not be empty on the line "0"
         And the scheduled command field "commandExecutionTime" should not be empty on the line "0"
-        And the scheduled command field "lastReturnCode" should not be empty on the line "0"
+        And the scheduled command field "lastReturnCode" should have value "0" on the line "0"
         And the scheduled command field "logFile" should not be empty on the line "0"
-        And the scheduled command field "priority" should not be empty on the line "0"
+        And the scheduled command field "priority" should have value "1" on the line "0"
         And the scheduled command field "enabled" should not be empty on the line "0"

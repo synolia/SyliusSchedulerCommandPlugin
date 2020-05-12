@@ -36,7 +36,7 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
-        if ($scheduleCommand->getCommandEndTime() === null) {
+        if ($scheduleCommand->getCommandEndTime() === null || $scheduleCommand->getLastExecution() === null) {
             return '';
         }
 

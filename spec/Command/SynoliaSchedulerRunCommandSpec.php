@@ -14,7 +14,7 @@ class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
         EntityManagerInterface $scheduledCommandManager,
         ExecuteScheduleCommand $executeScheduleCommand
     ) {
-        $this->beConstructedWith("", $scheduledCommandManager, $executeScheduleCommand);
+        $this->beConstructedWith("command", $scheduledCommandManager, $executeScheduleCommand);
     }
 
     function it_is_initializable()

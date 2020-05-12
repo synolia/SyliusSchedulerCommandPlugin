@@ -219,9 +219,15 @@ final class SchedulerCommandContext implements Context
      */
     public function theScheduledCommandFieldShouldNotBeEmptyOnTheLine(string $field, int $index): void
     {
-        if ($this->indexPage->getColumnFields($field)[$index] !== '0') {
-            Assert::notEmpty($this->indexPage->getColumnFields($field)[$index]);
-        }
+        Assert::notEmpty($this->indexPage->getColumnFields($field)[$index]);
+    }
+
+    /**
+     * @Then the scheduled command field :field should have value :value on the line :index
+     */
+    public function theScheduledCommandFieldShouldHaveValueOnTheLine(string $field, string $value, int $index): void
+    {
+        Assert::same($this->indexPage->getColumnFields($field)[$index], $value);
     }
 
     /**

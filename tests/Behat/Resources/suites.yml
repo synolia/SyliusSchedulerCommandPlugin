@@ -2,6 +2,7 @@ default:
     suites:
         ui_managing_scheduled_command:
             contexts:
+                - sylius.behat.context.hook.doctrine_orm
                 - sylius.behat.context.setup.command
                 - sylius.behat.context.setup.admin_security
 
