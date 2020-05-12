@@ -63,6 +63,9 @@ jobs:
             - name: PHPStan - Run
               run: (test -f ruleset/phpstan.neon && vendor/bin/phpstan analyse -c ruleset/phpstan.neon src/) || echo PHPStan does not config, skipping step
 
+            - name: PHPSpec - Run
+              run: (test -f phpspec.yml.dist && vendor/bin/phpspec run) || echo PHPSpec does not config, skipping step
+
             - name: GrumPHP - Run
               run: (test -f grumphp.yml && vendor/bin/grumphp run) || echo Grumphp does not config, skipping step
 

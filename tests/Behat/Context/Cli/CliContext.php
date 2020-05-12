@@ -12,10 +12,10 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 
 class CliContext implements Context
 {
@@ -43,21 +43,21 @@ class CliContext implements Context
     /** @var SharedStorageInterface */
     protected $sharedStorage;
 
-    /** @var ContainerInterface */
-    private $container;
+    /** @var ExecuteScheduleCommand */
+    protected $executeScheduleCommand;
 
     public function __construct(
         KernelInterface $kernel,
         RepositoryInterface $scheduledCommandRepository,
-        ContainerInterface $container,
         EntityManagerInterface $scheduledCommandManager,
-        SharedStorageInterface $sharedStorage
+        SharedStorageInterface $sharedStorage,
+        ExecuteScheduleCommand $executeScheduleCommand
     ) {
         $this->kernel = $kernel;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->container = $container;
         $this->scheduledCommandManager = $scheduledCommandManager;
         $this->sharedStorage = $sharedStorage;
+        $this->executeScheduleCommand = $executeScheduleCommand;
     }
 
     /**
@@ -85,7 +85,8 @@ class CliContext implements Context
             new SynoliaSchedulerRunCommand(
                 null,
                 $this->scheduledCommandManager,
-                $this->kernel->getLogDir())
+                $this->executeScheduleCommand
+            )
         );
         $this->command = $this->application->find('synolia:scheduler-run');
         $this->tester = new CommandTester($this->command);

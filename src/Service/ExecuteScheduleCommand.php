@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 class ExecuteScheduleCommand
@@ -21,38 +22,82 @@ class ExecuteScheduleCommand
     /** @var KernelInterface */
     private $kernel;
 
+    /** @var string */
+    private $logsDir;
+
     public function __construct(
         ScheduledCommandRepository $scheduledCommandRepository,
         EntityManagerInterface $entityManager,
-        KernelInterface $kernel
+        KernelInterface $kernel,
+        string $logsDir
     ) {
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
+        $this->logsDir = $logsDir;
     }
 
     public function executeImmediate(string $commandId): bool
     {
-        /** @var ScheduledCommand|null $scheduleCommand */
-        $scheduleCommand = $this->scheduledCommandRepository->find($commandId);
-        if (!$scheduleCommand instanceof ScheduledCommand) {
+        /** @var ScheduledCommand|null $scheduledCommand */
+        $scheduledCommand = $this->scheduledCommandRepository->find($commandId);
+        if (!$scheduledCommand instanceof ScheduledCommand) {
             return false;
         }
 
-        $scheduleCommand->setExecuteImmediately(true);
+        $process = Process::fromShellCommandline(
+            $this->getCommandLine($scheduledCommand),
+            $this->kernel->getProjectDir()
+        );
+
+        $scheduledCommand->setLastExecution(new \DateTime());
+        $process->run();
+        $result = $process->getExitCode();
+        $scheduledCommand->setLastReturnCode($result);
+        $scheduledCommand->setCommandEndTime(new \DateTime());
         $this->entityManager->flush();
 
-        $rootDir = $this->kernel->getProjectDir();
-        $process = Process::fromShellCommandline(
-            sprintf(
-                'bin/console synolia:scheduler-run --id=%s %s',
-                $commandId,
-                $scheduleCommand->getArguments() ?? ''
-            ),
-            $rootDir
-        );
-        $process->start();
-
         return true;
+    }
+
+    public function executeFromCron(ScheduledCommandInterface $scheduledCommand): ?int
+    {
+        $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
+        $process->run();
+        $result = $process->getExitCode();
+        $scheduledCommand->setCommandEndTime(new \DateTime());
+
+        return $result;
+    }
+
+    private function getLogOutput(ScheduledCommandInterface $scheduledCommand): ?string
+    {
+        if ($scheduledCommand->getLogFile() === null || $scheduledCommand->getLogFile() === '') {
+            return null;
+        }
+
+        return $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile();
+    }
+
+    private function getCommandLine(ScheduledCommandInterface $scheduledCommand): string
+    {
+        $commandLine = sprintf(
+            'bin/console %s %s',
+            $scheduledCommand->getCommand(),
+            $scheduledCommand->getArguments() ?? ''
+        );
+
+        $logOutput = $this->getLogOutput($scheduledCommand);
+        if (null !== $logOutput) {
+            $commandLine = sprintf(
+                'bin/console %s %s >> %s 2>> %s',
+                $scheduledCommand->getCommand(),
+                $scheduledCommand->getArguments() ?? '',
+                $logOutput,
+                $logOutput
+            );
+        }
+
+        return $commandLine;
     }
 }

@@ -14,10 +14,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 
 final class SynoliaSchedulerRunCommand extends Command
 {
@@ -28,8 +28,8 @@ final class SynoliaSchedulerRunCommand extends Command
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var string */
-    private $logsDir;
+    /** @var ExecuteScheduleCommand */
+    private $executeScheduleCommand;
 
     /** @var InputInterface */
     private $input;
@@ -37,12 +37,12 @@ final class SynoliaSchedulerRunCommand extends Command
     public function __construct(
         string $name = null,
         EntityManagerInterface $scheduledCommandManager,
-        string $logsDir
+        ExecuteScheduleCommand $executeScheduleCommand
     ) {
         parent::__construct($name);
 
         $this->entityManager = $scheduledCommandManager;
-        $this->logsDir = $logsDir;
+        $this->executeScheduleCommand = $executeScheduleCommand;
     }
 
     protected function configure(): void
@@ -150,27 +150,7 @@ final class SynoliaSchedulerRunCommand extends Command
                 . ' ' . $scheduledCommand->getArguments() . '</comment>'
             );
 
-            $commandLine = sprintf(
-                'bin/console %s %s',
-                $scheduledCommand->getCommand(),
-                $scheduledCommand->getArguments() ?? ''
-            );
-
-            $logOutput = $this->getLogOutput($scheduledCommand);
-            if (null !== $logOutput) {
-                $commandLine = sprintf(
-                    'bin/console %s %s >> %s 2>> %s',
-                    $scheduledCommand->getCommand(),
-                    $scheduledCommand->getArguments() ?? '',
-                    $logOutput,
-                    $logOutput
-                );
-            }
-
-            $process = Process::fromShellCommandline($commandLine);
-            $process->start();
-            $result = $process->getExitCodeText();
-            $scheduledCommand->setCommandEndTime(new \DateTime());
+            $result = $this->executeScheduleCommand->executeFromCron($scheduledCommand);
         } catch (\Exception $e) {
             $io->warning($e->getMessage());
             $result = -1;
@@ -198,15 +178,6 @@ final class SynoliaSchedulerRunCommand extends Command
 
         unset($command);
         gc_collect_cycles();
-    }
-
-    private function getLogOutput(ScheduledCommandInterface $scheduledCommand): ?string
-    {
-        if ($scheduledCommand->getLogFile() === null || $scheduledCommand->getLogFile() === '') {
-            return null;
-        }
-
-        return $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile();
     }
 
     private function getCommands(InputInterface $input): iterable

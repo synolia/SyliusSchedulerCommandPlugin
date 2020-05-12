@@ -16,7 +16,7 @@ services:
         arguments:
             $excludedNamespaces: ['_global']
 
-    Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand:
+    Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand:
         $logsDir: '%kernel.logs_dir%'
 
     app.grid_field.scheduled_command.url:
