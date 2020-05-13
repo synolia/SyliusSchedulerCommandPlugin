@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Synolia\SyliusSchedulerCommandPlugin\Factory;
+namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Factory;
 
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Resource\Factory\Factory;

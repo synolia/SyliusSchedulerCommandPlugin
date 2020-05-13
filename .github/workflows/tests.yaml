@@ -21,11 +21,33 @@ jobs:
                 php: [7.2, 7.3, 7.4]
                 prefer: ["--prefer-lowest", ""]
 
-        env:
-            package-name: synolia/sylius-scheduler-command-plugin
-
         steps:
             - uses: actions/checkout@v2
+
+            -   name: Dump GitHub context
+                env:
+                    GITHUB_CONTEXT: ${{ toJson(github) }}
+                run: echo "$GITHUB_CONTEXT"
+            -   name: Dump job context
+                env:
+                    JOB_CONTEXT: ${{ toJson(job) }}
+                run: echo "$JOB_CONTEXT"
+            -   name: Dump steps context
+                env:
+                    STEPS_CONTEXT: ${{ toJson(steps) }}
+                run: echo "$STEPS_CONTEXT"
+            -   name: Dump runner context
+                env:
+                    RUNNER_CONTEXT: ${{ toJson(runner) }}
+                run: echo "$RUNNER_CONTEXT"
+            -   name: Dump strategy context
+                env:
+                    STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+                run: echo "$STRATEGY_CONTEXT"
+            -   name: Dump matrix context
+                env:
+                    MATRIX_CONTEXT: ${{ toJson(matrix) }}
+                run: echo "$MATRIX_CONTEXT"
 
             - name: PHP - Switch
               run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
@@ -58,31 +80,29 @@ jobs:
               run: composer update ${{ matrix.prefer }} --no-progress --no-scripts
 
             - name: ECS - Run
-              run: (test -f ruleset/easy-coding-standard.yml && vendor/bin/ecs check src/ tests/Behat/ --no-progress-bar -c ruleset/easy-coding-standard.yml) || echo Ecs does not config, skipping step
+              run: if [ -f ruleset/easy-coding-standard.yml ]; then vendor/bin/ecs check src/ tests/Behat/ --no-progress-bar -c ruleset/easy-coding-standard.yml ; else echo Ecs ruleset file does not exist, skipping step ; fi
 
             - name: PHPStan - Run
-              run: (test -f ruleset/phpstan.neon && vendor/bin/phpstan analyse -c ruleset/phpstan.neon src/) || echo PHPStan does not config, skipping step
+              run: if [ -f ruleset/phpstan.neon ]; then vendor/bin/phpstan analyse -c ruleset/phpstan.neon src/ ; else echo PHPStan ruleset file does not exist, skipping step ; fi
+
+            - name: PHPSpec - Run
+              run: if [ -f phpspec.yml.dist ]; then vendor/bin/phpspec run ; else echo PHPSpec config file does not exist, skipping step ; fi
 
             - name: GrumPHP - Run
-              run: (test -f grumphp.yml && vendor/bin/grumphp run) || echo Grumphp does not config, skipping step
-
+              run: if [ -f grumphp.yml ]; then vendor/bin/grumphp run ; else echo Grumphp config file does not exist, skipping step ; fi
 
     sylius:
         runs-on: ubuntu-latest
-        #continue-on-error: ${{ matrix.experimental }}
         strategy:
             fail-fast: false
             matrix:
                 php: [7.2, 7.3, 7.4]
                 sylius: ['~1.5.0', '~1.6.0', '~1.7.0']
-                #experimental: [false]
-                #include:
-                #    - php: 7.3
-                #      sylius: 'dev-master'
-                #      experimental: true
-                #    - php: 7.4
-                #      sylius: 'dev-master'
-                #      experimental: true
+                include:
+                    - php: 7.3
+                      sylius: 'dev-master'
+                    - php: 7.4
+                      sylius: 'dev-master'
                 exclude:
                     - php: 7.2
                       sylius: '~1.7.0'
@@ -135,13 +155,16 @@ jobs:
               run: |
                   composer config repositories.plugin '{"type": "path", "url": "../plugin/"}'
 
-            - name: Composer - Allow contrib recipes
+            - name: Composer - Config
               working-directory: ./sylius
-              run: composer config extra.symfony.allow-contrib true
+              run: |
+                  composer config extra.symfony.allow-contrib true
+                  composer config minimum-stability "dev"
+                  composer config prefer-stable true
 
             - name: Composer - Install plugin
               working-directory: ./sylius
-              run: composer req "${{ env.package-name }}:^1" --prefer-source
+              run: composer require "${{ env.package-name }}:*" --prefer-source
 
             - name: Sylius - Init database
               working-directory: ./sylius
@@ -163,17 +186,21 @@ jobs:
               working-directory: ./plugin
               run: composer update --no-progress
 
+            - name: PHPUnit - Install PHPUnit 7.5
+              working-directory: ./sylius
+              run: wget https://phar.phpunit.de/phpunit-7.5.phar
+
             - name: PHPUnit - Configure
               working-directory: ./sylius
               run: |
                   cp vendor/${{ env.package-name }}/phpunit.xml.dist phpunit.xml
                   sed -i "s#tests/Application/config/bootstrap.php#config/bootstrap.php#g" phpunit.xml
-                  sed -i "s#<directory>tests</directory>#<directory>./vendor/${{ env.package-name }}</directory>#g" phpunit.xml
+                  sed -i "s#<directory>tests</directory>#<directory>./vendor/${{ env.package-name }}/tests/PHPUnit</directory>#g" phpunit.xml
                   sed -i "s#/tests/Application/AppKernel.php#src/Kernel.php#g" phpunit.xml
 
-            - name: PHPunit
+            - name: PHPunit - Run
               working-directory: ./sylius
-              run: ./vendor/bin/phpunit
+              run: php phpunit-7.5.phar
 
             - name: Behat - Configure display
               working-directory: ./sylius
