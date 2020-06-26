@@ -85,7 +85,8 @@ class CliContext implements Context
             new SynoliaSchedulerRunCommand(
                 null,
                 $this->scheduledCommandManager,
-                $this->executeScheduleCommand
+                $this->executeScheduleCommand,
+                $this->scheduledCommandRepository
             )
         );
         $this->command = $this->application->find('synolia:scheduler-run');

@@ -37,8 +37,8 @@ final class SynoliaSchedulerRunCommand extends Command
     public function __construct(
         string $name = null,
         EntityManagerInterface $scheduledCommandManager,
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ExecuteScheduleCommand $executeScheduleCommand
+        ExecuteScheduleCommand $executeScheduleCommand,
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository
     ) {
         parent::__construct($name);
 
