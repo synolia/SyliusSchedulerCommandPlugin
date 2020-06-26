@@ -14,7 +14,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
@@ -150,11 +149,9 @@ final class SynoliaSchedulerRunCommand extends Command
 
     private function getCommands(InputInterface $input): iterable
     {
-        /** @var ScheduledCommandRepositoryInterface $scheduledCommandRepository */
-        $scheduledCommandRepository = $this->entityManager->getRepository(ScheduledCommand::class);
-        $commands = $scheduledCommandRepository->findEnabledCommand();
+        $commands = $this->scheduledCommandRepository->findEnabledCommand();
         if ($input->getOption('id')) {
-            $commands = $scheduledCommandRepository->findBy(['id' => $input->getOption('id')]);
+            $commands = $this->scheduledCommandRepository->findBy(['id' => $input->getOption('id')]);
         }
 
         return $commands;
