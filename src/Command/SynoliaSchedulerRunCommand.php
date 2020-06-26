@@ -31,31 +31,26 @@ final class SynoliaSchedulerRunCommand extends Command
     /** @var ExecuteScheduleCommand */
     private $executeScheduleCommand;
 
-    /** @var InputInterface */
-    private $input;
+    /** @var ScheduledCommandRepositoryInterface */
+    private $scheduledCommandRepository;
 
     public function __construct(
         string $name = null,
         EntityManagerInterface $scheduledCommandManager,
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ExecuteScheduleCommand $executeScheduleCommand
     ) {
         parent::__construct($name);
 
         $this->entityManager = $scheduledCommandManager;
         $this->executeScheduleCommand = $executeScheduleCommand;
+        $this->scheduledCommandRepository = $scheduledCommandRepository;
     }
 
     protected function configure(): void
     {
         $this->setDescription('Execute scheduled commands');
         $this->addOption('id', 'i', InputOption::VALUE_OPTIONAL, 'Command ID');
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
-
-        $this->input = $input;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -69,57 +64,30 @@ final class SynoliaSchedulerRunCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $commands = $this->getCommands($input);
-        $noneExecution = true;
+        $commandsToExecute = [];
 
         /** @var ScheduledCommandInterface $command */
         foreach ($commands as $command) {
-            /** prevent update during running time */
-            $this->entityManager->refresh($this->entityManager->merge($command));
-            if (!$command->isEnabled()) {
-                continue;
-            }
-
-            if ($command->isExecuteImmediately()) {
-                $noneExecution = false;
-                $io->note(
-                    'Immediately execution asked for : ' . $command->getCommand()
-                );
-
-                $this->executeCommand($command, $io);
-
-                continue;
-            }
-
-            if (null === $command->getLastExecution()) {
-                $noneExecution = false;
-                $io->note(
-                    'First execution for : ' . $command->getCommand()
-                );
-
-                $this->executeCommand($command, $io);
-
-                continue;
-            }
-
-            /** @var ScheduledCommandInterface $command */
-            $cron = CronExpression::factory($command->getCronExpression());
-            $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
-            $now = new \DateTime();
-
-            if ($nextRunDate < $now) {
-                $noneExecution = false;
-                $lastExecution = $command->getLastExecution() !== null ? $command->getLastExecution()->format('d/m/Y H:i:s') : 'never';
-                $io->note(
-                    'Command ' . $command->getCommand() . ' should be executed - last execution : ' .
-                    $lastExecution . '.'
-                );
-
-                $this->executeCommand($command, $io);
+            // delayed execution just after, to keep cron comparison effective
+            if ($this->shouldExecuteCommand($command, $io)) {
+                $commandsToExecute[] = $command;
             }
         }
 
-        if (true === $noneExecution) {
+        if (0 === \count($commandsToExecute)) {
             $io->success('Nothing to do.');
+        }
+
+        foreach ($commandsToExecute as $command) {
+            /** prevent update during running time */
+            $this->entityManager->refresh($this->entityManager->merge($command));
+
+            $io->note(\sprintf(
+                'Execute Command "%s" - last execution : %s',
+                $command->getCommand(),
+                $command->getLastExecution() !== null ? $command->getLastExecution()->format('d/m/Y H:i:s') : 'never'
+            ));
+            $this->executeCommand($command, $io);
         }
 
         $this->release();
@@ -190,5 +158,23 @@ final class SynoliaSchedulerRunCommand extends Command
         }
 
         return $commands;
+    }
+
+    private function shouldExecuteCommand(ScheduledCommandInterface $scheduledCommand, SymfonyStyle $io): bool
+    {
+        // Could be removed as getCommands fetch only enabled commands
+        if (!$scheduledCommand->isEnabled()) {
+            return false;
+        }
+
+        if ($scheduledCommand->isExecuteImmediately()) {
+            $io->note('Immediately execution asked for : ' . $scheduledCommand->getCommand());
+
+            return true;
+        }
+
+        $cron = CronExpression::factory($scheduledCommand->getCronExpression());
+
+        return $cron->isDue();
     }
 }
