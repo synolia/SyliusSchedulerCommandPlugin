@@ -9,7 +9,7 @@
         "mtdowling/cron-expression": "^1.2",
         "sylius/sylius": "^1.5",
         "symfony/lock": "^3.4|^4.3",
-        "symfony/contracts": "^1.1|^2.0",
+        "symfony/service-contracts": "^1.1|^2.0",
         "symfony/framework-bundle": "^4.4",
         "symfony/process": "^4.4"
     },
