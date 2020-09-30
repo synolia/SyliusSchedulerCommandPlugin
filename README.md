@@ -31,6 +31,13 @@
 * Download, show file size, empty log files directly from the admin panel
 * Define commands with a Factory (from a Doctrine migration, for example)
 
+## Requirements
+
+| | Version |
+| :--- | :--- |
+| PHP  | 7.3+ |
+| Sylius | 1.7+ |
+
 ## Installation
 
 1. Add the bundle and dependencies in your composer.json :
