@@ -150,7 +150,7 @@ final class SynoliaSchedulerRunCommand extends Command
     private function getCommands(InputInterface $input): iterable
     {
         $commands = $this->scheduledCommandRepository->findEnabledCommand();
-        if ($input->getOption('id')) {
+        if ($input->getOption('id') !== null) {
             $commands = $this->scheduledCommandRepository->findBy(['id' => $input->getOption('id')]);
         }
 
@@ -172,6 +172,6 @@ final class SynoliaSchedulerRunCommand extends Command
 
         $cron = CronExpression::factory($scheduledCommand->getCronExpression());
 
-        return $cron->isDue();
+        return $cron->isDue() ?? false;
     }
 }

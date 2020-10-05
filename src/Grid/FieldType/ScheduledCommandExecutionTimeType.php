@@ -9,7 +9,6 @@ use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 
 class ScheduledCommandExecutionTimeType implements FieldTypeInterface
 {
@@ -31,8 +30,6 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @param ScheduledCommand $scheduleCommand
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
