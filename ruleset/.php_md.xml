@@ -22,6 +22,7 @@
     <rule ref="rulesets/naming.xml">
         <exclude name="ShortVariable"/>
         <exclude name="LongVariable"/>
+        <exclude name="LongClassName"/>
         <exclude name="ShortMethodName"/>
     </rule>
     <rule ref="rulesets/naming.xml/ShortVariable">
@@ -39,6 +40,11 @@
     <rule ref="rulesets/naming.xml/LongVariable">
         <properties>
             <property name="maximum" value="50"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/LongClassName">
+        <properties>
+            <property name="maximum" value="45"/>
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">
