@@ -13,10 +13,10 @@ sylius:
             enabled: Activé
             command_execution_time: Temps d'execution
             execute_immediate: Executer immédiatement
-        edit_scheduled_command: Editer la commanda
+        edit_scheduled_command: Editer la commande
         new_scheduled_command: Créer une commande
         live_view: Voir en direct
-        live_view_of_scheduled_command: 'Vue en direct de la commande "%scheduledCommandName"'
+        live_view_of_scheduled_command: 'Vue en direct de la commande "%scheduledCommandName%"'
         does_not_exists_or_missing_log_file: 'La commande n''existe pas ou n''a pas de fichier log.'
     menu:
         admin:
