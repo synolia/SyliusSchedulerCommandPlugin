@@ -18,7 +18,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.2, 7.3, 7.4]
+                php: [7.3, 7.4]
                 prefer: ["--prefer-lowest", ""]
 
         steps:
@@ -68,29 +68,18 @@ jobs:
 
     sylius:
         runs-on: ubuntu-latest
+        name: Sylius ${{ matrix.sylius }} PHP ${{ matrix.php }}
         strategy:
             fail-fast: false
             matrix:
-                php: [7.2, 7.3, 7.4]
-                sylius: ['~1.5.0', '~1.6.0', '~1.7.0']
-                include:
-                    - php: 7.3
-                      sylius: 'dev-master'
-                    - php: 7.4
-                      sylius: 'dev-master'
-                exclude:
-                    - php: 7.2
-                      sylius: '~1.7.0'
+                php: [7.3, 7.4]
+                sylius: ['~1.7.0', '~1.8.0', 'dev-master']
 
         env:
             APP_ENV: test
             package-name: synolia/sylius-scheduler-command-plugin
 
         steps:
-            - name: HHVM - Remove
-              run: sudo apt-get remove --auto-remove -y hhvm
-              if: matrix.sylius == 1.3 || matrix.sylius == 1.4
-
             - name: PHP - Switch
               run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }} && php -v
 
@@ -123,7 +112,7 @@ jobs:
               run: composer config -g github-oauth.github.com ${{ github.token }}
 
             - name: Composer - Install Sylius-Standard
-              run: composer create-project --no-scripts --no-progress sylius/sylius-standard sylius "${{ matrix.sylius }}"
+              run: composer create-project --no-progress sylius/sylius-standard sylius "${{ matrix.sylius }}"
 
             - name: Composer - Add path repository
               working-directory: ./sylius
@@ -141,13 +130,25 @@ jobs:
               working-directory: ./sylius
               run: composer require "${{ env.package-name }}:*" --prefer-source
 
-            - name: Sylius - Init database
+            - name: Composer - Security Checker
               working-directory: ./sylius
-              run: php bin/console doctrine:database:create --if-not-exists
+              run: composer require sensiolabs/security-checker
 
-            - name: Sylius - Update database schema
+            - name: Sylius - Copy migration
               working-directory: ./sylius
-              run: php bin/console doctrine:migr:migr -n
+              run: cp ../plugin/src/Migrations/* src/Migrations
+
+            - name: Sylius - Migration config
+              working-directory: ./sylius
+              run: |
+                  echo '    migrations_paths:' >> config/packages/doctrine_migrations.yaml
+                  echo '            'DoctrineMigrations': 'src/Migrations'' >> config/packages/doctrine_migrations.yaml
+              if: matrix.sylius == '~1.8.0' || matrix.sylius == 'dev-master'
+
+            - name: Sylius - Set database config
+              working-directory: ./sylius
+              run: |
+                  echo 'DATABASE_URL=mysql://root:@127.0.0.1:3306/scheduler_command_plugin_%kernel.environment%?serverVersion=mariadb-10.4.11' >> .env
 
             - name: Sylius - Copy fixtures
               working-directory: ./sylius
@@ -157,9 +158,13 @@ jobs:
               working-directory: ./sylius
               run: php bin/console sylius:install -n -s scheduler_command
 
-            - name: Plugin - Update dependencies
-              working-directory: ./plugin
-              run: composer update --no-progress
+            - name: Sylius - Yarn Build
+              working-directory: ./sylius
+              run: yarn install && yarn build
+
+            - name: Sylius - Update dependencies # need to update sylius version
+              working-directory: ./sylius
+              run: composer update
 
             - name: PHPUnit - Install PHPUnit 7.5
               working-directory: ./sylius
@@ -220,12 +225,13 @@ jobs:
 
             - name: Behat - Run Behat tests
               working-directory: ./sylius
-              run: vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun
+              run: vendor/bin/behat --strict --no-interaction -f progress || vendor/bin/behat --strict -vvv --no-interaction --rerun
 
         services:
             mariadb:
-                image: mariadb:latest
+                image: mariadb:10.4.11
                 ports:
                     - 3306:3306
                 env:
                     MYSQL_ALLOW_EMPTY_PASSWORD: true
+                options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
