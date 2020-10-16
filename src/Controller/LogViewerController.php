@@ -27,16 +27,21 @@ final class LogViewerController extends AbstractController
     /** @var \Symfony\Contracts\Translation\TranslatorInterface */
     private $translator;
 
+    /** @var string */
+    private $logsDir;
+
     public function __construct(
         ScheduledCommandRepository $scheduledCommandRepository,
         LogDataRetriever $logDataRetriever,
         TranslatorInterface $translator,
+        string $logsDir,
         int $updateTime = 2000
     ) {
         $this->logDataRetriever = $logDataRetriever;
         $this->updateTime = $updateTime;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->translator = $translator;
+        $this->logsDir = $logsDir;
     }
 
     public function getLogs(Request $request, string $command): JsonResponse
@@ -45,17 +50,14 @@ final class LogViewerController extends AbstractController
         $scheduleCommand = $this->scheduledCommandRepository->find($command);
 
         if (null === $scheduleCommand ||
-            null === $scheduleCommand->getLogFile() ||
-            null === $this->getParameter('kernel.logs_dir')
+            null === $scheduleCommand->getLogFile()
         ) {
             return new JsonResponse('', Response::HTTP_NO_CONTENT);
         }
 
-        $baseLogDir = $this->getParameter('kernel.logs_dir');
-
         if (true === (bool) $request->get('refresh')) {
             $result = $this->logDataRetriever->getLog(
-                $baseLogDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile(),
+                $this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile(),
                 (int) $request->get('lastsize'),
                 (string) $request->get('grep-keywords'),
                 (bool) $request->get('invert')
@@ -67,7 +69,7 @@ final class LogViewerController extends AbstractController
             ]);
         }
 
-        $result = $this->logDataRetriever->getLog($baseLogDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile());
+        $result = $this->logDataRetriever->getLog($this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile());
 
         return new JsonResponse([
             'size' => $result['size'],
@@ -81,8 +83,7 @@ final class LogViewerController extends AbstractController
         $scheduledCommand = $this->scheduledCommandRepository->find($command);
 
         if (null === $scheduledCommand ||
-            null === $scheduledCommand->getLogFile() ||
-            null === $this->getParameter('kernel.logs_dir')
+            null === $scheduledCommand->getLogFile()
         ) {
             $this->addFlash($this->translator->trans('sylius.ui.does_not_exists_or_missing_log_file'), 'error');
 

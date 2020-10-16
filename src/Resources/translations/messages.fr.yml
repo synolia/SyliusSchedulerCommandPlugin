@@ -13,6 +13,8 @@ sylius:
             enabled: Activé
             command_execution_time: Temps d'execution
             execute_immediate: Executer immédiatement
+            emtpy_logs: Vider les logs
+            bulk_empty_logs: Les fichiers de logs ont bien été vidé.
         edit_scheduled_command: Editer la commande
         new_scheduled_command: Créer une commande
         live_view: Voir en direct

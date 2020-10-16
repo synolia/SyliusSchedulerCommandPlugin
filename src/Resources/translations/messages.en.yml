@@ -13,6 +13,8 @@ sylius:
             enabled: Enabled
             command_execution_time: Execution time
             execute_immediate: Execute immediately
+            emtpy_logs: Empty logs
+            bulk_empty_logs: The log files have been emptied.
         edit_scheduled_command: Edit command
         new_scheduled_command: Create command
         log_file_undefined: Scheduled command has no defined log file.
