@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -22,19 +21,14 @@ final class CommandContext implements Context
     /** @var RepositoryInterface */
     private $scheduledCommandRepository;
 
-    /** @var ObjectManager */
-    private $scheduledCommandManager;
-
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $scheduledCommandFactory,
-        RepositoryInterface $scheduledCommandRepository,
-        ObjectManager $scheduledCommandManager
+        RepositoryInterface $scheduledCommandRepository
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->scheduledCommandFactory = $scheduledCommandFactory;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->scheduledCommandManager = $scheduledCommandManager;
     }
 
     /**

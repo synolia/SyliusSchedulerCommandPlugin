@@ -12,7 +12,7 @@ class DownloadControllerSpec extends ObjectBehavior
 {
     function let(ScheduledCommandRepository $scheduledCommandRepository)
     {
-        $this->beConstructedWith($scheduledCommandRepository);
+        $this->beConstructedWith($scheduledCommandRepository, 'logDir');
     }
 
     function it_is_initializable()

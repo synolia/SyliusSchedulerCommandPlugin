@@ -114,6 +114,10 @@ jobs:
             - name: Composer - Install Sylius-Standard
               run: composer create-project --no-progress sylius/sylius-standard sylius "${{ matrix.sylius }}"
 
+            - name: Sylius - Update dependencies # need to update sylius version
+              working-directory: ./sylius
+              run: composer update
+
             - name: Composer - Add path repository
               working-directory: ./sylius
               run: |
@@ -162,10 +166,6 @@ jobs:
               working-directory: ./sylius
               run: yarn install && yarn build
 
-            - name: Sylius - Update dependencies # need to update sylius version
-              working-directory: ./sylius
-              run: composer update
-
             - name: PHPUnit - Install PHPUnit 7.5
               working-directory: ./sylius
               run: wget https://phar.phpunit.de/phpunit-7.5.phar
@@ -182,36 +182,6 @@ jobs:
               working-directory: ./sylius
               run: php phpunit-7.5.phar
 
-            - name: Behat - Configure display
-              working-directory: ./sylius
-              run: |
-                  /sbin/start-stop-daemon --start --quiet --pidfile /tmp/xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1680x1050x16
-                  export DISPLAY=:99
-
-            - name: Behat - Download and configure ChromeDriver
-              working-directory: ./sylius
-              run: |
-                  if [ ! -f chromedriver ] || [ "$(chromedriver --version | grep -c 2.34)" = "0" ]; then
-                      curl http://chromedriver.storage.googleapis.com/2.34/chromedriver_linux64.zip > chromedriver.zip
-                      unzip chromedriver.zip
-                      chmod +x chromedriver
-                  fi
-
-            - name: Behat - Run ChromeDriver
-              working-directory: ./sylius
-              run: chromedriver > /dev/null 2>&1 &
-
-            - name: Behat - Download and configure Selenium
-              working-directory: ./sylius
-              run: |
-                  if [ ! -f selenium.jar ] || [ "$(java -jar selenium.jar --version | grep -c 3.4.0)" = "0" ]; then
-                      curl http://selenium-release.storage.googleapis.com/3.4/selenium-server-standalone-3.4.0.jar > selenium.jar
-                  fi
-
-            - name: Behat - Run Selenium
-              working-directory: ./sylius
-              run: java -Dwebdriver.chrome.driver=chromedriver -jar selenium.jar > /dev/null 2>&1 &
-
             - name: Behat - Run webserver
               working-directory: ./sylius
               run: bin/console server:run 127.0.0.1:8080 --quiet > /dev/null 2>&1 &
@@ -225,7 +195,8 @@ jobs:
 
             - name: Behat - Run Behat tests
               working-directory: ./sylius
-              run: vendor/bin/behat --strict --no-interaction -f progress || vendor/bin/behat --strict -vvv --no-interaction --rerun
+              # test behat without javascript (not functional on github actions)
+              run: vendor/bin/behat --strict --no-interaction -f progress --tags="~@javascript" || vendor/bin/behat --strict -vvv --no-interaction --tags="~@javascript" --rerun
 
         services:
             mariadb:

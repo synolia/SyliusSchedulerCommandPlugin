@@ -85,7 +85,7 @@ final class LogViewerController extends AbstractController
         if (null === $scheduledCommand ||
             null === $scheduledCommand->getLogFile()
         ) {
-            $this->addFlash($this->translator->trans('sylius.ui.does_not_exists_or_missing_log_file'), 'error');
+            $this->addFlash('error', $this->translator->trans('sylius.ui.does_not_exists_or_missing_log_file'));
 
             return $this->redirectToRoute('sylius_admin_scheduled_command_index');
         }

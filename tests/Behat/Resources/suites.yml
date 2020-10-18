@@ -3,8 +3,13 @@ default:
         ui_managing_scheduled_command:
             contexts:
                 - sylius.behat.context.hook.doctrine_orm
+
+                - sylius.behat.context.transform.shared_storage
+
                 - sylius.behat.context.setup.command
                 - sylius.behat.context.setup.admin_security
+
+                - sylius.behat.context.ui.admin.notification
 
                 - synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.scheduled_command
                 - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context

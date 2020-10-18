@@ -215,6 +215,30 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
+     * @When I check (also) the :commandName command
+     */
+    public function iCheckTheCommand(string $commandName): void
+    {
+        $this->indexPage->checkResourceOnPage(['name' => $commandName]);
+    }
+
+    /**
+     * @When I empty logs of them
+     */
+    public function iEmptyLogsOfThem(): void
+    {
+        $this->indexPage->bulkEmptyLogs();
+    }
+
+    /**
+     * @When I delete them
+     */
+    public function iDeleteThem(): void
+    {
+        $this->indexPage->bulkDelete();
+    }
+
+    /**
      * @Then the scheduled command field :field should not be empty on the line :index
      */
     public function theScheduledCommandFieldShouldNotBeEmptyOnTheLine(string $field, int $index): void
@@ -241,7 +265,7 @@ final class SchedulerCommandContext implements Context
     /**
      * @Then the first scheduled command shouldn't have log file
      */
-    public function theFirstScheduledCommandShouldntHaveLogFile(): void
+    public function theFirstScheduledCommandShouldNotHaveLogFile(): void
     {
         Assert::isEmpty($this->indexPage->getColumnFields('logFile')[0]);
     }
@@ -254,6 +278,37 @@ final class SchedulerCommandContext implements Context
         Assert::startsWith(
             $this->indexPage->getColumnFields('logFile')[1],
             \sprintf('%s %s', $this->translator->trans('sylius.ui.live_view'), $filename)
+        );
+    }
+
+    /**
+     * @When /^I clean log file for this scheduled command for scheduled command named "([^"]*)"$/
+     */
+    public function iCleanLogFileForThisScheduledCommandForScheduledCommandNamed(string $scheduledCommandName): void
+    {
+        $actions = $this->indexPage->getActionsForResource(['name' => $scheduledCommandName]);
+        $actions->pressButton('Empty log');
+    }
+
+    /**
+     * @Then /^I should be notified that the scheduled command log file has not been defined$/
+     */
+    public function iShouldBeNotifiedThatTheScheduledCommandLogFileHasNotBeenDefined(): void
+    {
+        $this->notificationChecker->checkNotification(
+            'Scheduled command has no defined log file.',
+            NotificationType::failure()
+        );
+    }
+
+    /**
+     * @Then I should be notified that log files has been emptied
+     */
+    public function iShouldBeNotifiedThatLogFilesHasBeenEmptied(): void
+    {
+        $this->notificationChecker->checkNotification(
+            'The log files have been emptied.',
+            NotificationType::success()
         );
     }
 
@@ -276,25 +331,5 @@ final class SchedulerCommandContext implements Context
             ->setCommand('about');
 
         return $schedule;
-    }
-
-    /**
-     * @When /^I clean log file for this scheduled command for scheduled command named "([^"]*)"$/
-     */
-    public function iCleanLogFileForThisScheduledCommandForScheduledCommandNamed(string $scheduledCommandName)
-    {
-        $actions = $this->indexPage->getActionsForResource(['name' => $scheduledCommandName]);
-        $actions->pressButton('Empty log');
-    }
-
-    /**
-     * @Then /^I should be notified that the scheduled command log file has not been defined$/
-     */
-    public function iShouldBeNotifiedThatTheScheduledCommandLogFileHasNotBeenDefined()
-    {
-        $this->notificationChecker->checkNotification(
-            'Scheduled command has no defined log file.',
-            NotificationType::failure()
-        );
     }
 }
