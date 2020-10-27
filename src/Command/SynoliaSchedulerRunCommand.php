@@ -105,6 +105,9 @@ final class SynoliaSchedulerRunCommand extends Command
             $command = $application->find($scheduledCommand->getCommand());
         } catch (\InvalidArgumentException $e) {
             $scheduledCommand->setLastReturnCode(-1);
+            //persist last return code
+            $this->entityManager->merge($scheduledCommand);
+            $this->entityManager->flush();
             $io->error('Cannot find ' . $scheduledCommand->getCommand());
 
             return;
