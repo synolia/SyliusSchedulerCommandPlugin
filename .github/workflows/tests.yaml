@@ -106,7 +106,7 @@ jobs:
             - name: Composer - Self Update
               run: |
                   mkdir -p /home/runner/.composer/
-                  sudo composer self-update
+                  sudo composer self-update --1
 
             - name: Composer - Github Auth
               run: composer config -g github-oauth.github.com ${{ github.token }}
@@ -116,7 +116,7 @@ jobs:
 
             - name: Sylius - Update dependencies # need to update sylius version
               working-directory: ./sylius
-              run: composer update
+              run: composer update --no-progress --no-suggest --prefer-dist --no-interaction
 
             - name: Composer - Add path repository
               working-directory: ./sylius
@@ -145,8 +145,7 @@ jobs:
             - name: Sylius - Migration config
               working-directory: ./sylius
               run: |
-                  echo '    migrations_paths:' >> config/packages/doctrine_migrations.yaml
-                  echo '            'DoctrineMigrations': 'src/Migrations'' >> config/packages/doctrine_migrations.yaml
+                  echo '        'DoctrineMigrations': 'src/Migrations'' >> config/packages/doctrine_migrations.yaml
               if: matrix.sylius == '~1.8.0' || matrix.sylius == 'dev-master'
 
             - name: Sylius - Set database config
@@ -166,6 +165,10 @@ jobs:
               working-directory: ./sylius
               run: yarn install && yarn build
 
+            - name: Sylius - Cache clear
+              working-directory: ./sylius
+              run: php bin/console c:c
+
             - name: PHPUnit - Install PHPUnit 7.5
               working-directory: ./sylius
               run: wget https://phar.phpunit.de/phpunit-7.5.phar
@@ -182,10 +185,6 @@ jobs:
               working-directory: ./sylius
               run: php phpunit-7.5.phar
 
-            - name: Behat - Run webserver
-              working-directory: ./sylius
-              run: bin/console server:run 127.0.0.1:8080 --quiet > /dev/null 2>&1 &
-
             - name: Behat - Config Suite
               working-directory: ./sylius
               run: |
@@ -193,10 +192,40 @@ jobs:
                   sed -i "s#vendor/sylius/sylius/features#vendor/${{ env.package-name }}/features#g" behat.yml.dist
                   echo '    - { resource: "../vendor/${{ env.package-name }}/tests/Behat/Resources/services.yml" }' >> config/services_test.yaml
 
-            - name: Behat - Run Behat tests
-              working-directory: ./sylius
-              # test behat without javascript (not functional on github actions)
-              run: vendor/bin/behat --strict --no-interaction -f progress --tags="~@javascript" || vendor/bin/behat --strict -vvv --no-interaction --tags="~@javascript" --rerun
+            -   name: Output PHP version
+                working-directory: ./sylius
+                run: php -v | head -n 1 | awk '{print $2}' > .php-version
+
+            -   name: Install Symfony CLI
+                working-directory: ./sylius
+                run: |
+                  wget https://get.symfony.com/cli/installer -O - | bash
+
+            -   name: Install certificates
+                working-directory: ./sylius
+                run: |
+                  /home/runner/.symfony/bin/symfony server:ca:install
+
+            -   name: Run Chrome headless
+                working-directory: ./sylius
+                run: google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' https://127.0.0.1 > /dev/null 2>&1 &
+
+            -   name: Run webserver
+                working-directory: ./sylius
+                run: |
+                    /home/runner/.symfony/bin/symfony server:start --port=8080 --dir=public --allow-http --daemon
+                    sleep 15
+                    /home/runner/.symfony/bin/symfony server:status
+
+            -   name: Run behat
+                working-directory: ./sylius
+                run: vendor/bin/behat --strict --no-interaction -f progress || vendor/bin/behat --strict -vvv --no-interaction --rerun
+
+            -   uses: actions/upload-artifact@v2.1.4
+                if: failure()
+                with:
+                    name: logs
+                    path: ./sylius/etc/build
 
         services:
             mariadb:
