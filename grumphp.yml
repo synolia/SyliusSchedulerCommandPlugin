@@ -1,6 +1,4 @@
-parameters:
-    git_dir: .
-    bin_dir: vendor/bin
+grumphp:
     ascii:
         failed: ~
         succeeded: ~
@@ -31,14 +29,12 @@ parameters:
         securitychecker: ~
         yamllint: ~
         ecs:
-            whitelist_patterns:
+            paths:
                 - src
                 - tests/Behat
             config: 'ruleset/easy-coding-standard.yml'
             no-progress-bar: true
             level: strict
-        phpmnd:
-            directory: src
         twigcs:
             path: 'src/'
             severity: error

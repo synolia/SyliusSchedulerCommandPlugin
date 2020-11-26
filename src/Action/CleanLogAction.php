@@ -15,7 +15,8 @@ final class CleanLogAction extends AbstractController
     public function __invoke(
         TranslatorInterface $translator,
         ScheduledCommandRepository $scheduledCommandRepository,
-        string $command
+        string $command,
+        string $logsDir
     ): Response {
         $scheduleCommand = $scheduledCommandRepository->find($command);
 
@@ -25,15 +26,13 @@ final class CleanLogAction extends AbstractController
             return $this->redirectToGrid();
         }
 
-        if (null === $scheduleCommand->getLogFile() ||
-            null === $this->getParameter('kernel.logs_dir')
-        ) {
+        if (null === $scheduleCommand->getLogFile()) {
             $this->addFlash('error', $translator->trans('sylius.ui.log_file_undefined'));
 
             return $this->redirectToGrid();
         }
 
-        $filePath = $this->getParameter('kernel.logs_dir') . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
+        $filePath = $logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
         if (!\file_exists($filePath)) {
             $this->addFlash('error', $translator->trans('sylius.ui.no_log_file_found'));
 

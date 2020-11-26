@@ -3,6 +3,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $logsDir: '%kernel.logs_dir%'
 
     Synolia\SyliusSchedulerCommandPlugin\:
         resource: '../../*'
@@ -16,13 +18,8 @@ services:
         arguments:
             $excludedNamespaces: ['_global']
 
-    Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand:
-        $logsDir: '%kernel.logs_dir%'
-
     app.grid_field.scheduled_command.url:
         class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandUrlType
-        arguments:
-            $logsDir: '%kernel.logs_dir%'
         tags:
             - { name: sylius.grid_field, type: scheduled_command_url }
 

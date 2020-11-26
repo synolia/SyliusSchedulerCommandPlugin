@@ -33,8 +33,19 @@ sylius_admin_scheduler_view_log_file:
     methods: [GET]
     defaults:
         _controller: Synolia\SyliusSchedulerCommandPlugin\Controller\LogViewerController::show
+
 sylius_admin_scheduler_get_log_file:
     path: /scheduled-commands/{command}/get-log.json
     methods: [GET]
     defaults:
         _controller: Synolia\SyliusSchedulerCommandPlugin\Controller\LogViewerController::getLogs
+
+sylius_admin_scheduler_emtpy_logs:
+    path: /scheduled-commands/emtpy_logs
+    methods: [GET|PUT]
+    controller: Synolia\SyliusSchedulerCommandPlugin\Controller\EmptyLogsController::emptyLogs
+    defaults:
+        _sylius:
+            repository:
+                method: findById
+                arguments: [$ids]

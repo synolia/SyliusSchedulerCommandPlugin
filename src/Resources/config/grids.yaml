@@ -102,7 +102,21 @@ sylius_grid:
                                 route: execute_immediate_schedule
                                 parameters:
                                     commandId: resource.id
+                bulk:
+                    delete:
+                        type: delete
+                    emtpy_logs:
+                        type: emtpy_logs
+                        label: sylius.ui.scheduled_command.emtpy_logs
+                        options:
+                            link:
+                                route: sylius_admin_scheduler_emtpy_logs
+                                parameters:
+                                    commands: [$ids]
+
     templates:
         action:
             emptyLogFile: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/empty_log_file.html.twig"
             schedule_command_execute_immediate: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"
+        bulk_action:
+            emtpy_logs: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/empty_logs_file.html.twig"
