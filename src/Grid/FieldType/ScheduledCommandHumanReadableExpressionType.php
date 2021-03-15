@@ -8,14 +8,14 @@ use Sivaschenko\Utility\Cron\ExpressionFactory;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInterface
 {
-    /** @var \Symfony\Component\Templating\EngineInterface */
+    /** @var Environment */
     private $engine;
 
-    public function __construct(EngineInterface $engine)
+    public function __construct(Environment $engine)
     {
         $this->engine = $engine;
     }
