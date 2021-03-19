@@ -12,31 +12,23 @@ default:
     extensions:
         DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
 
-        Lakion\Behat\MinkDebugExtension:
+        FriendsOfBehat\MinkDebugExtension:
             directory: etc/build
             clean_start: false
             screenshot: true
 
         Behat\MinkExtension:
             files_path: "%paths.base%/vendor/sylius/sylius/src/Sylius/Behat/Resources/fixtures/"
-            base_url: https://127.0.0.1:8080
+            base_url: "https://127.0.0.1:8080/"
             default_session: symfony
             javascript_session: chrome_headless
             sessions:
-                default:
-                    goutte:
-                        guzzle_parameters:
-                            verify: false
                 symfony:
                     symfony: ~
                 chrome_headless:
                     chrome:
-                        api_url: https://127.0.0.1:9222
+                        api_url: http://127.0.0.1:9222
                         validate_certificate: false
-                    default:
-                        goutte:
-                            guzzle_parameters:
-                                verify: false
                 chrome:
                     selenium2:
                         browser: chrome
@@ -61,10 +53,7 @@ default:
                         browser: firefox
             show_auto: false
 
-        FriendsOfBehat\SymfonyExtension:
-            bootstrap: tests/Application/config/bootstrap.php
-            kernel:
-                class: Tests\Synolia\SyliusSchedulerCommandPlugin\Application\Kernel
+        FriendsOfBehat\SymfonyExtension: ~
 
         FriendsOfBehat\VariadicExtension: ~
 

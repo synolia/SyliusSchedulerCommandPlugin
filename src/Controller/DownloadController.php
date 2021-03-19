@@ -6,7 +6,6 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 final class DownloadController extends AbstractController
@@ -25,7 +24,6 @@ final class DownloadController extends AbstractController
 
     public function downloadLogFile(string $command): Response
     {
-        /** @var ScheduledCommandInterface $command */
         $scheduleCommand = $this->scheduledCommandRepository->find($command);
 
         if (null === $scheduleCommand ||

@@ -71,7 +71,7 @@
     ```yaml
     synolia_scheduled_command:
         resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yaml"
-        prefix: /admin
+        prefix: '/%sylius_admin.path_name%'
     ```
 
 5. Copy plugin migrations to your migrations directory (e.g. `src/Migrations`) and apply them to your database:

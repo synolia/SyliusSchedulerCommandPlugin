@@ -70,9 +70,13 @@ final class LogDataRetriever
     private function grepData(array $data, string $grepKeyword, bool $invertGrep): array
     {
         if (false === $invertGrep) {
-            return preg_grep("/$grepKeyword/", $data);
+            $lines = preg_grep("/$grepKeyword/", $data);
+
+            return \is_array($lines) ? $lines : [];
         }
 
-        return preg_grep("/$grepKeyword/", $data, \PREG_GREP_INVERT);
+        $lines = preg_grep("/$grepKeyword/", $data, \PREG_GREP_INVERT);
+
+        return \is_array($lines) ? $lines : [];
     }
 }

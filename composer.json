@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
+        "ext-json": "*",
         "dragonmantank/cron-expression": "^3.0",
         "sylius/sylius": "^1.7",
         "symfony/lock": "^3.4|^4.3|^5.1",
@@ -20,6 +21,7 @@
         "dmore/chrome-mink-driver": "^2.7",
         "friends-of-behat/mink": "^1.8",
         "friends-of-behat/mink-browserkit-driver": "^1.4",
+        "friends-of-behat/mink-debug-extension": "^2.0",
         "friends-of-behat/mink-extension": "^2.4",
         "friends-of-behat/page-object-extension": "^0.3",
         "friends-of-behat/suite-settings-extension": "^1.0",
@@ -42,14 +44,13 @@
         "seld/jsonlint": "^1.7",
         "sensiolabs/security-checker": "^5.0",
         "sivaschenko/utility-cron": "^1.0",
-        "sylius-labs/coding-standard": "^3.1",
+        "sylius-labs/coding-standard": "^4.0",
         "symfony/browser-kit": "^3.4|^4.3",
         "symfony/debug-bundle": "^3.4|^4.3",
         "symfony/dotenv": "^4.3",
         "symfony/intl": "^3.4|^4.3",
         "symfony/web-profiler-bundle": "^3.4|^4.3",
-        "symfony/web-server-bundle": "^3.4|^4.3",
-        "symplify/easy-coding-standard": "^6.1"
+        "symfony/web-server-bundle": "^3.4|^4.3"
     },
     "suggest": {
         "sivaschenko/utility-cron": "Allow showing humanized cron expression."
