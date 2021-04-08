@@ -33,7 +33,6 @@ grumphp:
                 - tests/Behat
             config: 'ruleset/ecs.php'
             no-progress-bar: true
-            level: strict
         twigcs:
             path: 'src/'
             severity: error
