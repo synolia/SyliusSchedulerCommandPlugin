@@ -167,7 +167,7 @@ jobs:
 
             - name: Composer - Install plugin
               working-directory: ./sylius
-              run: composer req "${{ env.package-name }}:*" --prefer-source --no-scripts
+              run: composer req "synolia/sylius-scheduler-command-plugin:*" --prefer-source --no-scripts
 
             - name: Sylius - Update dependencies # need to update sylius version
               working-directory: ./sylius

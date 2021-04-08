@@ -13,11 +13,11 @@ use Twig\Environment;
 final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInterface
 {
     /** @var Environment */
-    private $engine;
+    private $twig;
 
-    public function __construct(Environment $engine)
+    public function __construct(Environment $twig)
     {
-        $this->engine = $engine;
+        $this->twig = $twig;
     }
 
     /**
@@ -32,7 +32,7 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
         try {
             $expression = ExpressionFactory::getExpression($scheduleCommand->getCronExpression());
 
-            return $this->engine->render(
+            return $this->twig->render(
                 $options['template'],
                 [
                     'schedulerCommand' => $scheduleCommand,
