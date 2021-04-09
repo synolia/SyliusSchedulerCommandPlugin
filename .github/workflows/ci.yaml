@@ -165,19 +165,10 @@ jobs:
               working-directory: ./sylius
               run: composer sync-recipes
 
-            - name: Sylius - Copy migration of Plugin
-              working-directory: ./sylius
-              run: |
-                  cp ../plugin/src/Migrations/* src/Migrations
-                  sed -i "s#Synolia\\\SyliusSchedulerCommandPlugin\\\Migrations#DoctrineMigrations#g" src/Migrations/Version*.php
-              if: matrix.sylius == '1.7.*'
-
-            - name: Sylius - Migration config
+            - name: Sylius - Migration config # Until Symfony Flex is updated
               working-directory: ./sylius
               run: |
                   rm src/Migrations/*
-                  echo "        'Synolia\SyliusSchedulerCommandPlugin\Migrations': '@SynoliaSyliusSchedulerCommandPlugin/Migrations'" >> config/packages/doctrine_migrations.yaml
-              if: matrix.sylius != '1.7.*'
 
             - name: Behat - Config Suite
               working-directory: ./sylius
