@@ -11,7 +11,7 @@ on:
 
 jobs:
     php:
-        name: PHP ${{ matrix.php }}
+        name: PHP ${{ matrix.php }} Symfony ${{ matrix.symfony }}
         runs-on: ubuntu-18.04
 
         strategy:
