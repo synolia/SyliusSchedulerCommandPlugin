@@ -35,8 +35,8 @@
 
 | | Version |
 | :--- | :--- |
-| PHP  | 7.3+ |
-| Sylius | 1.7+ |
+| PHP  | 7.3, 7.4 |
+| Sylius | 1.8, 1.9 |
 
 ## Installation
 
@@ -46,22 +46,16 @@
         composer req synolia/sylius-scheduler-command-plugin
 
 2. Apply migrations to your database:
-
-    ```shell
-    bin/console doctrine:migrations:migrate
-    ```
+   
+        bin/console doctrine:migrations:migrate
 
 3. Launch Run command in your Crontab
 
-    ```shell
-    * * * * * /_PROJECT_DIRECTORY_/bin/console synolia:scheduler-run
-    ```
+        * * * * * /_PROJECT_DIRECTORY_/bin/console synolia:scheduler-run
 
 4. (optional) Showing humanized cron expression
 
-    ```shell
-    composer require sivaschenko/utility-cron
-    ```
+        composer require sivaschenko/utility-cron
 
 ## Usage
 
