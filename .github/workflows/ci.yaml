@@ -162,7 +162,8 @@ jobs:
             - name: Sylius - Update dependencies # need to update sylius version
               working-directory: ./sylius
               run: |
-                  composer update --no-progress --prefer-dist --no-suggest -n -o
+                  composer update --no-progress --no-scripts --prefer-dist
+                  composer update --no-suggest -n -o
 
             - name: Sylius - Run Symfony flex
               working-directory: ./sylius
@@ -177,7 +178,7 @@ jobs:
               working-directory: ./sylius
               run: |
                   rm src/Migrations/*
-                  echo "        'DoctrineMigrations': '@SynoliaSyliusSchedulerCommandPlugin/Migrations'" >> config/packages/doctrine_migrations.yaml
+                  echo "        'Synolia\SyliusSchedulerCommandPlugin\Migrations': '@SynoliaSyliusSchedulerCommandPlugin/Migrations'" >> config/packages/doctrine_migrations.yaml
               if: matrix.sylius != '1.7.*'
 
             - name: Behat - Config Suite
@@ -195,7 +196,7 @@ jobs:
 
             - name: Sylius - Copy fixtures
               working-directory: ./sylius
-              run: cp ../plugin/src/Resources/config/test/sylius_fixtures.yaml config/packages
+              run: cp ../plugin/tests/datas/sylius_fixtures.yaml config/packages
 
             - name: Sylius - Install
               working-directory: ./sylius
