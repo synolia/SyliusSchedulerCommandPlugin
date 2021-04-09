@@ -86,7 +86,7 @@ jobs:
             fail-fast: false
             matrix:
                 php: [7.3, 7.4]
-                sylius: [1.7.*, 1.8.*, 1.9.*]
+                sylius: [1.8.*, 1.9.*]
                 symfony: [4.4.*]
                 node: [10.x]
 
@@ -128,10 +128,6 @@ jobs:
             - name: Composer - Create cache directory
               run: mkdir -p /home/runner/.composer/cache
               if: steps.cache-composer.outputs.cache-hit != 'true'
-
-            - name: Composer - Self Update
-              run: sudo composer self-update --1
-              if: matrix.sylius == '1.7.*'
 
             - name: Composer - Github Auth
               run: composer config -g github-oauth.github.com ${{ github.token }}
