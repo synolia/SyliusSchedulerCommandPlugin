@@ -171,7 +171,9 @@ jobs:
 
             - name: Sylius - Copy migration of Plugin
               working-directory: ./sylius
-              run: cp ../plugin/src/Migrations/* src/Migrations
+              run: |
+                  cp ../plugin/src/Migrations/* src/Migrations
+                  sed -i "s#Synolia\\\SyliusSchedulerCommandPlugin\\\Migrations#DoctrineMigrations#g" src/Migrations/Version*.php
               if: matrix.sylius == '1.7.*'
 
             - name: Sylius - Migration config
