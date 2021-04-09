@@ -6,7 +6,6 @@ on:
         paths-ignore:
             - README.md
     pull_request:
-        branches: [ master ]
         paths-ignore:
             - README.md
 
@@ -137,17 +136,8 @@ jobs:
             - name: Composer - Github Auth
               run: composer config -g github-oauth.github.com ${{ github.token }}
 
-            # FIX for sylius install error
-            #            - name: Composer - Install Sylius-Standard
-            #              run: composer create-project --no-progress sylius/sylius-standard sylius "${{ matrix.sylius }}"
             - name: Composer - Install Sylius-Standard
-              run: composer create-project --no-progress --no-install --no-scripts sylius/sylius-standard sylius "${{ matrix.sylius }}"
-
-            - name: Composer - Update
-              working-directory: ./sylius
-              run: |
-                  composer req --no-update symfony/dependency-injection:v4.4.18
-                  composer update --no-scripts
+              run: composer create-project --no-progress sylius/sylius-standard sylius "${{ matrix.sylius }}"
 
             - name: Composer - Add path repository
               working-directory: ./sylius
@@ -172,8 +162,7 @@ jobs:
             - name: Sylius - Update dependencies # need to update sylius version
               working-directory: ./sylius
               run: |
-                  composer update --no-progress --no-scripts --prefer-dist
-                  composer update --no-suggest -n -o
+                  composer update --no-progress --prefer-dist --no-suggest -n -o
 
             - name: Sylius - Run Symfony flex
               working-directory: ./sylius
