@@ -8,8 +8,8 @@
         "php": "^7.3",
         "ext-json": "*",
         "dragonmantank/cron-expression": "^3.0",
-        "sylius/sylius": "^1.7",
-        "symfony/lock": "^3.4|^4.3|^5.1",
+        "sylius/sylius": "^1.8",
+        "symfony/lock": "^4.3|^5.1",
         "symfony/service-contracts": "^1.1|^2.0",
         "symfony/framework-bundle": "^4.4|^5.1",
         "symfony/process": "^4.2|^5.1"
