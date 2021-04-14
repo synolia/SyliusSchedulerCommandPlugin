@@ -8,7 +8,7 @@ use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class ScheduledCommandExecutionTimeType implements FieldTypeInterface
 {
@@ -19,10 +19,10 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
     /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface */
     private $urlGenerator;
 
-    /** @var \Symfony\Component\Templating\EngineInterface */
+    /** @var Environment */
     private $engine;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, EngineInterface $engine)
+    public function __construct(UrlGeneratorInterface $urlGenerator, Environment $engine)
     {
         $this->urlGenerator = $urlGenerator;
         $this->engine = $engine;
