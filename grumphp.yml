@@ -26,15 +26,13 @@ grumphp:
         phpstan:
             level: ~
             configuration: 'ruleset/phpstan.neon'
-        securitychecker: ~
         yamllint: ~
         ecs:
             paths:
                 - src
                 - tests/Behat
-            config: 'ruleset/easy-coding-standard.yml'
+            config: 'ruleset/ecs.php'
             no-progress-bar: true
-            level: strict
         twigcs:
             path: 'src/'
             severity: error

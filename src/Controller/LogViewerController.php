@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Synolia\SyliusSchedulerCommandPlugin\DataRetriever\LogDataRetriever;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 final class LogViewerController extends AbstractController
@@ -46,7 +45,6 @@ final class LogViewerController extends AbstractController
 
     public function getLogs(Request $request, string $command): JsonResponse
     {
-        /** @var ScheduledCommandInterface $command */
         $scheduleCommand = $this->scheduledCommandRepository->find($command);
 
         if (null === $scheduleCommand ||
@@ -79,7 +77,6 @@ final class LogViewerController extends AbstractController
 
     public function show(string $command): Response
     {
-        /** @var ScheduledCommandInterface $command */
         $scheduledCommand = $this->scheduledCommandRepository->find($command);
 
         if (null === $scheduledCommand ||

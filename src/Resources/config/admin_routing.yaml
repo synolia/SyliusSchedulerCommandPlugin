@@ -1,7 +1,7 @@
 sylius_admin_scheduled_command:
     resource: |
         alias: sylius.scheduled_command
-        templates: SyliusAdminBundle:Crud
+        templates: "@SyliusAdmin\\Crud"
         section: admin
         grid: sylius_admin_scheduled_command
         except: ['show']

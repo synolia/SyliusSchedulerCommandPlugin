@@ -16,18 +16,18 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
     private $urlGenerator;
 
     /** @var Environment */
-    private $engine;
+    private $twig;
 
     /** @var string */
     private $logsDir;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        Environment $engine,
+        Environment $twig,
         string $logsDir
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->engine = $engine;
+        $this->twig = $twig;
         $this->logsDir = $logsDir;
     }
 
@@ -57,7 +57,7 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
             $size = filesize($filePath);
         }
 
-        return $this->engine->render(
+        return $this->twig->render(
             $options['template'],
             [
                 'schedulerCommand' => $scheduleCommand,

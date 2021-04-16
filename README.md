@@ -35,63 +35,27 @@
 
 | | Version |
 | :--- | :--- |
-| PHP  | 7.3+ |
-| Sylius | 1.7+ |
+| PHP  | 7.3, 7.4 |
+| Sylius | 1.8, 1.9 |
 
 ## Installation
 
 1. Add the bundle and dependencies in your composer.json :
 
-    With **Symfony Flex** :
-    
         composer config extra.symfony.allow-contrib true
         composer req synolia/sylius-scheduler-command-plugin
-    
-    Yon can now go to step 5.
-    
-    Or **manually** :
-    
-        composer require synolia/sylius-scheduler-command-plugin
 
-2. Enable the plugin in your `config/bundles.php` file by add
+2. Apply migrations to your database:
+   
+        bin/console doctrine:migrations:migrate
 
-    ```php
-    Synolia\SyliusSchedulerCommandPlugin\SynoliaSyliusSchedulerCommandPlugin::class => ['all' => true],
-    ```
+3. Launch Run command in your Crontab
 
-3. Import required config in your `config/packages/_sylius.yaml` file:
+        * * * * * /_PROJECT_DIRECTORY_/bin/console synolia:scheduler-run
 
-    ```yaml
-    imports:
-        - { resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/config.yaml" }
-    ```
+4. (optional) Showing humanized cron expression
 
-4. Import routing in your `config/routes.yaml` file:
-
-    ```yaml
-    synolia_scheduled_command:
-        resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yaml"
-        prefix: /admin
-    ```
-
-5. Copy plugin migrations to your migrations directory (e.g. `src/Migrations`) and apply them to your database:
-
-    ```shell
-    cp -R vendor/synolia/sylius-scheduler-command-plugin/src/Migrations/* src/Migrations
-    bin/console doctrine:migrations:migrate
-    ```
-
-6. Launch Run command in your Crontab
-
-    ```shell
-    * * * * * /_PROJECT_DIRECTORY_/bin/console synolia:scheduler-run
-    ```
-
-7. (optional) Showing humanized cron expression
-
-    ```shell
-    composer require sivaschenko/utility-cron
-    ```
+        composer require sivaschenko/utility-cron
 
 ## Usage
 

@@ -7,26 +7,12 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 class ScheduledCommandExecutionTimeType implements FieldTypeInterface
 {
     private const HOUR_IN_SECONDES = 3600;
 
     private const MINUTE_IN_SECONDES = 60;
-
-    /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface */
-    private $urlGenerator;
-
-    /** @var Environment */
-    private $engine;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator, Environment $engine)
-    {
-        $this->urlGenerator = $urlGenerator;
-        $this->engine = $engine;
-    }
 
     /**
      * {@inheritdoc}

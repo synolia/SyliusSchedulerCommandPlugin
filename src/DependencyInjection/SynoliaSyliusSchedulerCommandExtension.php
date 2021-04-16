@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\DependencyInjection;
 
 use Sivaschenko\Utility\Cron\ExpressionFactory;
+use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -13,6 +14,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class SynoliaSyliusSchedulerCommandExtension extends Extension implements PrependExtensionInterface
 {
+    use PrependDoctrineMigrationsTrait;
+
     private const GRID_KEY = 'sylius_admin_scheduled_command';
 
     /** @var array */
@@ -35,6 +38,7 @@ final class SynoliaSyliusSchedulerCommandExtension extends Extension implements 
         $this->gridConf = $container->getExtensionConfig('sylius_grid');
 
         $this->removeHumanizedCronExpressionColumn($container);
+        $this->prependDoctrineMigrations($container);
     }
 
     private function removeHumanizedCronExpressionColumn(ContainerBuilder $container): void
@@ -67,5 +71,20 @@ final class SynoliaSyliusSchedulerCommandExtension extends Extension implements 
         }
 
         throw new \LogicException('SchedulerCommand grid not found.');
+    }
+
+    protected function getMigrationsNamespace(): string
+    {
+        return 'Synolia\SyliusSchedulerCommandPlugin\Migrations';
+    }
+
+    protected function getMigrationsDirectory(): string
+    {
+        return '@SynoliaSyliusSchedulerCommandPlugin/Migrations';
+    }
+
+    protected function getNamespacesOfMigrationsExecutedBefore(): array
+    {
+        return [];
     }
 }
