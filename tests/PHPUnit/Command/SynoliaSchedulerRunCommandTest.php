@@ -80,9 +80,6 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         self::assertStringNotContainsString('Nothing to do', $commandTester->getDisplay());
     }
 
-    /**
-     * @group toto
-     */
     public function testExecuteNonExistentCommand(): void
     {
         $invalidCommandName = 'non:existent';

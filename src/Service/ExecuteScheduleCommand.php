@@ -25,16 +25,21 @@ class ExecuteScheduleCommand
     /** @var string */
     private $logsDir;
 
+    /** @var string */
+    private $projectDir;
+
     public function __construct(
         ScheduledCommandRepository $scheduledCommandRepository,
         EntityManagerInterface $entityManager,
         KernelInterface $kernel,
-        string $logsDir
+        string $logsDir,
+        string $projectDir
     ) {
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
         $this->logsDir = $logsDir;
+        $this->projectDir = $projectDir;
     }
 
     public function executeImmediate(string $commandId): bool
@@ -91,7 +96,8 @@ class ExecuteScheduleCommand
     private function getCommandLine(ScheduledCommandInterface $scheduledCommand): string
     {
         $commandLine = sprintf(
-            'bin/console %s %s',
+            '%s/bin/console %s %s',
+            $this->projectDir,
             $scheduledCommand->getCommand(),
             $scheduledCommand->getArguments() ?? ''
         );
@@ -99,7 +105,8 @@ class ExecuteScheduleCommand
         $logOutput = $this->getLogOutput($scheduledCommand);
         if (null !== $logOutput) {
             $commandLine = sprintf(
-                'bin/console %s %s >> %s 2>> %s',
+                '%s/bin/console %s %s >> %s 2>> %s',
+                $this->projectDir,
                 $scheduledCommand->getCommand(),
                 $scheduledCommand->getArguments() ?? '',
                 $logOutput,
