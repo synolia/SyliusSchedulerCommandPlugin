@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $logsDir: '%kernel.logs_dir%'
+            $projectDir: '%kernel.project_dir%'
 
     Synolia\SyliusSchedulerCommandPlugin\:
         resource: '../../*'
