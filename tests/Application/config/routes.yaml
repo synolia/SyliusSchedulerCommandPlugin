@@ -1,3 +1,0 @@
-synolia_scheduled_command:
-    resource: "@SynoliaSyliusSchedulerCommandPlugin/Resources/config/admin_routing.yaml"
-    prefix: /admin

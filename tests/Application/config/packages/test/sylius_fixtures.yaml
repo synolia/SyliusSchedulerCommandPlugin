@@ -1,2 +1,0 @@
-imports:
-    - { resource: "../../../../datas/sylius_fixtures.yaml" }

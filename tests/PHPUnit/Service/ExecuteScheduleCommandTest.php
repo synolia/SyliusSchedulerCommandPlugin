@@ -7,7 +7,6 @@ namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\WithDatabaseTrait;
@@ -28,17 +27,8 @@ class ExecuteScheduleCommandTest extends WebTestCase
         $kernel = self::bootKernel();
         self::initDatabase($kernel);
 
-        $this->executeScheduleCommand = $this->getContainer()->get(ExecuteScheduleCommand::class);
-        $this->entityManager = $this->getContainer()->get(EntityManagerInterface::class);
-    }
-
-    public function getContainer(): ContainerInterface
-    {
-        if (null === self::$container) {
-            self::bootKernel();
-        }
-
-        return self::$container;
+        $this->executeScheduleCommand = self::$container->get(ExecuteScheduleCommand::class);
+        $this->entityManager = self::$container->get(EntityManagerInterface::class);
     }
 
     public function testExecuteImmediateWithWrongCommand(): void
