@@ -1,0 +1,32 @@
+sylius:
+    ui:
+        scheduled_commands: 'Geplande commando''s'
+        scheduled_command:
+            name: Naam
+            command: Commando
+            cron_expression: Cron expressie
+            human_readable_expression: Menselijke expressie
+            last_execution: Laatst uitgevoerd
+            last_return_code: Laatste retourcode
+            log_file: Log-bestand
+            priority: Prioriteit
+            enabled: Ingeschakeld
+            command_execution_time: Uitvoer duur
+            execute_immediate: Voer direct uit
+            emtpy_logs: Logs legen
+            bulk_empty_logs: De log-bestanden zijn geleegd.
+        edit_scheduled_command: Bewerk commando
+        new_scheduled_command: Creëreer commando
+        log_file_undefined: Geplande commando heeft geen log-bestand gedefinieerd.
+        no_log_file_found: Geen log-bestand gevonden.
+        error_emptying_log_file: Er was een fout bij het leegmaken van het log-bestand.
+        log_file_successfully_emptied: Log-bestand succesvol geleegd.
+        scheduled_command_not_exists: Gepland commando bestaat niet.
+        live_view: Live weergave
+        live_view_of_scheduled_command: 'Live weergave van commando "%scheduledCommandName%"'
+        does_not_exists_or_missing_log_file: 'Gepland commando bestaat niet of heeft geen log-bestand.'
+    menu:
+        admin:
+            main:
+                configuration:
+                    scheduler_command: 'Geplande commando''s'
