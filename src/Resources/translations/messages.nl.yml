@@ -16,7 +16,7 @@ sylius:
             emtpy_logs: Logs legen
             bulk_empty_logs: De log-bestanden zijn geleegd.
         edit_scheduled_command: Bewerk commando
-        new_scheduled_command: Creëreer commando
+        new_scheduled_command: Creëer commando
         log_file_undefined: Geplande commando heeft geen log-bestand gedefinieerd.
         no_log_file_found: Geen log-bestand gevonden.
         error_emptying_log_file: Er was een fout bij het leegmaken van het log-bestand.
