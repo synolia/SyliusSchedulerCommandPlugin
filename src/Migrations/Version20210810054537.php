@@ -24,9 +24,10 @@ final class Version20210810054537 extends AbstractMigration
           id INT AUTO_INCREMENT NOT NULL,
           name VARCHAR(255) NOT NULL,
           command VARCHAR(255) NOT NULL,
+          state VARCHAR(255) NOT NULL,
           arguments VARCHAR(255) DEFAULT NULL,
           cronExpression VARCHAR(255) NOT NULL,
-          logFile VARCHAR(255) DEFAULT NULL,
+          logFilePrefix VARCHAR(255) DEFAULT NULL,
           priority INT NOT NULL,
           executeImmediately TINYINT(1) NOT NULL,
           enabled TINYINT(1) NOT NULL,
@@ -37,10 +38,11 @@ final class Version20210810054537 extends AbstractMigration
           name VARCHAR(255) NOT NULL,
           command VARCHAR(255) NOT NULL,
           arguments VARCHAR(255) DEFAULT NULL,
-          lastExecution DATETIME DEFAULT NULL,
+          executed_at DATETIME DEFAULT NULL,
           lastReturnCode INT DEFAULT NULL,
           logFile VARCHAR(255) DEFAULT NULL,
           commandEndTime DATETIME DEFAULT NULL,
+          created_At DATETIME NOT NULL,
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('DROP TABLE scheduled_command');

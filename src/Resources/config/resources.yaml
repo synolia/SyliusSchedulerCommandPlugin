@@ -11,3 +11,4 @@ sylius_resource:
             classes:
                 model: Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand
                 form: Synolia\SyliusSchedulerCommandPlugin\Form\ScheduledCommandType
+                repository: Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository

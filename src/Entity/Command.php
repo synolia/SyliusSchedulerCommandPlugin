@@ -52,7 +52,7 @@ class Command implements CommandInterface
      * @var string|null
      * @ORM\Column(type="string", nullable=true)
      */
-    private $logFile;
+    private $logFilePrefix;
 
     /**
      * @var int
@@ -127,14 +127,14 @@ class Command implements CommandInterface
         return $this;
     }
 
-    public function getLogFile(): ?string
+    public function getLogFilePrefix(): ?string
     {
-        return $this->logFile;
+        return $this->logFilePrefix;
     }
 
-    public function setLogFile(?string $logFile): self
+    public function setLogFilePrefix(?string $logFilePrefix): self
     {
-        $this->logFile = $logFile;
+        $this->logFilePrefix = $logFilePrefix;
 
         return $this;
     }

@@ -22,9 +22,9 @@ interface ScheduledCommandInterface extends ResourceInterface
 
     public function setArguments(?string $arguments): self;
 
-    public function getLastExecution(): ?\DateTime;
+    public function getExecutedAt(): ?\DateTime;
 
-    public function setLastExecution(?\DateTime $lastExecution): self;
+    public function setExecutedAt(?\DateTime $lastExecution): self;
 
     public function getLastReturnCode(): ?int;
 

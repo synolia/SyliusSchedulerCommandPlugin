@@ -1,0 +1,24 @@
+{% if schedulerCommand.state == 'waiting' %}
+    <span class="ui grey label">
+        <i class="calendar alternate icon"></i>
+        {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
+    </span>
+{% endif %}
+{% if schedulerCommand.state == 'in_progress' %}
+    <span class="ui blue label">
+        <i class="sync icon"></i>
+        {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
+    </span>
+{% endif %}
+{% if schedulerCommand.state == 'finished' %}
+    <span class="ui green label">
+        <i class="checkmark icon"></i>
+        {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
+    </span>
+{% endif %}
+{% if schedulerCommand.state == 'error' %}
+    <span class="ui red label">
+        <i class="bell icon"></i>
+        {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
+    </span>
+{% endif %}

@@ -24,6 +24,11 @@ services:
         tags:
             - { name: sylius.grid_field, type: scheduled_command_url }
 
+    app.grid_field.scheduled_command.state:
+        class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandStateType
+        tags:
+            - { name: sylius.grid_field, type: scheduled_command_state }
+
     app.grid_field.scheduled_command.humanReadableExpression:
         class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandHumanReadableExpressionType
         tags:

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Synolia\SyliusSchedulerCommandPlugin\DataRetriever\LogDataRetriever;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
 final class LogViewerController extends AbstractController
 {
@@ -20,7 +20,7 @@ final class LogViewerController extends AbstractController
     /** @var \Synolia\SyliusSchedulerCommandPlugin\DataRetriever\LogDataRetriever */
     private $logDataRetriever;
 
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository */
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
 
     /** @var \Symfony\Contracts\Translation\TranslatorInterface */
@@ -30,7 +30,7 @@ final class LogViewerController extends AbstractController
     private $logsDir;
 
     public function __construct(
-        ScheduledCommandRepository $scheduledCommandRepository,
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         LogDataRetriever $logDataRetriever,
         TranslatorInterface $translator,
         string $logsDir,
@@ -84,10 +84,10 @@ final class LogViewerController extends AbstractController
         ) {
             $this->addFlash('error', $this->translator->trans('sylius.ui.does_not_exists_or_missing_log_file'));
 
-            return $this->redirectToRoute('sylius_admin_scheduled_command_index');
+            return $this->redirectToRoute('synolia_admin_command_index');
         }
 
-        return $this->render('@SynoliaSyliusSchedulerCommandPlugin/Resources/views/Controller/show.html.twig', [
+        return $this->render('@SynoliaSyliusSchedulerCommandPlugin/Controller/show.html.twig', [
             'route' => $this->generateUrl('sylius_admin_scheduler_get_log_file', ['command' => $command]),
             'updateTime' => $this->updateTime,
             'scheduledCommand' => $scheduledCommand,

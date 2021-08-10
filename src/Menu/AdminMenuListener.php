@@ -14,20 +14,20 @@ final class AdminMenuListener
         $menu = $event->getMenu();
 
         /** @var ItemInterface $newSubmenu */
-        $newSubmenu = $menu->addChild('scheduler');
+        $newSubmenu = $menu->addChild('scheduler')->setLabel('synolia.menu.admin.main.configuration.scheduler_command');
 
         $newSubmenu->addChild('scheduler-command', [
                 'route' => 'synolia_admin_command_index',
             ])
             ->setAttribute('type', 'link')
-            ->setLabel('sylius.menu.admin.main.configuration.scheduler_command')
-            ->setLabelAttribute('icon', 'clock')
+            ->setLabel('synolia.menu.admin.main.configuration.scheduler_command')
+            ->setLabelAttribute('icon', 'list')
         ;
         $newSubmenu->addChild('scheduler-command-history', [
                 'route' => 'synolia_admin_scheduled_command_index',
             ])
             ->setAttribute('type', 'link')
-            ->setLabel('sylius.menu.admin.main.configuration.scheduler_command_history')
+            ->setLabel('synolia.menu.admin.main.configuration.scheduler_command_history')
             ->setLabelAttribute('icon', 'clock')
         ;
     }

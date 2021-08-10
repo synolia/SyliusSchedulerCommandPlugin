@@ -26,9 +26,9 @@ interface CommandInterface extends ResourceInterface
 
     public function setCronExpression(string $cronExpression): self;
 
-    public function getLogFile(): ?string;
+    public function getLogFilePrefix(): ?string;
 
-    public function setLogFile(?string $logFile): self;
+    public function setLogFilePrefix(?string $logFile): self;
 
     public function getPriority(): int;
 

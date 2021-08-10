@@ -1,4 +1,4 @@
-sylius:
+synolia:
     ui:
         scheduled_commands: 'Geplande commando''s'
         scheduled_command:

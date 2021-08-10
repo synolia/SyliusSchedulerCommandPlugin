@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Synolia\SyliusSchedulerCommandPlugin\Enum\ScheduledCommandStateEnum;
 
 /**
- * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository")
+ * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository")
  * @ORM\Table("synolia_scheduled_commands")
  */
 class ScheduledCommand implements ScheduledCommandInterface
@@ -40,9 +41,9 @@ class ScheduledCommand implements ScheduledCommandInterface
 
     /**
      * @var \DateTime|null
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="executed_at", type="datetime", nullable=true)
      */
-    private $lastExecution;
+    private $executedAt;
 
     /**
      * @var int|null
@@ -63,6 +64,23 @@ class ScheduledCommand implements ScheduledCommandInterface
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $commandEndTime;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+
+    /**
+     * @var string
+     * @ORM\Column(name="state", type="string")
+     */
+    private $state = ScheduledCommandStateEnum::WAITING;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -105,14 +123,14 @@ class ScheduledCommand implements ScheduledCommandInterface
         return $this;
     }
 
-    public function getLastExecution(): ?\DateTime
+    public function getExecutedAt(): ?\DateTime
     {
-        return $this->lastExecution;
+        return $this->executedAt;
     }
 
-    public function setLastExecution(?\DateTime $lastExecution): ScheduledCommandInterface
+    public function setExecutedAt(?\DateTime $executedAt): ScheduledCommandInterface
     {
-        $this->lastExecution = $lastExecution;
+        $this->executedAt = $executedAt;
 
         return $this;
     }
@@ -163,5 +181,22 @@ class ScheduledCommand implements ScheduledCommandInterface
         $this->commandEndTime = $commandEndTime;
 
         return $this;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
     }
 }

@@ -63,5 +63,8 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "fix-ecs": "ecs check -c ruleset/ecs.php --fix --ansi --clear-cache"
     }
 }

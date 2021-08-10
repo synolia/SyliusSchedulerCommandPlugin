@@ -2,10 +2,10 @@
 
 {% import '@SyliusUi/Macro/headers.html.twig' as headers %}
 
-{% block title %}{{ 'sylius.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}) }} {{ parent() }}{% endblock %}
+{% block title %}{{ 'synolia.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}) }} {{ parent() }}{% endblock %}
 
 {% block content %}
-    {{ headers.default('sylius.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}), 'cogs') }}
+    {{ headers.default('synolia.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}), 'cogs') }}
 
     <div class="ui input">
         <input id="grep" type="text" placeholder="Search...">

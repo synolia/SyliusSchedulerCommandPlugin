@@ -8,24 +8,24 @@ sylius_grid:
                 name:
                     type: string
                     sortable: ~
-                    label: sylius.ui.scheduled_command.name
+                    label: synolia.ui.scheduled_command.name
                 command:
                     type: string
                     sortable: ~
-                    label: sylius.ui.scheduled_command.command
+                    label: synolia.ui.scheduled_command.command
                 cronExpression:
                     type: scheduled_human_readable_expression
-                    label: sylius.ui.scheduled_command.cron_expression
+                    label: synolia.ui.scheduled_command.cron_expression
                     options:
                        template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/human_readable_expression.html.twig'
                 priority:
                     type: string
                     sortable: ~
-                    label: sylius.ui.scheduled_command.priority
+                    label: synolia.ui.scheduled_command.priority
                 enabled:
                     type: twig
                     sortable: ~
-                    label: sylius.ui.scheduled_command.enabled
+                    label: synolia.ui.scheduled_command.enabled
                     options:
                         template: "@SyliusUi/Grid/Field/enabled.html.twig"
             sorting:
@@ -35,23 +35,23 @@ sylius_grid:
                 enabled: asc
             filters:
                 name:
-                    label: sylius.ui.scheduled_command.name
+                    label: synolia.ui.scheduled_command.name
                     type: string
                     enabled: true
                 command:
-                    label: sylius.ui.scheduled_command.command
+                    label: synolia.ui.scheduled_command.command
                     type: string
                     enabled: true
                 cronExpression:
-                    label: sylius.ui.scheduled_command.cron_expression
+                    label: synolia.ui.scheduled_command.cron_expression
                     type: string
                     enabled: true
                 priority:
-                    label: sylius.ui.scheduled_command.priority
+                    label: synolia.ui.scheduled_command.priority
                     type: string
                     enabled: true
                 enabled:
-                    label: sylius.ui.scheduled_command.enabled
+                    label: synolia.ui.scheduled_command.enabled
                     type: boolean
                     enabled: true
             actions:
@@ -61,7 +61,7 @@ sylius_grid:
                 item:
                     execute:
                         type: schedule_command_execute_immediate
-                        label: sylius.ui.scheduled_command.execute_immediate
+                        label: synolia.ui.scheduled_command.execute_immediate
                         options:
                             link:
                                 route: execute_immediate_schedule
@@ -79,41 +79,46 @@ sylius_grid:
                 options:
                     class: Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand
             fields:
-                name:
-                    type: string
-                    sortable: ~
-                    label: sylius.ui.scheduled_command.name
                 command:
                     type: string
                     sortable: ~
-                    label: sylius.ui.scheduled_command.command
-                lastExecution:
+                    label: synolia.ui.scheduled_command.command
+                state:
+                    type: scheduled_command_state
+                    sortable: ~
+                    label: synolia.ui.scheduled_command.state
+                    options:
+                        template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/scheduled_command_state.html.twig'
+                executedAt:
                     type: datetime
                     sortable: ~
-                    label: sylius.ui.scheduled_command.last_execution
+                    label: synolia.ui.scheduled_command.last_execution
                 commandExecutionTime:
                     type: scheduled_command_execution_time
-                    label: sylius.ui.scheduled_command.command_execution_time
-                lastReturnCode:
-                    type: string
-                    sortable: ~
-                    label: sylius.ui.scheduled_command.last_return_code
+                    label: synolia.ui.scheduled_command.command_execution_time
                 logFile:
                     type: scheduled_command_url
                     sortable: ~
-                    label: sylius.ui.scheduled_command.log_file
+                    label: synolia.ui.scheduled_command.log_file
                     options:
                         template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/log_file.html.twig'
             sorting:
-                name: asc
-                command: asc
+                executedAt: desc
             filters:
+                id:
+                    label: synolia.ui.scheduled_command.name
+                    type: string
+                    enabled: false
                 name:
-                    label: sylius.ui.scheduled_command.name
+                    label: synolia.ui.scheduled_command.name
                     type: string
                     enabled: true
                 command:
-                    label: sylius.ui.scheduled_command.command
+                    label: synolia.ui.scheduled_command.command
+                    type: string
+                    enabled: true
+                state:
+                    label: synolia.ui.scheduled_command.command
                     type: string
                     enabled: true
             actions:
@@ -121,16 +126,6 @@ sylius_grid:
                     create:
                         type: create
                 item:
-                    execute:
-                        type: schedule_command_execute_immediate
-                        label: sylius.ui.scheduled_command.execute_immediate
-                        options:
-                            link:
-                                route: execute_immediate_schedule
-                                parameters:
-                                    commandId: resource.id
-                    update:
-                        type: update
                     delete:
                         type: delete
                 bulk:

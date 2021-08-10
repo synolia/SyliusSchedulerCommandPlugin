@@ -1,9 +1,11 @@
-sylius:
+synolia:
     ui:
+        commands: Commands
         scheduled_commands: Scheduled commands
         scheduled_command:
             name: Name
             command: Command
+            state: State
             cron_expression: Cron expression
             human_readable_expression: Humanized expression
             last_execution: Last execution
@@ -15,18 +17,27 @@ sylius:
             execute_immediate: Execute immediately
             emtpy_logs: Empty logs
             bulk_empty_logs: The log files have been emptied.
-        edit_scheduled_command: Edit command
-        new_scheduled_command: Create command
+        edit_command: Edit command
+        new_scheduled_command: Create planned command
+        new_command: Create command
         log_file_undefined: Scheduled command has no defined log file.
         no_log_file_found: No log file found.
         error_emptying_log_file: There was an error while trying to empty the log file.
         log_file_successfully_emptied: Log file successfully emptied.
         scheduled_command_not_exists: Scheduled Command does not exists.
         live_view: Live view
+        download: Download
         live_view_of_scheduled_command: 'Live view of scheduled command "%scheduledCommandName%"'
         does_not_exists_or_missing_log_file: 'Scheduler Command does not exists or has no log file.'
+        statuses:
+            waiting: Waiting
+            in_progress: In Progress
+            finished: Finished
+            error: Error
     menu:
         admin:
             main:
                 configuration:
                     scheduler_command: Scheduled commands
+                    command: List of commands
+                    scheduler_command_history: Planned command history

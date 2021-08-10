@@ -16,7 +16,7 @@ synolia_admin_scheduled_commands:
         templates: "@SyliusAdmin\\Crud"
         section: admin
         grid: synolia_admin_scheduled_commands
-        except: ['show']
+        except: ['update', 'show']
         vars:
             index:
                 icon: 'box'

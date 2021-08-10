@@ -9,12 +9,12 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository;
 
 class ExecuteScheduleCommand
 {
-    /** @var ScheduledCommandRepository */
-    private $scheduledCommandRepository;
+    /** @var CommandRepository */
+    private $commandRepository;
 
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -29,13 +29,13 @@ class ExecuteScheduleCommand
     private $projectDir;
 
     public function __construct(
-        ScheduledCommandRepository $scheduledCommandRepository,
+        CommandRepository $commandRepository,
         EntityManagerInterface $entityManager,
         KernelInterface $kernel,
         string $logsDir,
         string $projectDir
     ) {
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
+        $this->commandRepository = $commandRepository;
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
         $this->logsDir = $logsDir;
@@ -45,7 +45,7 @@ class ExecuteScheduleCommand
     public function executeImmediate(string $commandId): bool
     {
         /** @var ScheduledCommand|null $scheduledCommand */
-        $scheduledCommand = $this->scheduledCommandRepository->find($commandId);
+        $scheduledCommand = $this->commandRepository->find($commandId);
         if (!$scheduledCommand instanceof ScheduledCommand) {
             return false;
         }
@@ -55,7 +55,7 @@ class ExecuteScheduleCommand
             $this->kernel->getProjectDir()
         );
 
-        $scheduledCommand->setLastExecution(new \DateTime());
+        $scheduledCommand->setExecutedAt(new \DateTime());
         $process->run();
         $result = $process->getExitCode();
 
