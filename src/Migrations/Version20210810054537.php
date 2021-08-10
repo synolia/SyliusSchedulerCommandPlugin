@@ -24,7 +24,6 @@ final class Version20210810054537 extends AbstractMigration
           id INT AUTO_INCREMENT NOT NULL,
           name VARCHAR(255) NOT NULL,
           command VARCHAR(255) NOT NULL,
-          state VARCHAR(255) NOT NULL,
           arguments VARCHAR(255) DEFAULT NULL,
           cronExpression VARCHAR(255) NOT NULL,
           logFilePrefix VARCHAR(255) DEFAULT NULL,
@@ -36,7 +35,8 @@ final class Version20210810054537 extends AbstractMigration
         $this->addSql('CREATE TABLE synolia_scheduled_commands (
           id INT AUTO_INCREMENT NOT NULL,
           name VARCHAR(255) NOT NULL,
-          command VARCHAR(255) NOT NULL,
+          command VARCHAR(255) NOT NULL,          
+          state VARCHAR(255) NOT NULL,
           arguments VARCHAR(255) DEFAULT NULL,
           executed_at DATETIME DEFAULT NULL,
           lastReturnCode INT DEFAULT NULL,

@@ -75,11 +75,12 @@ class ScheduledCommand implements ScheduledCommandInterface
      * @var string
      * @ORM\Column(name="state", type="string")
      */
-    private $state = ScheduledCommandStateEnum::WAITING;
+    private $state;
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->state = ScheduledCommandStateEnum::WAITING;
     }
 
     public function getId(): ?int
