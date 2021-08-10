@@ -14,13 +14,10 @@ sylius_grid:
                     sortable: ~
                     label: sylius.ui.scheduled_command.command
                 cronExpression:
-                    type: string
-                    label: sylius.ui.scheduled_command.cron_expression
-                humanReadableExpression:
                     type: scheduled_human_readable_expression
-                    label: sylius.ui.scheduled_command.human_readable_expression
+                    label: sylius.ui.scheduled_command.cron_expression
                     options:
-                        template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/human_readable_expression.html.twig'
+                       template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/human_readable_expression.html.twig'
                 priority:
                     type: string
                     sortable: ~
