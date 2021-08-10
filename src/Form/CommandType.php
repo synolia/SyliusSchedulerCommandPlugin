@@ -7,9 +7,9 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
-final class ScheduledCommandType extends AbstractType
+final class CommandType extends AbstractType
 {
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -31,7 +31,7 @@ final class ScheduledCommandType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ScheduledCommand::class,
+            'data_class' => CommandInterface::class,
         ]);
     }
 }

@@ -6,7 +6,7 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Entity;
 
 use Sylius\Component\Resource\Model\ResourceInterface;
 
-interface ScheduledCommandInterface extends ResourceInterface
+interface CommandInterface extends ResourceInterface
 {
     public function getId(): ?int;
 
@@ -22,19 +22,23 @@ interface ScheduledCommandInterface extends ResourceInterface
 
     public function setArguments(?string $arguments): self;
 
-    public function getLastExecution(): ?\DateTime;
+    public function getCronExpression(): string;
 
-    public function setLastExecution(?\DateTime $lastExecution): self;
-
-    public function getLastReturnCode(): ?int;
-
-    public function setLastReturnCode(?int $lastReturnCode): self;
+    public function setCronExpression(string $cronExpression): self;
 
     public function getLogFile(): ?string;
 
     public function setLogFile(?string $logFile): self;
 
-    public function getCommandEndTime(): ?\DateTime;
+    public function getPriority(): int;
 
-    public function setCommandEndTime(\DateTime $executeImmediately): self;
+    public function setPriority(int $priority): self;
+
+    public function isExecuteImmediately(): bool;
+
+    public function setExecuteImmediately(bool $executeImmediately): self;
+
+    public function isEnabled(): bool;
+
+    public function setEnabled(bool $enabled): self;
 }

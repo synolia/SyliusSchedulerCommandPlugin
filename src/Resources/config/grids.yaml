@@ -1,9 +1,9 @@
 sylius_grid:
     grids:
-        sylius_admin_scheduled_command:
+        synolia_admin_commands:
             driver:
                 options:
-                    class: Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand
+                    class: Synolia\SyliusSchedulerCommandPlugin\Entity\Command
             fields:
                 name:
                     type: string
@@ -21,23 +21,6 @@ sylius_grid:
                     label: sylius.ui.scheduled_command.human_readable_expression
                     options:
                         template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/human_readable_expression.html.twig'
-                lastExecution:
-                    type: datetime
-                    sortable: ~
-                    label: sylius.ui.scheduled_command.last_execution
-                commandExecutionTime:
-                    type: scheduled_command_execution_time
-                    label: sylius.ui.scheduled_command.command_execution_time
-                lastReturnCode:
-                    type: string
-                    sortable: ~
-                    label: sylius.ui.scheduled_command.last_return_code
-                logFile:
-                    type: scheduled_command_url
-                    sortable: ~
-                    label: sylius.ui.scheduled_command.log_file
-                    options:
-                        template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/log_file.html.twig'
                 priority:
                     type: string
                     sortable: ~
@@ -51,10 +34,7 @@ sylius_grid:
             sorting:
                 name: asc
                 command: asc
-                lastExecution: asc
-                lastReturnCode: asc
                 priority: asc
-                logFile: asc
                 enabled: asc
             filters:
                 name:
@@ -82,18 +62,6 @@ sylius_grid:
                     create:
                         type: create
                 item:
-                    update:
-                        type: update
-                    delete:
-                        type: delete
-                    emptyLogFile:
-                        type: emptyLogFile
-                        label: Empty log
-                        options:
-                            link:
-                                route: sylius_admin_scheduler_empty_log_file
-                                parameters:
-                                    command: resource.id
                     execute:
                         type: schedule_command_execute_immediate
                         label: sylius.ui.scheduled_command.execute_immediate
@@ -102,21 +70,75 @@ sylius_grid:
                                 route: execute_immediate_schedule
                                 parameters:
                                     commandId: resource.id
+                    update:
+                        type: update
+                    delete:
+                        type: delete
                 bulk:
                     delete:
                         type: delete
-                    emtpy_logs:
-                        type: emtpy_logs
-                        label: sylius.ui.scheduled_command.emtpy_logs
+        synolia_admin_scheduled_commands:
+            driver:
+                options:
+                    class: Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand
+            fields:
+                name:
+                    type: string
+                    sortable: ~
+                    label: sylius.ui.scheduled_command.name
+                command:
+                    type: string
+                    sortable: ~
+                    label: sylius.ui.scheduled_command.command
+                lastExecution:
+                    type: datetime
+                    sortable: ~
+                    label: sylius.ui.scheduled_command.last_execution
+                commandExecutionTime:
+                    type: scheduled_command_execution_time
+                    label: sylius.ui.scheduled_command.command_execution_time
+                lastReturnCode:
+                    type: string
+                    sortable: ~
+                    label: sylius.ui.scheduled_command.last_return_code
+                logFile:
+                    type: scheduled_command_url
+                    sortable: ~
+                    label: sylius.ui.scheduled_command.log_file
+                    options:
+                        template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/log_file.html.twig'
+            sorting:
+                name: asc
+                command: asc
+            filters:
+                name:
+                    label: sylius.ui.scheduled_command.name
+                    type: string
+                    enabled: true
+                command:
+                    label: sylius.ui.scheduled_command.command
+                    type: string
+                    enabled: true
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    execute:
+                        type: schedule_command_execute_immediate
+                        label: sylius.ui.scheduled_command.execute_immediate
                         options:
                             link:
-                                route: sylius_admin_scheduler_emtpy_logs
+                                route: execute_immediate_schedule
                                 parameters:
-                                    commands: [$ids]
-
+                                    commandId: resource.id
+                    update:
+                        type: update
+                    delete:
+                        type: delete
+                bulk:
+                    delete:
+                        type: delete
     templates:
         action:
-            emptyLogFile: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/empty_log_file.html.twig"
             schedule_command_execute_immediate: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"
-        bulk_action:
-            emtpy_logs: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/empty_logs_file.html.twig"

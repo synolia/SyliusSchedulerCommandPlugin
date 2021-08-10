@@ -16,7 +16,7 @@ final class SynoliaSyliusSchedulerCommandExtension extends Extension implements 
 {
     use PrependDoctrineMigrationsTrait;
 
-    private const GRID_KEY = 'sylius_admin_scheduled_command';
+    private const GRID_KEY = 'synolia_admin_commands';
 
     /** @var array */
     private $gridConf;
@@ -43,7 +43,7 @@ final class SynoliaSyliusSchedulerCommandExtension extends Extension implements 
 
     private function removeHumanizedCronExpressionColumn(ContainerBuilder $container): void
     {
-        if (class_exists(ExpressionFactory::class)) {
+        if (\class_exists(ExpressionFactory::class)) {
             return;
         }
         $index = $this->findSchedulerCommandGridIndex();

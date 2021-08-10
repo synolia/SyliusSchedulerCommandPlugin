@@ -12,17 +12,17 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 class SchedulerCommandFixture extends AbstractFixture
 {
     /** @var RepositoryInterface */
-    private $scheduledCommandRepository;
+    private $commandRepository;
 
     /** @var \Sylius\Component\Resource\Factory\FactoryInterface */
-    private $scheduledCommandFactory;
+    private $commandFactory;
 
     public function __construct(
-        RepositoryInterface $scheduledCommandRepository,
-        FactoryInterface $scheduledCommandFactory
+        RepositoryInterface $commandRepository,
+        FactoryInterface $commandFactory
     ) {
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->scheduledCommandFactory = $scheduledCommandFactory;
+        $this->commandRepository = $commandRepository;
+        $this->commandFactory = $commandFactory;
     }
 
     /**
@@ -35,8 +35,8 @@ class SchedulerCommandFixture extends AbstractFixture
         }
 
         foreach ($options['scheduled_commands'] as $scheduledCommandArray) {
-            /** @var \Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface $scheduledCommand */
-            $scheduledCommand = $this->scheduledCommandFactory->createNew();
+            /** @var \Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface $scheduledCommand */
+            $scheduledCommand = $this->commandFactory->createNew();
             $scheduledCommand
                 ->setName($scheduledCommandArray['name'])
                 ->setCommand($scheduledCommandArray['command'])
@@ -47,7 +47,7 @@ class SchedulerCommandFixture extends AbstractFixture
                 ->setExecuteImmediately($scheduledCommandArray['executeImmediately'])
                 ->setEnabled($scheduledCommandArray['enabled'])
             ;
-            $this->scheduledCommandRepository->add($scheduledCommand);
+            $this->commandRepository->add($scheduledCommand);
         }
     }
 

@@ -7,8 +7,8 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository")
- * @ORM\Table("scheduled_command")
+ * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository")
+ * @ORM\Table("synolia_scheduled_commands")
  */
 class ScheduledCommand implements ScheduledCommandInterface
 {
@@ -39,14 +39,6 @@ class ScheduledCommand implements ScheduledCommandInterface
     private $arguments;
 
     /**
-     * @see https://abunchofutils.com/u/computing/cron-format-helper/
-     *
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $cronExpression = '* * * * *';
-
-    /**
      * @var \DateTime|null
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -65,26 +57,6 @@ class ScheduledCommand implements ScheduledCommandInterface
      * @ORM\Column(type="string", nullable=true)
      */
     private $logFile;
-
-    /**
-     * @var int
-     * @ORM\Column(type="integer")
-     */
-    private $priority = 0;
-
-    /**
-     * If true, command will be execute next time regardless cron expression
-     *
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $executeImmediately = false;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $enabled = true;
 
     /**
      * @var \DateTime|null
@@ -133,18 +105,6 @@ class ScheduledCommand implements ScheduledCommandInterface
         return $this;
     }
 
-    public function getCronExpression(): string
-    {
-        return $this->cronExpression;
-    }
-
-    public function setCronExpression(string $cronExpression): ScheduledCommandInterface
-    {
-        $this->cronExpression = $cronExpression;
-
-        return $this;
-    }
-
     public function getLastExecution(): ?\DateTime
     {
         return $this->lastExecution;
@@ -189,30 +149,6 @@ class ScheduledCommand implements ScheduledCommandInterface
     public function setPriority(int $priority): ScheduledCommandInterface
     {
         $this->priority = $priority;
-
-        return $this;
-    }
-
-    public function isExecuteImmediately(): bool
-    {
-        return $this->executeImmediately;
-    }
-
-    public function setExecuteImmediately(bool $executeImmediately): ScheduledCommandInterface
-    {
-        $this->executeImmediately = $executeImmediately;
-
-        return $this;
-    }
-
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    public function setEnabled(bool $enabled): ScheduledCommandInterface
-    {
-        $this->enabled = $enabled;
 
         return $this;
     }
