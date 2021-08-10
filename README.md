@@ -77,7 +77,7 @@ sylius_fixtures:
                                 name: 'Reset Sylius'
                                 command: 'sylius:fixtures:load'
                                 cronExpression: '0 0 * * *'
-                                logFile: 'reset.log'
+                                logFilePrefix: 'reset'
                                 priority: 0
                                 enabled: true
                             -
