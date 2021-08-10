@@ -7,7 +7,6 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 final class ScheduledCommandStateType implements FieldTypeInterface
@@ -15,14 +14,9 @@ final class ScheduledCommandStateType implements FieldTypeInterface
     /** @var Environment */
     private $twig;
 
-    public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        Environment $twig,
-        string $logsDir
-    ) {
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(Environment $twig)
+    {
         $this->twig = $twig;
-        $this->logsDir = $logsDir;
     }
 
     /**

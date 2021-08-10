@@ -159,18 +159,6 @@ class ScheduledCommand implements ScheduledCommandInterface
         return $this;
     }
 
-    public function getPriority(): int
-    {
-        return $this->priority;
-    }
-
-    public function setPriority(int $priority): ScheduledCommandInterface
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
     public function getCommandEndTime(): ?\DateTime
     {
         return $this->commandEndTime;

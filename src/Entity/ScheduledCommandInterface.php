@@ -37,4 +37,8 @@ interface ScheduledCommandInterface extends ResourceInterface
     public function getCommandEndTime(): ?\DateTime;
 
     public function setCommandEndTime(\DateTime $executeImmediately): self;
+
+    public function setState(string $state): self;
+
+    public function getState(): string;
 }

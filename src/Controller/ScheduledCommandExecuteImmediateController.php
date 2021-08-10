@@ -7,8 +7,10 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Webmozart\Assert\Assert;
 
 class ScheduledCommandExecuteImmediateController extends AbstractController
 {
@@ -33,7 +35,10 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 
     public function executeImmediate(string $commandId): Response
     {
-        $scheduledCommand = $this->scheduledCommandPlanner->plan($this->commandRepository->find($commandId));
+        $command = $this->commandRepository->find($commandId);
+        Assert::isInstanceOf($command, CommandInterface::class);
+
+        $scheduledCommand = $this->scheduledCommandPlanner->plan($command);
 
         $this->flashBag->add('success', \sprintf(
             'Command "%s" as been planned for execution.',

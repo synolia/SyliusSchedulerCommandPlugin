@@ -174,16 +174,4 @@ class Command implements CommandInterface
 
         return $this;
     }
-
-    public function getCommandEndTime(): ?\DateTime
-    {
-        return $this->commandEndTime;
-    }
-
-    public function setCommandEndTime(?\DateTime $commandEndTime): self
-    {
-        $this->commandEndTime = $commandEndTime;
-
-        return $this;
-    }
 }

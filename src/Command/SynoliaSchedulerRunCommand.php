@@ -85,6 +85,7 @@ final class SynoliaSchedulerRunCommand extends Command
             }
         }
 
+        /** @var ScheduledCommandInterface[] $scheduledCommands */
         $scheduledCommands = $this->scheduledCommandRepository->findAllRunnable();
 
         if (0 === \count($scheduledCommands)) {
