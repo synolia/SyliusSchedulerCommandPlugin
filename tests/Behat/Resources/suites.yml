@@ -1,6 +1,6 @@
 default:
     suites:
-        ui_managing_scheduled_command:
+        ui_managing_command:
             contexts:
                 - sylius.behat.context.hook.doctrine_orm
 
@@ -11,12 +11,28 @@ default:
 
                 - sylius.behat.context.ui.admin.notification
 
+                - synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.command
+                - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context
+            filters:
+                tags: '@managing_command && @ui'
+
+        ui_managing_scheduled_command:
+            contexts:
+                - sylius.behat.context.hook.doctrine_orm
+
+                - sylius.behat.context.transform.shared_storage
+
+                - sylius.behat.context.setup.scheduled_command
+                - sylius.behat.context.setup.admin_security
+
+                - sylius.behat.context.ui.admin.notification
+
                 - synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.scheduled_command
                 - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context
             filters:
                 tags: '@managing_scheduled_command && @ui'
 
-        cli_run_commad:
+        cli_run_command:
             contexts:
                 - sylius.behat.context.setup.command
                 - sylius.behat.context.hook.doctrine_orm
@@ -24,4 +40,4 @@ default:
 
                 - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context
             filters:
-                tags: "@cli && @cli_run_commad"
+                tags: "@cli && @cli_run_command"

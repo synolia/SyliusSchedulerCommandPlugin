@@ -52,7 +52,7 @@ class ExecuteScheduleCommandTest extends WebTestCase
         $this->entityManager->flush();
 
         /** @var ScheduledCommandPlanner $planner */
-        $planner = static::getContainer()->get(ScheduledCommandPlanner::class);
+        $planner = self::$container->get(ScheduledCommandPlanner::class);
         $scheduledCommand = $planner->plan($command);
 
         $commandResult = $this->executeScheduleCommand->executeImmediate((string) $scheduledCommand->getId());

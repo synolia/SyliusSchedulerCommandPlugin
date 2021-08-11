@@ -14,8 +14,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
 
 class CliContext implements Context
 {
@@ -46,18 +50,28 @@ class CliContext implements Context
     /** @var ExecuteScheduleCommand */
     protected $executeScheduleCommand;
 
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface */
+    private $commandRepository;
+
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner */
+    private $scheduledCommandPlanner;
+
     public function __construct(
         KernelInterface $kernel,
-        RepositoryInterface $scheduledCommandRepository,
-        EntityManagerInterface $scheduledCommandManager,
         SharedStorageInterface $sharedStorage,
-        ExecuteScheduleCommand $executeScheduleCommand
+        EntityManagerInterface $scheduledCommandManager,
+        ExecuteScheduleCommand $executeScheduleCommand,
+        CommandRepositoryInterface $commandRepository,
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        ScheduledCommandPlanner $scheduledCommandPlanner
     ) {
         $this->kernel = $kernel;
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->scheduledCommandManager = $scheduledCommandManager;
         $this->sharedStorage = $sharedStorage;
+        $this->scheduledCommandManager = $scheduledCommandManager;
         $this->executeScheduleCommand = $executeScheduleCommand;
+        $this->commandRepository = $commandRepository;
+        $this->scheduledCommandRepository = $scheduledCommandRepository;
+        $this->scheduledCommandPlanner = $scheduledCommandPlanner;
     }
 
     /**
@@ -83,10 +97,11 @@ class CliContext implements Context
     {
         $this->application->add(
             new SynoliaSchedulerRunCommand(
-                null,
                 $this->scheduledCommandManager,
                 $this->executeScheduleCommand,
-                $this->scheduledCommandRepository
+                $this->commandRepository,
+                $this->scheduledCommandRepository,
+                $this->scheduledCommandPlanner
             )
         );
         $this->command = $this->application->find('synolia:scheduler-run');
@@ -99,34 +114,34 @@ class CliContext implements Context
      */
     public function itIsExecutedImmediately(): void
     {
-        /** @var ScheduledCommandInterface $command */
+        /** @var CommandInterface $command */
         $command = $this->sharedStorage->get('command');
         $command->setExecuteImmediately(true);
         $this->scheduledCommandManager->flush();
     }
 
     /**
-     * @Given this scheduled command has :value in :attribute
+     * @Given this command has :value in :attribute
      */
-    public function thisScheduledCommandHasIn(string $value, string $attribute): void
+    public function thisCommandHasIn(string $value, string $attribute): void
     {
-        /** @var ScheduledCommandInterface $schedule */
-        $schedule = $this->sharedStorage->get('command');
+        /** @var CommandInterface $command */
+        $command = $this->sharedStorage->get('command');
         $getter = 'get' . \ucfirst($attribute);
-        $attributeType = gettype($schedule->$getter());
+        $attributeType = gettype($command->$getter());
         $setter = 'set' . \ucfirst($attribute);
 
         if ($attributeType === 'double') {
-            $schedule->$setter((float) $value);
+            $command->$setter((float) $value);
         }
         if ($attributeType === 'integer') {
-            $schedule->$setter((int) $value);
+            $command->$setter((int) $value);
         }
-        if ($schedule->$getter() === null || $schedule->$getter() === '') {
-            $schedule->$setter($value);
+        if ($command->$getter() === null || $command->$getter() === '') {
+            $command->$setter($value);
         }
 
-        $this->scheduledCommandRepository->add($schedule);
+        $this->commandRepository->add($command);
     }
 
     /**
@@ -146,9 +161,9 @@ class CliContext implements Context
      */
     public function thisFileNotExitYet(): void
     {
-        /** @var ScheduledCommandInterface $schedule */
+        /** @var CommandInterface $schedule */
         $schedule = $this->sharedStorage->get('command');
-        $logFile = $this->kernel->getLogDir() . \DIRECTORY_SEPARATOR . $schedule->getLogFile();
+        $logFile = $this->kernel->getLogDir() . \DIRECTORY_SEPARATOR . $schedule->getLogFilePrefix();
 
         @\unlink($logFile);
     }

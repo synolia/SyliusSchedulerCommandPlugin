@@ -9,30 +9,44 @@ services:
         parent: sylius.behat.page.admin.crud.index
         public: false
         arguments:
+            - 'synolia_admin_scheduled_command_index'
+
+    synolia_sylius_scheduler_command_plugin.behat.page.admin.command.index:
+        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\Command\IndexPage
+        parent: sylius.behat.page.admin.crud.index
+        public: false
+        arguments:
             - 'synolia_admin_command_index'
 
-    synolia_sylius_scheduler_command_plugin.behat.page.admin.scheduled_command.create:
-        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\CreatePage
+    synolia_sylius_scheduler_command_plugin.behat.page.admin.command.create:
+        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\Command\CreatePage
         parent: sylius.behat.page.admin.crud.create
         public: false
         arguments:
             - 'synolia_admin_command_create'
 
-    synolia_sylius_scheduler_command_plugin.behat.page.admin.scheduled_command.update:
-        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\UpdatePage
+    synolia_sylius_scheduler_command_plugin.behat.page.admin.command.update:
+        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\Command\UpdatePage
         parent: sylius.behat.page.admin.crud.update
         public: false
         arguments:
             - 'synolia_admin_command_update'
 
+    synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.command:
+        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Ui\Admin\CommandContext
+        public: true
+        autowire: true
+        arguments:
+            $indexPage: '@synolia_sylius_scheduler_command_plugin.behat.page.admin.command.index'
+            $createPage: '@synolia_sylius_scheduler_command_plugin.behat.page.admin.command.create'
+            $updatePage: '@synolia_sylius_scheduler_command_plugin.behat.page.admin.command.update'
+
     synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.scheduled_command:
-        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Ui\Admin\SchedulerCommandContext
+        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Ui\Admin\ScheduledCommandContext
         public: true
         autowire: true
         arguments:
             $indexPage: '@synolia_sylius_scheduler_command_plugin.behat.page.admin.scheduled_command.index'
-            $createPage: '@synolia_sylius_scheduler_command_plugin.behat.page.admin.scheduled_command.create'
-            $updatePage: '@synolia_sylius_scheduler_command_plugin.behat.page.admin.scheduled_command.update'
 
     synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context:
         class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Cli\CliContext
@@ -41,5 +55,10 @@ services:
 
     sylius.behat.context.setup.command:
         class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Setup\CommandContext
+        public: true
+        autowire: true
+
+    sylius.behat.context.setup.scheduled_command:
+        class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Setup\ScheduledCommandContext
         public: true
         autowire: true
