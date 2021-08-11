@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -7,8 +9,10 @@ use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\Command;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\WithDatabaseTrait;
 
 final class SynoliaSchedulerRunCommandTest extends KernelTestCase
@@ -86,23 +90,22 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         //remove last test
         /** @var EntityManagerInterface $em */
         $em = static::$container->get(EntityManagerInterface::class);
-        /** @var ScheduledCommandRepositoryInterface $repository */
+        /** @var CommandRepositoryInterface $repository */
         $repository = $em->getRepository(ScheduledCommand::class);
 
         $lastScheduledCommand = $repository->findOneBy(['command' => $invalidCommandName]);
-        if($lastScheduledCommand !== null) {
+        if ($lastScheduledCommand !== null) {
             $repository->remove($lastScheduledCommand);
         }
 
-
         //generate command
-        /** @var ScheduledCommand $scheduledCommand */
-        $scheduledCommand = (new Factory(ScheduledCommand::class))->createNew();
-        $scheduledCommand
+        /** @var Command $command */
+        $command = (new Factory(Command::class))->createNew();
+        $command
             ->setCronExpression('* * * * *')
             ->setCommand('non:existent');
 
-        $this->save($scheduledCommand);
+        $this->save($command);
 
         //run command
         $application = new Application(static::$kernel);
@@ -114,26 +117,26 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         //assertion
         self::assertStringContainsString('Cannot find non:existent', $commandTester->getDisplay());
 
-        $persistedScheduledCommand = $repository->findOneBy(['command' => $invalidCommandName]);
+        $persistedCommand = $repository->findOneBy(['command' => $invalidCommandName]);
 
         self::assertEquals(
             -1,
-            $persistedScheduledCommand->getLastReturnCode()
+            $persistedCommand->getLastReturnCode()
         );
     }
 
-    private function generateAboutScheduleCommand(string $cron): ScheduledCommand
+    private function generateAboutScheduleCommand(string $cron): CommandInterface
     {
-        /** @var ScheduledCommand $scheduledCommand */
-        $scheduledCommand = (new Factory(ScheduledCommand::class))->createNew();
-        $scheduledCommand
+        /** @var Command $command */
+        $command = (new Factory(Command::class))->createNew();
+        $command
             ->setCronExpression($cron)
             ->setCommand('about');
 
-        return $scheduledCommand;
+        return $command;
     }
 
-    private function save(ScheduledCommand $command): void
+    private function save(CommandInterface $command): void
     {
         /** @var EntityManagerInterface $em */
         $em = static::$container->get(EntityManagerInterface::class);

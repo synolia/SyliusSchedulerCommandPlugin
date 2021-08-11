@@ -7,14 +7,13 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
 class ExecuteScheduleCommand
 {
-    /** @var CommandRepository */
-    private $commandRepository;
+    /** @var ScheduledCommandRepositoryInterface */
+    private $scheduledCommandRepository;
 
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -29,24 +28,24 @@ class ExecuteScheduleCommand
     private $projectDir;
 
     public function __construct(
-        CommandRepository $commandRepository,
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         EntityManagerInterface $entityManager,
         KernelInterface $kernel,
         string $logsDir,
         string $projectDir
     ) {
-        $this->commandRepository = $commandRepository;
+        $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
         $this->logsDir = $logsDir;
         $this->projectDir = $projectDir;
     }
 
-    public function executeImmediate(string $commandId): bool
+    public function executeImmediate(string $scheduledCommandId): bool
     {
-        /** @var ScheduledCommand|null $scheduledCommand */
-        $scheduledCommand = $this->commandRepository->find($commandId);
-        if (!$scheduledCommand instanceof ScheduledCommand) {
+        /** @var ScheduledCommandInterface|null $scheduledCommand */
+        $scheduledCommand = $this->scheduledCommandRepository->find($scheduledCommandId);
+        if (!$scheduledCommand instanceof ScheduledCommandInterface) {
             return false;
         }
 

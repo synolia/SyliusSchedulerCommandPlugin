@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit;
 
 use Doctrine\ORM\Tools\SchemaTool;
