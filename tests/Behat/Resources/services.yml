@@ -9,21 +9,21 @@ services:
         parent: sylius.behat.page.admin.crud.index
         public: false
         arguments:
-            - 'sylius_admin_scheduled_command_index'
+            - 'synolia_admin_command_index'
 
     synolia_sylius_scheduler_command_plugin.behat.page.admin.scheduled_command.create:
         class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\CreatePage
         parent: sylius.behat.page.admin.crud.create
         public: false
         arguments:
-            - 'sylius_admin_scheduled_command_create'
+            - 'synolia_admin_command_create'
 
     synolia_sylius_scheduler_command_plugin.behat.page.admin.scheduled_command.update:
         class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\UpdatePage
         parent: sylius.behat.page.admin.crud.update
         public: false
         arguments:
-            - 'sylius_admin_scheduled_command_update'
+            - 'synolia_admin_command_update'
 
     synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.scheduled_command:
         class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Ui\Admin\SchedulerCommandContext
