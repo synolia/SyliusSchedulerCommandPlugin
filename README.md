@@ -15,7 +15,11 @@
 </p>
 <p align="center">Schedule Symfony Commands in your Sylius admin panel.</p>
 
-![Capture](/etc/capture.png "Capture")
+## Commands list
+![Commands](/doc/images/Commands.png "Commands")
+
+## Scheduled Commands list
+![Scheduled Commands](/doc/images/ScheduledCommands.png "Scheduled Commands")
 
 ## Features
 
