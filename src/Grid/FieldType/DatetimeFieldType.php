@@ -9,7 +9,6 @@ use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Webmozart\Assert\Assert;
 
 final class DatetimeFieldType implements FieldTypeInterface
 {
@@ -31,14 +30,16 @@ final class DatetimeFieldType implements FieldTypeInterface
     public function render(Field $field, $data, array $options): string
     {
         $value = $this->dataExtractor->get($field, $data);
-        if (null === $value) {
+        if (!$value instanceof \DateTimeInterface) {
             return '';
         }
 
+        /** @var \IntlDateFormatter|null $fmt */
         $fmt = \datefmt_create($this->localeContext->getLocaleCode(), $options['date_format'], $options['time_format']);
 
-        Assert::isInstanceOf($value, \DateTimeInterface::class);
-        Assert::notFalse($fmt);
+        if (!$fmt instanceof \IntlDateFormatter) {
+            return '';
+        }
 
         /** @phpstan-ignore-next-line  */
         return $fmt->format($value) ?: '';

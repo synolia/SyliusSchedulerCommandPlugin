@@ -60,7 +60,7 @@ final class ScheduledCommandContext implements Context
     public function iGoToTheSchedulerCommandPage(): void
     {
         $this->indexPage->open();
-        $this->indexPage->sortBy('command');
+        $this->indexPage->sortBy('name');
     }
 
     /**

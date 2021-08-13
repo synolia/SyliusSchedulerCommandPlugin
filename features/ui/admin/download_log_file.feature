@@ -7,8 +7,8 @@ Feature: Downloading log file
     Background:
         Given I have a working command-line interface
         And I have an empty list of scheduled command
-        And I have scheduled command "about" named "Displays project information without logs"
-        And I have scheduled command "about:end" named "Displays project information"
+        And I have scheduled command "about" named "0. Displays project information without logs"
+        And I have scheduled command "about" named "1. Displays project information"
         And this scheduled command has "logfile" in "logFile"
         Given I am logged in as an administrator
 
