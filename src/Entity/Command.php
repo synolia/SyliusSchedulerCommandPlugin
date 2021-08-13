@@ -47,7 +47,7 @@ class Command implements CommandInterface
     private $cronExpression = '* * * * *';
 
     /**
-     * Log's file name (without path)
+     * Log's file name prefix (without path), followed by a time stamp of the execution
      *
      * @var string|null
      * @ORM\Column(type="string", nullable=true)
