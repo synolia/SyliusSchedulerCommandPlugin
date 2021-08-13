@@ -20,6 +20,7 @@ synolia:
         edit_command: Edit scheduled command
         new_scheduled_command: Create immediate scheduled command
         new_command: Create scheduled command
+        launch_a_command: Launch a command
         log_file_undefined: Scheduled command has no defined log file.
         no_log_file_found: No log file found.
         error_emptying_log_file: There was an error while trying to empty the log file.
