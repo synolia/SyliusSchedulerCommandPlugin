@@ -75,6 +75,21 @@ final class SynoliaSchedulerRunCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
 
+        $scheduledCommandId = $input->getOption('id');
+
+        if (null !== $scheduledCommandId) {
+            /** @var ScheduledCommandInterface|null $scheduledCommand */
+            $scheduledCommand = $this->scheduledCommandRepository->find((int) $scheduledCommandId);
+
+            if (!$scheduledCommand instanceof ScheduledCommandInterface) {
+                return 0;
+            }
+
+            $this->executeCommand($scheduledCommand, $io);
+
+            return 0;
+        }
+
         $commands = $this->getCommands($input);
 
         /** @var CommandInterface $command */

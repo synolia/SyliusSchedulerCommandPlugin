@@ -7,7 +7,9 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
 use Webmozart\Assert\Assert;
@@ -23,14 +25,19 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
     /** @var \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface */
     private $flashBag;
 
+    /** @var string */
+    private $projectDir;
+
     public function __construct(
         ScheduledCommandPlanner $scheduledCommandPlanner,
         CommandRepositoryInterface $commandRepository,
-        FlashBagInterface $flashBag
+        FlashBagInterface $flashBag,
+        string $projectDir
     ) {
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
         $this->commandRepository = $commandRepository;
         $this->flashBag = $flashBag;
+        $this->projectDir = $projectDir;
     }
 
     public function executeImmediate(string $commandId): Response
@@ -40,11 +47,38 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 
         $scheduledCommand = $this->scheduledCommandPlanner->plan($command);
 
+        $this->executeFromCron($scheduledCommand);
+
         $this->flashBag->add('success', \sprintf(
             'Command "%s" as been planned for execution.',
             $scheduledCommand->getName(),
         ));
 
         return $this->redirectToRoute('synolia_admin_command_index');
+    }
+
+    public function executeFromCron(ScheduledCommandInterface $scheduledCommand): int
+    {
+        $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
+        $process->run();
+        $result = $process->getExitCode();
+        $scheduledCommand->setCommandEndTime(new \DateTime());
+
+        if (null === $result) {
+            $result = 0;
+        }
+
+        return $result;
+    }
+
+    private function getCommandLine(ScheduledCommandInterface $scheduledCommand): string
+    {
+        $commandLine = sprintf(
+            '%s/bin/console synolia:scheduler-run --id=%d > /dev/null 2>&1 &',
+            $this->projectDir,
+            $scheduledCommand->getId(),
+        );
+
+        return $commandLine;
     }
 }
