@@ -1,13 +1,12 @@
 synolia:
     ui:
-        commands: Commands
-        scheduled_commands: Scheduled commands
+        commands: Scheduled commands
+        scheduled_commands: Scheduled commands history
         scheduled_command:
             name: Name
             command: Command
             state: State
             cron_expression: Cron expression
-            human_readable_expression: Humanized expression
             last_execution: Last execution
             last_return_code: Last return code
             log_file: Log file
@@ -17,9 +16,9 @@ synolia:
             execute_immediate: Execute immediately
             emtpy_logs: Empty logs
             bulk_empty_logs: The log files have been emptied.
-        edit_command: Edit command
-        new_scheduled_command: Create planned command
-        new_command: Create command
+        edit_command: Edit scheduled command
+        new_scheduled_command: Create immediate scheduled command
+        new_command: Create scheduled command
         log_file_undefined: Scheduled command has no defined log file.
         no_log_file_found: No log file found.
         error_emptying_log_file: There was an error while trying to empty the log file.
@@ -39,5 +38,4 @@ synolia:
             main:
                 configuration:
                     scheduler_command: Scheduled commands
-                    command: List of commands
-                    scheduler_command_history: Planned command history
+                    scheduler_command_history: Scheduled commands history
