@@ -79,10 +79,10 @@ sylius_grid:
                 options:
                     class: Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand
             fields:
-                command:
+                name:
                     type: string
                     sortable: ~
-                    label: synolia.ui.scheduled_command.command
+                    label: synolia.ui.scheduled_command.name
                 state:
                     type: scheduled_command_state
                     sortable: ~
@@ -90,9 +90,12 @@ sylius_grid:
                     options:
                         template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/scheduled_command_state.html.twig'
                 executedAt:
-                    type: datetime
+                    type: scheduled_command_executed_at
                     sortable: ~
                     label: synolia.ui.scheduled_command.last_execution
+                    options:
+                        date_format: !php/const \Symfony\Polyfill\Intl\Icu\IntlDateFormatter::SHORT
+                        time_format: !php/const \Symfony\Polyfill\Intl\Icu\IntlDateFormatter::SHORT
                 commandExecutionTime:
                     type: scheduled_command_execution_time
                     label: synolia.ui.scheduled_command.command_execution_time

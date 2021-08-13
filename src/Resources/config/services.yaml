@@ -38,3 +38,10 @@ services:
         class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandExecutionTimeType
         tags:
             - { name: sylius.grid_field, type: scheduled_command_execution_time }
+
+    Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\DatetimeFieldType:
+        decorates: 'sylius.grid_field.datetime'
+        arguments:
+            $dataExtractor: '@sylius.grid.data_extractor.property_access'
+        tags:
+            - { name: sylius.grid_field, type: scheduled_command_executed_at }

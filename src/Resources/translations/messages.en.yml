@@ -8,7 +8,7 @@ synolia:
             command: Command
             state: State
             cron_expression: Cron expression
-            last_execution: Last execution
+            last_execution: Executed At
             last_return_code: Last return code
             log_file: Log file
             priority: Priority
