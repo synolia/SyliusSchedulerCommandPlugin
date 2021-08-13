@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType;
 
-use Lorisleiva\CronTranslator\CronTranslator;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
-use Sylius\Component\Locale\Context\LocaleContextInterface;
-use Sylius\Component\Locale\Context\LocaleNotFoundException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Synolia\SyliusSchedulerCommandPlugin\Humanizer\HumanizerInterface;
 use Twig\Environment;
 
 final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInterface
@@ -17,15 +15,15 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
     /** @var Environment */
     private $twig;
 
-    /** @var \Sylius\Component\Locale\Context\LocaleContextInterface */
-    private $localeContext;
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Humanizer\HumanizerInterface */
+    private $humanizer;
 
     public function __construct(
         Environment $twig,
-        LocaleContextInterface $localeContext
+        HumanizerInterface $humanizer
     ) {
         $this->twig = $twig;
-        $this->localeContext = $localeContext;
+        $this->humanizer = $humanizer;
     }
 
     /**
@@ -33,39 +31,18 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
-        if (!\class_exists(CronTranslator::class) || '' === $scheduleCommand->getCronExpression()) {
-            return $scheduleCommand->getCronExpression();
-        }
-
-        $locale = $this->getLocale();
-
-        try {
-            $expression = CronTranslator::translate($scheduleCommand->getCronExpression(), $locale);
-
-            return $this->twig->render(
-                $options['template'],
-                [
-                    'schedulerCommand' => $scheduleCommand,
-                    'value' => $expression,
-                ]
-            );
-        } catch (\Throwable $throwable) {
-            return '';
-        }
+        return $this->twig->render(
+            $options['template'],
+            [
+                'schedulerCommand' => $scheduleCommand,
+                'value' => $this->humanizer->humanize($scheduleCommand->getCronExpression()),
+            ]
+        );
     }
 
     /** {@inheritdoc} */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('template');
-    }
-
-    private function getLocale(): string
-    {
-        try {
-            return $this->localeContext->getLocaleCode();
-        } catch (LocaleNotFoundException $localeNotFoundException) {
-            return 'en';
-        }
     }
 }
