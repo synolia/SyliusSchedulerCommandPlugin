@@ -36,7 +36,13 @@ class CronExpressionHumanizer implements HumanizerInterface
     private function getLocale(): string
     {
         try {
-            return $this->localeContext->getLocaleCode();
+            $locale = $this->localeContext->getLocaleCode();
+
+            if (\strlen($locale) === 2) {
+                return $locale;
+            }
+
+            return mb_substr($locale, 0, 2);
         } catch (LocaleNotFoundException $localeNotFoundException) {
             return 'en';
         }
