@@ -106,7 +106,7 @@ sylius_grid:
                 executedAt: desc
             filters:
                 id:
-                    label: synolia.ui.scheduled_command.name
+                    label: synolia.ui.scheduled_command.id
                     type: string
                     enabled: false
                 name:
@@ -118,7 +118,7 @@ sylius_grid:
                     type: string
                     enabled: true
                 state:
-                    label: synolia.ui.scheduled_command.command
+                    label: synolia.ui.scheduled_command.state
                     type: string
                     enabled: true
             actions:

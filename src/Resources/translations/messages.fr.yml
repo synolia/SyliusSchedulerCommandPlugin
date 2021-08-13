@@ -3,6 +3,7 @@ synolia:
         commands: Commandes planifiées
         scheduled_commands: Historique des commandes planifiées
         scheduled_command:
+            id: Id
             name: Nom
             command: Commande
             state: Etat

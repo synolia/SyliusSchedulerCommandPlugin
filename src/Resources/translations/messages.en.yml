@@ -3,6 +3,7 @@ synolia:
         commands: Scheduled commands
         scheduled_commands: Scheduled commands history
         scheduled_command:
+            id: Id
             name: Name
             command: Command
             state: State
