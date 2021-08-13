@@ -45,3 +45,11 @@ services:
             $dataExtractor: '@sylius.grid.data_extractor.property_access'
         tags:
             - { name: sylius.grid_field, type: scheduled_command_executed_at }
+
+    Synolia\SyliusSchedulerCommandPlugin\Listener\Grid\GoToHistoryButtonGridListener:
+        tags:
+            - { name: kernel.event_listener, event: sylius.grid.synolia_admin_commands, method: onSyliusGridAdmin }
+
+    Synolia\SyliusSchedulerCommandPlugin\Listener\Grid\GoToCommandsButtonGridListener:
+        tags:
+            - { name: kernel.event_listener, event: sylius.grid.synolia_admin_scheduled_commands, method: onSyliusGridAdmin }

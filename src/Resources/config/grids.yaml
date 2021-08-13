@@ -137,3 +137,4 @@ sylius_grid:
     templates:
         action:
             schedule_command_execute_immediate: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"
+            link: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/link.html.twig"
