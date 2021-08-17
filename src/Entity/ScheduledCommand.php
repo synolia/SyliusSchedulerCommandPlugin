@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Synolia\SyliusSchedulerCommandPlugin\Enum\ScheduledCommandStateEnum;
 
 /**
  * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository")
- * @ORM\Table("scheduled_command")
+ * @ORM\Table("synolia_scheduled_commands")
  */
 class ScheduledCommand implements ScheduledCommandInterface
 {
@@ -39,18 +40,10 @@ class ScheduledCommand implements ScheduledCommandInterface
     private $arguments;
 
     /**
-     * @see https://abunchofutils.com/u/computing/cron-format-helper/
-     *
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $cronExpression = '* * * * *';
-
-    /**
      * @var \DateTime|null
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="executed_at", type="datetime", nullable=true)
      */
-    private $lastExecution;
+    private $executedAt;
 
     /**
      * @var int|null
@@ -67,30 +60,28 @@ class ScheduledCommand implements ScheduledCommandInterface
     private $logFile;
 
     /**
-     * @var int
-     * @ORM\Column(type="integer")
-     */
-    private $priority = 0;
-
-    /**
-     * If true, command will be execute next time regardless cron expression
-     *
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $executeImmediately = false;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $enabled = true;
-
-    /**
      * @var \DateTime|null
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $commandEndTime;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+
+    /**
+     * @var string
+     * @ORM\Column(name="state", type="string")
+     */
+    private $state;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->state = ScheduledCommandStateEnum::WAITING;
+    }
 
     public function getId(): ?int
     {
@@ -133,26 +124,14 @@ class ScheduledCommand implements ScheduledCommandInterface
         return $this;
     }
 
-    public function getCronExpression(): string
+    public function getExecutedAt(): ?\DateTime
     {
-        return $this->cronExpression;
+        return $this->executedAt;
     }
 
-    public function setCronExpression(string $cronExpression): ScheduledCommandInterface
+    public function setExecutedAt(?\DateTime $executedAt): ScheduledCommandInterface
     {
-        $this->cronExpression = $cronExpression;
-
-        return $this;
-    }
-
-    public function getLastExecution(): ?\DateTime
-    {
-        return $this->lastExecution;
-    }
-
-    public function setLastExecution(?\DateTime $lastExecution): ScheduledCommandInterface
-    {
-        $this->lastExecution = $lastExecution;
+        $this->executedAt = $executedAt;
 
         return $this;
     }
@@ -181,42 +160,6 @@ class ScheduledCommand implements ScheduledCommandInterface
         return $this;
     }
 
-    public function getPriority(): int
-    {
-        return $this->priority;
-    }
-
-    public function setPriority(int $priority): ScheduledCommandInterface
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
-    public function isExecuteImmediately(): bool
-    {
-        return $this->executeImmediately;
-    }
-
-    public function setExecuteImmediately(bool $executeImmediately): ScheduledCommandInterface
-    {
-        $this->executeImmediately = $executeImmediately;
-
-        return $this;
-    }
-
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    public function setEnabled(bool $enabled): ScheduledCommandInterface
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
     public function getCommandEndTime(): ?\DateTime
     {
         return $this->commandEndTime;
@@ -227,5 +170,22 @@ class ScheduledCommand implements ScheduledCommandInterface
         $this->commandEndTime = $commandEndTime;
 
         return $this;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
     }
 }

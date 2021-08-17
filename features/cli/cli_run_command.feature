@@ -1,4 +1,4 @@
-@cli_run_commad
+@cli_run_command
 Feature: Run cli command
     In order to execute commands
     As a developer

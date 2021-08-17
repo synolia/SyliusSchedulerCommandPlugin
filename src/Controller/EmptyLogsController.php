@@ -8,11 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
 final class EmptyLogsController extends AbstractController
 {
-    /** @var ScheduledCommandRepository */
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
 
     /** @var TranslatorInterface */
@@ -22,7 +22,7 @@ final class EmptyLogsController extends AbstractController
     private $logsDir;
 
     public function __construct(
-        ScheduledCommandRepository $scheduledCommandRepository,
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         TranslatorInterface $translator,
         string $logsDir
     ) {
@@ -45,7 +45,7 @@ final class EmptyLogsController extends AbstractController
         $this->addFlash('success', $this->translator->trans('sylius.ui.scheduled_command.bulk_empty_logs'));
 
         return $this->redirectToRoute(
-            'sylius_admin_scheduled_command_index',
+            'synolia_admin_command_index',
             [],
             Response::HTTP_MOVED_PERMANENTLY
         );

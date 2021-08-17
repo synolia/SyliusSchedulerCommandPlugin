@@ -7,13 +7,12 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
 class ExecuteScheduleCommand
 {
-    /** @var ScheduledCommandRepository */
+    /** @var ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
 
     /** @var EntityManagerInterface */
@@ -29,7 +28,7 @@ class ExecuteScheduleCommand
     private $projectDir;
 
     public function __construct(
-        ScheduledCommandRepository $scheduledCommandRepository,
+        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         EntityManagerInterface $entityManager,
         KernelInterface $kernel,
         string $logsDir,
@@ -42,11 +41,11 @@ class ExecuteScheduleCommand
         $this->projectDir = $projectDir;
     }
 
-    public function executeImmediate(string $commandId): bool
+    public function executeImmediate(string $scheduledCommandId): bool
     {
-        /** @var ScheduledCommand|null $scheduledCommand */
-        $scheduledCommand = $this->scheduledCommandRepository->find($commandId);
-        if (!$scheduledCommand instanceof ScheduledCommand) {
+        /** @var ScheduledCommandInterface|null $scheduledCommand */
+        $scheduledCommand = $this->scheduledCommandRepository->find($scheduledCommandId);
+        if (!$scheduledCommand instanceof ScheduledCommandInterface) {
             return false;
         }
 
@@ -55,7 +54,9 @@ class ExecuteScheduleCommand
             $this->kernel->getProjectDir()
         );
 
-        $scheduledCommand->setLastExecution(new \DateTime());
+        $scheduledCommand->setExecutedAt(new \DateTime());
+        $process->setIdleTimeout(null);
+        $process->setTimeout(null);
         $process->run();
         $result = $process->getExitCode();
 
@@ -73,6 +74,8 @@ class ExecuteScheduleCommand
     public function executeFromCron(ScheduledCommandInterface $scheduledCommand): int
     {
         $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
+        $process->setIdleTimeout(null);
+        $process->setTimeout(null);
         $process->run();
         $result = $process->getExitCode();
         $scheduledCommand->setCommandEndTime(new \DateTime());

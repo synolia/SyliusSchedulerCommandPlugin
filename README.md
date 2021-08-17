@@ -15,7 +15,11 @@
 </p>
 <p align="center">Schedule Symfony Commands in your Sylius admin panel.</p>
 
-![Capture](/etc/capture.png "Capture")
+## Commands list
+![Commands](/doc/images/Commands.png "Commands")
+
+## Scheduled Commands list
+![Scheduled Commands](/doc/images/ScheduledCommands.png "Scheduled Commands")
 
 ## Features
 
@@ -77,7 +81,7 @@ sylius_fixtures:
                                 name: 'Reset Sylius'
                                 command: 'sylius:fixtures:load'
                                 cronExpression: '0 0 * * *'
-                                logFile: 'reset.log'
+                                logFilePrefix: 'reset'
                                 priority: 0
                                 enabled: true
                             -

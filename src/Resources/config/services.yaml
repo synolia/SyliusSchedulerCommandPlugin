@@ -24,6 +24,11 @@ services:
         tags:
             - { name: sylius.grid_field, type: scheduled_command_url }
 
+    app.grid_field.scheduled_command.state:
+        class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandStateType
+        tags:
+            - { name: sylius.grid_field, type: scheduled_command_state }
+
     app.grid_field.scheduled_command.humanReadableExpression:
         class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandHumanReadableExpressionType
         tags:
@@ -33,3 +38,18 @@ services:
         class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandExecutionTimeType
         tags:
             - { name: sylius.grid_field, type: scheduled_command_execution_time }
+
+    Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\DatetimeFieldType:
+        decorates: 'sylius.grid_field.datetime'
+        arguments:
+            $dataExtractor: '@sylius.grid.data_extractor.property_access'
+        tags:
+            - { name: sylius.grid_field, type: scheduled_command_executed_at }
+
+    Synolia\SyliusSchedulerCommandPlugin\Listener\Grid\GoToHistoryButtonGridListener:
+        tags:
+            - { name: kernel.event_listener, event: sylius.grid.synolia_admin_commands, method: onSyliusGridAdmin }
+
+    Synolia\SyliusSchedulerCommandPlugin\Listener\Grid\GoToCommandsButtonGridListener:
+        tags:
+            - { name: kernel.event_listener, event: sylius.grid.synolia_admin_scheduled_commands, method: onSyliusGridAdmin }

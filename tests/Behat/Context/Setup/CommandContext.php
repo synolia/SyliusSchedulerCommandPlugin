@@ -9,6 +9,7 @@ use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 
 final class CommandContext implements Context
 {
@@ -16,19 +17,19 @@ final class CommandContext implements Context
     private $sharedStorage;
 
     /** @var FactoryInterface */
-    private $scheduledCommandFactory;
+    private $commandFactory;
 
     /** @var RepositoryInterface */
-    private $scheduledCommandRepository;
+    private $commandRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        FactoryInterface $scheduledCommandFactory,
-        RepositoryInterface $scheduledCommandRepository
+        FactoryInterface $commandFactory,
+        CommandRepositoryInterface $commandRepository
     ) {
         $this->sharedStorage = $sharedStorage;
-        $this->scheduledCommandFactory = $scheduledCommandFactory;
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
+        $this->commandFactory = $commandFactory;
+        $this->commandRepository = $commandRepository;
     }
 
     /**
@@ -37,11 +38,11 @@ final class CommandContext implements Context
     public function iHaveCommandNamed(string $code, string $name): void
     {
         /** @var ScheduledCommandInterface $command */
-        $command = $this->scheduledCommandFactory->createNew();
+        $command = $this->commandFactory->createNew();
         $command->setCommand($code)
             ->setName($name);
 
         $this->sharedStorage->set('command', $command);
-        $this->scheduledCommandRepository->add($command);
+        $this->commandRepository->add($command);
     }
 }

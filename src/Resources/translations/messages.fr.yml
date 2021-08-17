@@ -1,12 +1,14 @@
-sylius:
+synolia:
     ui:
-        scheduled_commands: Commandes planifiées
+        commands: Commandes planifiées
+        scheduled_commands: Historique des commandes planifiées
         scheduled_command:
+            id: Id
             name: Nom
             command: Commande
+            state: Etat
             cron_expression: Expression de Cron
-            human_readable_expression: Expression humanisée
-            last_execution: Dernière exécution
+            last_execution: Lancé à
             last_return_code: Dernier code de retour
             log_file: Fichier de log
             priority: Priorité
@@ -15,13 +17,22 @@ sylius:
             execute_immediate: Executer immédiatement
             emtpy_logs: Vider les logs
             bulk_empty_logs: Les fichiers de logs ont bien été vidé.
-        edit_scheduled_command: Editer la commande
-        new_scheduled_command: Créer une commande
+        edit_command: Editer la commande planifiée
+        new_scheduled_command: Créer une commande planifiée immédiate
+        new_command: Créer une commande planifiée
+        launch_a_command: Lancer une commande
         live_view: Voir en direct
+        download: Télécharger
         live_view_of_scheduled_command: 'Vue en direct de la commande "%scheduledCommandName%"'
         does_not_exists_or_missing_log_file: 'La commande n''existe pas ou n''a pas de fichier log.'
+        statuses:
+            waiting: En attente
+            in_progress: En cours
+            finished: Terminée
+            error: En erreur
     menu:
         admin:
             main:
                 configuration:
                     scheduler_command: Commandes planifiées
+                    scheduler_command_history: Historique des planifications

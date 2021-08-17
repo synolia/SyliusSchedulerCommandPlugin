@@ -1,11 +1,10 @@
-sylius:
+synolia:
     ui:
         scheduled_commands: 'Geplande commando''s'
         scheduled_command:
             name: Naam
             command: Commando
             cron_expression: Cron expressie
-            human_readable_expression: Menselijke expressie
             last_execution: Laatst uitgevoerd
             last_return_code: Laatste retourcode
             log_file: Log-bestand

@@ -1,10 +1,22 @@
-sylius_admin_scheduled_command:
+synolia_admin_commands:
     resource: |
-        alias: sylius.scheduled_command
+        alias: synolia.command
         templates: "@SyliusAdmin\\Crud"
         section: admin
-        grid: sylius_admin_scheduled_command
+        grid: synolia_admin_commands
         except: ['show']
+        vars:
+            index:
+                icon: 'box'
+    type: sylius.resource
+
+synolia_admin_scheduled_commands:
+    resource: |
+        alias: synolia.scheduled_command
+        templates: "@SyliusAdmin\\Crud"
+        section: admin
+        grid: synolia_admin_scheduled_commands
+        except: ['update', 'show']
         vars:
             index:
                 icon: 'box'

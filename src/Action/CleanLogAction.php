@@ -8,17 +8,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository;
 
 final class CleanLogAction extends AbstractController
 {
     public function __invoke(
         TranslatorInterface $translator,
-        ScheduledCommandRepository $scheduledCommandRepository,
+        CommandRepository $commandRepository,
         string $command,
         string $logsDir
     ): Response {
-        $scheduleCommand = $scheduledCommandRepository->find($command);
+        $scheduleCommand = $commandRepository->find($command);
 
         if (null === $scheduleCommand) {
             $this->addFlash('error', $translator->trans('sylius.ui.scheduled_command_not_exists'));
@@ -53,7 +53,7 @@ final class CleanLogAction extends AbstractController
     private function redirectToGrid(): RedirectResponse
     {
         return $this->redirectToRoute(
-            'sylius_admin_scheduled_command_index',
+            'synolia_admin_command_index',
             [],
             Response::HTTP_MOVED_PERMANENTLY
         );

@@ -7,7 +7,7 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 final class ScheduledCommandType extends AbstractType
 {
@@ -20,18 +20,14 @@ final class ScheduledCommandType extends AbstractType
             ->add('name')
             ->add('command', CommandChoiceType::class)
             ->add('arguments')
-            ->add('cronExpression')
             ->add('logFile')
-            ->add('priority')
-            ->add('executeImmediately')
-            ->add('enabled')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ScheduledCommand::class,
+            'data_class' => ScheduledCommandInterface::class,
         ]);
     }
 }

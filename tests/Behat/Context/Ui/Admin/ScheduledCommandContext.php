@@ -11,15 +11,14 @@ use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\Command;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
-use Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\CreatePageInterface;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\IndexPageInterface;
-use Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\UpdatePageInterface;
 use Webmozart\Assert\Assert;
 
-final class SchedulerCommandContext implements Context
+final class ScheduledCommandContext implements Context
 {
     /** @var SharedStorageInterface */
     private $sharedStorage;
@@ -33,14 +32,8 @@ final class SchedulerCommandContext implements Context
     /** @var IndexPageInterface */
     private $indexPage;
 
-    /** @var CreatePageInterface */
-    private $createPage;
-
-    /** @var UpdatePageInterface */
-    private $updatePage;
-
     /** @var ScheduledCommandRepositoryInterface */
-    private $repository;
+    private $scheduledCommandRepository;
 
     /** @var \Symfony\Contracts\Translation\TranslatorInterface */
     private $translator;
@@ -50,8 +43,6 @@ final class SchedulerCommandContext implements Context
         CurrentPageResolverInterface $currentPageResolver,
         NotificationCheckerInterface $notificationChecker,
         IndexPageInterface $indexPage,
-        CreatePageInterface $createPage,
-        UpdatePageInterface $updatePage,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         TranslatorInterface $translator
     ) {
@@ -59,9 +50,7 @@ final class SchedulerCommandContext implements Context
         $this->currentPageResolver = $currentPageResolver;
         $this->notificationChecker = $notificationChecker;
         $this->indexPage = $indexPage;
-        $this->createPage = $createPage;
-        $this->updatePage = $updatePage;
-        $this->repository = $scheduledCommandRepository;
+        $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->translator = $translator;
     }
 
@@ -71,52 +60,7 @@ final class SchedulerCommandContext implements Context
     public function iGoToTheSchedulerCommandPage(): void
     {
         $this->indexPage->open();
-    }
-
-    /**
-     * @When I go to the create scheduled command page
-     */
-    public function iGoToTheCreateScheduledCommandPage(): void
-    {
-        $this->createPage->open();
-    }
-
-    /**
-     * @When I fill :field with :value
-     */
-    public function iFillFields(string $field, string $value): void
-    {
-        /** @var CreatePageInterface|UpdatePageInterface $currentPage */
-        $currentPage = $this->resolveCurrentPage();
-        $currentPage->fillField($field, $value);
-    }
-
-    /**
-     * @When I add it
-     * @When I try to add it
-     */
-    public function iAddIt(): void
-    {
-        $this->createPage->create();
-    }
-
-    /**
-     * @When I update it
-     */
-    public function iUpdateIt(): void
-    {
-        $this->updatePage->saveChanges();
-    }
-
-    /**
-     * @When I update this scheduled command
-     */
-    public function iUpdateThisScheduledCommand(): void
-    {
-        /** @var ScheduledCommandInterface $schedule */
-        $schedule = $this->sharedStorage->get('schedule');
-
-        $this->updatePage->open(['id' => $schedule->getId()]);
+        $this->indexPage->sortBy('name');
     }
 
     /**
@@ -124,8 +68,8 @@ final class SchedulerCommandContext implements Context
      */
     public function iHaveAnEmptyListOfScheduledCommand(): void
     {
-        foreach ($this->repository->findAll() as $scheduledCommand) {
-            $this->repository->remove($scheduledCommand);
+        foreach ($this->scheduledCommandRepository->findAll() as $command) {
+            $this->scheduledCommandRepository->remove($command);
         }
     }
 
@@ -154,7 +98,7 @@ final class SchedulerCommandContext implements Context
     public function iShouldBeNotifiedThatNewScheduledCommandHasBeenCreated(): void
     {
         $this->notificationChecker->checkNotification(
-            'Scheduled command has been successfully created.',
+            'Command has been successfully created.',
             NotificationType::success()
         );
     }
@@ -165,7 +109,7 @@ final class SchedulerCommandContext implements Context
     public function iShouldBeNotifiedThatTheScheduledCommandHasBeenSuccessfullyUpdated(): void
     {
         $this->notificationChecker->checkNotification(
-            'Scheduled command has been successfully updated.',
+            'Command has been successfully updated.',
             NotificationType::success()
         );
     }
@@ -176,7 +120,7 @@ final class SchedulerCommandContext implements Context
     public function iShouldBeNotifiedThatTheScheduledCommandHasBeenDeleted(): void
     {
         $this->notificationChecker->checkNotification(
-            'Scheduled command has been successfully deleted.',
+            'Command has been successfully deleted.',
             NotificationType::success()
         );
     }
@@ -197,10 +141,10 @@ final class SchedulerCommandContext implements Context
      */
     public function thereIsAScheduledCommandInTheStore(): void
     {
-        $schedule = $this->createSchedule();
+        $schedule = $this->createCommand();
 
-        $this->sharedStorage->set('schedule', $schedule);
-        $this->repository->add($schedule);
+        $this->sharedStorage->set('command', $schedule);
+        $this->scheduledCommandRepository->add($schedule);
     }
 
     /**
@@ -209,7 +153,7 @@ final class SchedulerCommandContext implements Context
     public function iDeleteThisScheduledCommand(): void
     {
         /** @var ScheduledCommandInterface $schedule */
-        $schedule = $this->sharedStorage->get('schedule');
+        $schedule = $this->sharedStorage->get('command');
 
         $this->indexPage->deleteResourceOnPage(['name' => $schedule->getName()]);
     }
@@ -282,15 +226,6 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
-     * @When /^I clean log file for this scheduled command for scheduled command named "([^"]*)"$/
-     */
-    public function iCleanLogFileForThisScheduledCommandForScheduledCommandNamed(string $scheduledCommandName): void
-    {
-        $actions = $this->indexPage->getActionsForResource(['name' => $scheduledCommandName]);
-        $actions->pressButton('Empty log');
-    }
-
-    /**
      * @Then /^I should be notified that the scheduled command log file has not been defined$/
      */
     public function iShouldBeNotifiedThatTheScheduledCommandLogFileHasNotBeenDefined(): void
@@ -313,23 +248,21 @@ final class SchedulerCommandContext implements Context
     }
 
     /**
-     * @return IndexPageInterface|CreatePageInterface|UpdatePageInterface|SymfonyPageInterface
+     * @return IndexPageInterface|SymfonyPageInterface
      */
     private function resolveCurrentPage(): SymfonyPageInterface
     {
         return $this->currentPageResolver->getCurrentPageWithForm([
             $this->indexPage,
-            $this->createPage,
-            $this->updatePage,
         ]);
     }
 
-    private function createSchedule(): ScheduledCommandInterface
+    private function createCommand(): CommandInterface
     {
-        $schedule = new ScheduledCommand();
-        $schedule->setName('About project')
+        $command = new Command();
+        $command->setName('About project')
             ->setCommand('about');
 
-        return $schedule;
+        return $command;
     }
 }

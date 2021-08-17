@@ -6,17 +6,17 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
 final class DownloadController extends AbstractController
 {
-    /** @var ScheduledCommandRepository */
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
 
     /** @var string */
     private $logsDir;
 
-    public function __construct(ScheduledCommandRepository $scheduledCommandRepository, string $logsDir)
+    public function __construct(ScheduledCommandRepositoryInterface $scheduledCommandRepository, string $logsDir)
     {
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->logsDir = $logsDir;

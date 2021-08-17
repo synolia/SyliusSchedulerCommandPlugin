@@ -7,8 +7,9 @@ namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\Command;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\WithDatabaseTrait;
 
 class ExecuteScheduleCommandTest extends WebTestCase
@@ -40,19 +41,21 @@ class ExecuteScheduleCommandTest extends WebTestCase
 
     public function testExecuteImmediateWithGoodCommand(): void
     {
-        /** @var ScheduledCommand $scheduledCommand */
-        $scheduledCommand = (new Factory(ScheduledCommand::class))->createNew();
-        $scheduledCommand
+        /** @var Command $command */
+        $command = (new Factory(Command::class))->createNew();
+        $command
             ->setName('About application')
-            ->setCommand('about');
+            ->setCommand('about')
+        ;
 
-        $this->entityManager->persist($scheduledCommand);
+        $this->entityManager->persist($command);
         $this->entityManager->flush();
 
-        /** @var ScheduledCommand $result */
-        $result = $this->entityManager->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'About application']);
-        $commandResult = $this->executeScheduleCommand->executeImmediate((string) $result->getId());
+        /** @var ScheduledCommandPlanner $planner */
+        $planner = self::$container->get(ScheduledCommandPlanner::class);
+        $scheduledCommand = $planner->plan($command);
 
+        $commandResult = $this->executeScheduleCommand->executeImmediate((string) $scheduledCommand->getId());
         $this->assertEquals(true, $commandResult);
     }
 }

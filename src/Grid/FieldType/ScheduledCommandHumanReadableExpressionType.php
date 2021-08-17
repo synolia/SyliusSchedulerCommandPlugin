@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType;
 
-use Sivaschenko\Utility\Cron\ExpressionFactory;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Synolia\SyliusSchedulerCommandPlugin\Humanizer\HumanizerInterface;
 use Twig\Environment;
 
 final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInterface
@@ -15,9 +15,15 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
     /** @var Environment */
     private $twig;
 
-    public function __construct(Environment $twig)
-    {
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Humanizer\HumanizerInterface */
+    private $humanizer;
+
+    public function __construct(
+        Environment $twig,
+        HumanizerInterface $humanizer
+    ) {
         $this->twig = $twig;
+        $this->humanizer = $humanizer;
     }
 
     /**
@@ -25,23 +31,13 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
-        if (!\class_exists(ExpressionFactory::class) || '' === $scheduleCommand->getCronExpression()) {
-            return '';
-        }
-
-        try {
-            $expression = ExpressionFactory::getExpression($scheduleCommand->getCronExpression());
-
-            return $this->twig->render(
-                $options['template'],
-                [
-                    'schedulerCommand' => $scheduleCommand,
-                    'value' => $expression->getVerbalString(),
-                ]
-            );
-        } catch (\Throwable $throwable) {
-            return '';
-        }
+        return $this->twig->render(
+            $options['template'],
+            [
+                'schedulerCommand' => $scheduleCommand,
+                'value' => $this->humanizer->humanize($scheduleCommand->getCronExpression()),
+            ]
+        );
     }
 
     /** {@inheritdoc} */

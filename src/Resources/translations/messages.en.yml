@@ -1,12 +1,14 @@
-sylius:
+synolia:
     ui:
-        scheduled_commands: Scheduled commands
+        commands: Scheduled commands
+        scheduled_commands: Scheduled commands history
         scheduled_command:
+            id: Id
             name: Name
             command: Command
+            state: State
             cron_expression: Cron expression
-            human_readable_expression: Humanized expression
-            last_execution: Last execution
+            last_execution: Executed At
             last_return_code: Last return code
             log_file: Log file
             priority: Priority
@@ -15,18 +17,27 @@ sylius:
             execute_immediate: Execute immediately
             emtpy_logs: Empty logs
             bulk_empty_logs: The log files have been emptied.
-        edit_scheduled_command: Edit command
-        new_scheduled_command: Create command
+        edit_command: Edit scheduled command
+        new_scheduled_command: Create immediate scheduled command
+        new_command: Create scheduled command
+        launch_a_command: Launch a command
         log_file_undefined: Scheduled command has no defined log file.
         no_log_file_found: No log file found.
         error_emptying_log_file: There was an error while trying to empty the log file.
         log_file_successfully_emptied: Log file successfully emptied.
         scheduled_command_not_exists: Scheduled Command does not exists.
         live_view: Live view
+        download: Download
         live_view_of_scheduled_command: 'Live view of scheduled command "%scheduledCommandName%"'
         does_not_exists_or_missing_log_file: 'Scheduler Command does not exists or has no log file.'
+        statuses:
+            waiting: Waiting
+            in_progress: In Progress
+            finished: Finished
+            error: Error
     menu:
         admin:
             main:
                 configuration:
                     scheduler_command: Scheduled commands
+                    scheduler_command_history: Scheduled commands history

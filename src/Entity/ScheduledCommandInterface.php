@@ -22,13 +22,9 @@ interface ScheduledCommandInterface extends ResourceInterface
 
     public function setArguments(?string $arguments): self;
 
-    public function getCronExpression(): string;
+    public function getExecutedAt(): ?\DateTime;
 
-    public function setCronExpression(string $cronExpression): self;
-
-    public function getLastExecution(): ?\DateTime;
-
-    public function setLastExecution(?\DateTime $lastExecution): self;
+    public function setExecutedAt(?\DateTime $lastExecution): self;
 
     public function getLastReturnCode(): ?int;
 
@@ -38,19 +34,11 @@ interface ScheduledCommandInterface extends ResourceInterface
 
     public function setLogFile(?string $logFile): self;
 
-    public function getPriority(): int;
-
-    public function setPriority(int $priority): self;
-
-    public function isExecuteImmediately(): bool;
-
-    public function setExecuteImmediately(bool $executeImmediately): self;
-
-    public function isEnabled(): bool;
-
-    public function setEnabled(bool $enabled): self;
-
     public function getCommandEndTime(): ?\DateTime;
 
     public function setCommandEndTime(\DateTime $executeImmediately): self;
+
+    public function setState(string $state): self;
+
+    public function getState(): string;
 }

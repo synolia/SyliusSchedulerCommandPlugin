@@ -52,7 +52,7 @@
         "webmozart/assert": "^1.8"
     },
     "suggest": {
-        "sivaschenko/utility-cron": "Allow showing humanized cron expression."
+        "lorisleiva/cron-translator": "Allow showing humanized and translated cron expression."
     },
     "prefer-stable": true,
     "autoload": {
@@ -63,5 +63,8 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "fix-ecs": "ecs check -c ruleset/ecs.php --fix --ansi --clear-cache"
     }
 }

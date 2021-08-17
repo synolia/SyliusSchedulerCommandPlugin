@@ -2,4 +2,4 @@
 
 {% set path = options.link.url|default(path(options.link.route, options.link.parameters)) %}
 
-{{ buttons.default(path, action.label, null, 'execute') }}
+{{ buttons.default(path, action.label, null, 'sync', 'primary') }}
