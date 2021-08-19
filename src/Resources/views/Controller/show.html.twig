@@ -10,118 +10,19 @@
     <div class="ui input">
         <input id="grep" type="text" placeholder="Search...">
     </div>
+
     <pre id="results"></pre>
-{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        pre {
-            white-space: pre-wrap;       /* Since CSS 2.1 */
-            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-            white-space: -pre-wrap;      /* Opera 4-6 */
-            white-space: -o-pre-wrap;    /* Opera 7 */
-            word-wrap: break-word;       /* Internet Explorer 5.5+ */
-        }
-        #results {
-            border: solid 1px;
-            padding: 5px;
-        }
-    </style>
-{% endblock %}
+    {{ sylius_template_event('synolia.admin.command.logs.stylesheets') }}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
     <script type="text/javascript">
+        {% autoescape 'js' %}
         /* <![CDATA[ */
-        //Last know size of the file
-        lastSize = 0;
-        //Grep keyword
-        grep = "";
-        //Should the Grep be inverted?
-        invert = 0;
-        //Last known document height
-        documentHeight = 0;
-        //Last known scroll position
-        scrollPosition = 0;
-        //Should we scroll to the bottom?
-        scroll = false;
-        $(document).ready(function() {
-            //Close the settings dialog after a user hits enter in the textarea
-            $('#grep').keyup(function(e) {
-                if (e.keyCode == 13) {
-                    lastSize = 0;
-                    grep = $(this).val();
-                    $('#results').html('');
-                }
-            });
-            //Focus on the textarea
-            $("#grep").focus();
-            //Settings button into a nice looking button with a theme
-            //Settings button opens the settings dialog
-            $("#grepKeyword").click(function() {
-                $("#settings").dialog('open');
-                $("#grepKeyword").removeClass('ui-state-focus');
-            });
-            $(".file").click(function(e) {
-                $("#results").text("");
-                lastSize = 0;
-            });
-
-            //Set up an interval for updating the log. Change updateTime in the PHPTail contstructor to change this
-            setInterval("updateLog()", {{ updateTime }});
-            //Some window scroll event to keep the menu at the top
-            $(window).scroll(function(e) {
-                if ($(window).scrollTop() > 0) {
-                    $('.float').css({
-                        position : 'fixed',
-                        top : '0',
-                        left : 'auto'
-                    });
-                } else {
-                    $('.float').css({
-                        position : 'static'
-                    });
-                }
-            });
-            //If window is resized should we scroll to the bottom?
-            $(window).resize(function() {
-                if (scroll) {
-                    scrollToBottom();
-                }
-            });
-            //Handle if the window should be scrolled down or not
-            $(window).scroll(function() {
-                documentHeight = $(document).height();
-                scrollPosition = $(window).height() + $(window).scrollTop();
-                if (documentHeight <= scrollPosition) {
-                    scroll = true;
-                } else {
-                    scroll = false;
-                }
-            });
-            scrollToBottom();
-
-        });
-        //This function scrolls to the bottom
-        function scrollToBottom() {
-            $("html, body").animate({scrollTop: $(document).height()}, "fast");
-        }
-        //This function queries the server for updates.
-        function updateLog() {
-            $.getJSON('{{ route }}?refresh=1&lastsize=' + lastSize + '&grep-keywords=' + grep + '&invert=' + invert, function(data) {
-                lastSize = data.size;
-                $("#current").text(data.file);
-                $.each(data.data, function(key, value) {
-                    $("#results").append('' + value + '<br/>');
-                });
-                if (scroll) {
-                    scrollToBottom();
-                }
-            });
-        }
+        var updateTime = {{ updateTime }};
+        var route = "{{ route }}";
         /* ]]> */
+        {% endautoescape %}
     </script>
+
+    {{ sylius_template_event('synolia.admin.command.logs.javascripts') }}
 {% endblock %}

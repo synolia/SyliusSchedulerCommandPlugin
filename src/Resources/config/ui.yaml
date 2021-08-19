@@ -1,0 +1,22 @@
+sylius_ui:
+    events:
+        synolia.admin.scheduled_command.index:
+            blocks:
+                modal:
+                    priority: 0
+                    template: '@SynoliaSyliusSchedulerCommandPlugin/Controller/modal.html.twig'
+        synolia.admin.scheduled_command.index.javascripts:
+            blocks:
+                js:
+                    priority: 0
+                    template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/js.html.twig'
+        synolia.admin.command.logs.javascripts:
+            blocks:
+                js:
+                    priority: 0
+                    template: '@SynoliaSyliusSchedulerCommandPlugin/Controller/js.html.twig'
+        synolia.admin.command.logs.stylesheets:
+            blocks:
+                css:
+                    priority: 0
+                    template: '@SynoliaSyliusSchedulerCommandPlugin/Controller/css.html.twig'
