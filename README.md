@@ -29,10 +29,11 @@
   * Name
   * Selected Command from the list of Symfony commands
   * Based on Cron schedule expression see [Cron formats](https://abunchofutils.com/u/computing/cron-format-helper/)
-  * Output Log file (optional)
+  * Output Log file prefix (optional)
   * Priority (highest is priority)
-* Run the Command immediately
-* Download, show file size, empty log files directly from the admin panel
+* Run the Command immediately (at the next passage of the command `synolia:scheduler-run`)
+* Run a Command juste one time (from history page clic on `Launch a command` button) 
+* Download or live view of log files directly from the admin panel
 * Define commands with a Factory (from a Doctrine migration, for example)
 
 ## Requirements
@@ -59,13 +60,13 @@
 
 4. (optional) Showing humanized cron expression
 
-        composer require sivaschenko/utility-cron
+        composer require dragonmantank/cron-expression
 
 ## Usage
 
 * Log into admin panel
-* Click on `Scheduled commands` in the Configuration section in main menu
-* Manage your Scheduled commands
+* Click on `Scheduled commands` in the Scheduled commands section in main menu to manage your Scheduled commands
+* Click on `Scheduled commands history` in the Scheduled commands section in main menu to see history of commands
 
 ## Fixtures
 Inside sylius fixture file `config/packages/sylius_fixtures.yaml` you can add scheduled command fixtures to your suite.
