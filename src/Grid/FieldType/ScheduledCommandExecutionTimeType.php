@@ -19,25 +19,26 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
-        if ($scheduleCommand->getCommandEndTime() === null || $scheduleCommand->getExecutedAt() === null) {
+        if ($scheduleCommand->getExecutedAt() === null) {
             return '';
         }
 
-        $time = $scheduleCommand->getCommandEndTime()->getTimestamp() - $scheduleCommand->getExecutedAt()->getTimestamp();
+        $baseDateTime = $scheduleCommand->getCommandEndTime() ?? new \DateTime();
+        $time = $baseDateTime->getTimestamp() - $scheduleCommand->getExecutedAt()->getTimestamp();
 
         if ($time > self::HOUR_IN_SECONDES) {
             $hours = (int) ($time / self::HOUR_IN_SECONDES) . 'h ';
             $minutes = (($time % self::HOUR_IN_SECONDES) / self::MINUTE_IN_SECONDES) . 'm ';
-            $secondes = (($time % self::HOUR_IN_SECONDES) % self::MINUTE_IN_SECONDES) . 's';
+            $seconds = (($time % self::HOUR_IN_SECONDES) % self::MINUTE_IN_SECONDES) . 's';
 
-            return $hours . $minutes . $secondes;
+            return $hours . $minutes . $seconds;
         }
 
         if ($time > self::MINUTE_IN_SECONDES) {
             $minutes = (int) ($time / self::MINUTE_IN_SECONDES) . 'm ';
-            $secondes = $time % self::MINUTE_IN_SECONDES . 's';
+            $seconds = $time % self::MINUTE_IN_SECONDES . 's';
 
-            return $minutes . $secondes;
+            return $minutes . $seconds;
         }
 
         return $time . 's';
