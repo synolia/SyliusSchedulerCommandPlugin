@@ -1,9 +1,12 @@
 synolia:
     ui:
-        scheduled_commands: 'Geplande commando''s'
+        commands: 'Geplande commando''s'
+        scheduled_commands: Geplande commando geschiedenis
         scheduled_command:
+            id: Id
             name: Naam
             command: Commando
+            state: Status
             cron_expression: Cron expressie
             last_execution: Laatst uitgevoerd
             last_return_code: Laatste retourcode
@@ -14,18 +17,27 @@ synolia:
             execute_immediate: Voer direct uit
             emtpy_logs: Logs legen
             bulk_empty_logs: De log-bestanden zijn geleegd.
-        edit_scheduled_command: Bewerk commando
-        new_scheduled_command: Creëer commando
+        edit_command: Bewerk commando
+        new_scheduled_command: Creëer direct een commando
+        new_command: Creëer commando
+        launch_a_command: Lanceer een commando
         log_file_undefined: Geplande commando heeft geen log-bestand gedefinieerd.
         no_log_file_found: Geen log-bestand gevonden.
         error_emptying_log_file: Er was een fout bij het leegmaken van het log-bestand.
         log_file_successfully_emptied: Log-bestand succesvol geleegd.
         scheduled_command_not_exists: Gepland commando bestaat niet.
         live_view: Live weergave
+        download: Download
         live_view_of_scheduled_command: 'Live weergave van commando "%scheduledCommandName%"'
         does_not_exists_or_missing_log_file: 'Gepland commando bestaat niet of heeft geen log-bestand.'
+        statuses:
+            waiting: In afwachting
+            in_progress: Bezig
+            finished: Voltooid
+            error: Fout
     menu:
         admin:
             main:
                 configuration:
                     scheduler_command: 'Geplande commando''s'
+                    scheduler_command_history: Geplande commando geschiedenis
