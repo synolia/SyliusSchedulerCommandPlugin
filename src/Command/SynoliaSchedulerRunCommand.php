@@ -21,6 +21,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
 final class SynoliaSchedulerRunCommand extends Command
 {
@@ -43,12 +44,16 @@ final class SynoliaSchedulerRunCommand extends Command
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner */
     private $scheduledCommandPlanner;
 
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface */
+    private $isDueVoter;
+
     public function __construct(
         EntityManagerInterface $scheduledCommandManager,
         ExecuteScheduleCommand $executeScheduleCommand,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlanner $scheduledCommandPlanner
+        ScheduledCommandPlanner $scheduledCommandPlanner,
+        IsDueVoterInterface $isDueVoter
     ) {
         parent::__construct(static::$defaultName);
 
@@ -57,6 +62,7 @@ final class SynoliaSchedulerRunCommand extends Command
         $this->commandRepository = $commandRepository;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
+        $this->isDueVoter = $isDueVoter;
     }
 
     protected function configure(): void
@@ -193,22 +199,20 @@ final class SynoliaSchedulerRunCommand extends Command
         return $commands;
     }
 
-    private function shouldExecuteCommand(CommandInterface $scheduledCommand, SymfonyStyle $io): bool
+    private function shouldExecuteCommand(CommandInterface $command, SymfonyStyle $io): bool
     {
-        if ($scheduledCommand->isExecuteImmediately()) {
-            $io->note('Immediately execution asked for : ' . $scheduledCommand->getCommand());
+        if ($command->isExecuteImmediately()) {
+            $io->note('Immediately execution asked for : ' . $command->getCommand());
 
             return true;
         }
 
         // Could be removed as getCommands fetch only enabled commands
-        if (!$scheduledCommand->isEnabled()) {
+        if (!$command->isEnabled()) {
             return false;
         }
 
-        $cron = CronExpression::factory($scheduledCommand->getCronExpression());
-
-        return $cron->isDue() ?? false;
+        return $this->isDueVoter->isDue($command);
     }
 
     private function changeState(ScheduledCommandInterface $scheduledCommand, string $state): void
