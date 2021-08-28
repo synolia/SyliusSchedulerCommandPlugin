@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
 interface CommandInterface extends ResourceInterface
@@ -41,4 +42,13 @@ interface CommandInterface extends ResourceInterface
     public function isEnabled(): bool;
 
     public function setEnabled(bool $enabled): self;
+
+    /**
+     * @return Collection<array-key, \Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface>|\Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface[]
+     */
+    public function getScheduledCommands(): Collection;
+
+    public function addScheduledCommand(ScheduledCommandInterface $scheduledCommand): self;
+
+    public function removeScheduledCommand(ScheduledCommandInterface $scheduledCommand): self;
 }

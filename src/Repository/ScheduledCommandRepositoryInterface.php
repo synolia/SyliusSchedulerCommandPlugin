@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Repository;
 
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 /**
@@ -19,4 +20,6 @@ interface ScheduledCommandRepositoryInterface extends RepositoryInterface
      * @return ScheduledCommandInterface[]
      */
     public function findAllRunnable(): iterable;
+
+    public function findLastCreatedCommand(CommandInterface $command): ?ScheduledCommandInterface;
 }

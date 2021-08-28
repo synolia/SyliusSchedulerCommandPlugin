@@ -34,6 +34,7 @@ class ScheduledCommandPlanner
             ->setName($command->getName())
             ->setCommand($command->getCommand())
             ->setArguments($command->getArguments())
+            ->setOwner($command)
         ;
 
         if (null !== $command->getLogFilePrefix()) {
