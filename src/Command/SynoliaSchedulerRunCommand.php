@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Command;
 
-use Cron\CronExpression;
-use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\Exception\ConnectionLost;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -159,19 +158,15 @@ final class SynoliaSchedulerRunCommand extends Command
             $this->changeState($scheduledCommand, ScheduledCommandStateEnum::IN_PROGRESS);
             $result = $this->executeScheduleCommand->executeFromCron($scheduledCommand);
 
-            $this->changeState($scheduledCommand, $this->getStateForResult($result));
+            try {
+                $this->changeState($scheduledCommand, $this->getStateForResult($result));
+            } catch (ConnectionLost $connectionLost) {
+                $this->changeState($scheduledCommand, $this->getStateForResult($result));
+            }
         } catch (\Exception $e) {
             $this->changeState($scheduledCommand, ScheduledCommandStateEnum::ERROR);
             $io->warning($e->getMessage());
             $result = -1;
-        }
-
-        if (false === $this->entityManager->isOpen()) {
-            $io->comment('Entity manager closed by the last command.');
-            $this->entityManager = EntityManager::create(
-                $this->entityManager->getConnection(),
-                $this->entityManager->getConfiguration()
-            );
         }
 
         /** @var ScheduledCommandInterface $scheduledCommand */
