@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Checker;
+namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Voter;
 
-use Synolia\SyliusSchedulerCommandPlugin\Checker\SoftLimitThresholdIsDueChecker;
-use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
 
-class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
+class IsDueVoterTest extends AbstractIsDueTest
 {
-    /** @var SoftLimitThresholdIsDueChecker */
-    private $rangeIsDueChecker;
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface */
+    private $voter;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->rangeIsDueChecker = self::$container->get(SoftLimitThresholdIsDueChecker::class);
+
+        $this->voter = self::$container->get(IsDueVoterInterface::class);
     }
 
     /**
@@ -41,11 +41,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
 
         $this->entityManager->flush();
 
-        if ($expectedResult === false) {
-            $this->expectException(IsNotDueException::class);
-        }
-
-        $this->assertEquals($expectedResult, $this->rangeIsDueChecker->isDue($command, $currentDateTime));
+        $this->assertEquals($expectedResult, $this->voter->isDue($command, $currentDateTime));
     }
 
     /**
@@ -58,11 +54,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
     ): void {
         $command = $this->setupCommand($cronExpression);
 
-        if ($expectedResult === false) {
-            $this->expectException(IsNotDueException::class);
-        }
-
-        $this->assertEquals($expectedResult, $this->rangeIsDueChecker->isDue($command, $currentDateTime));
+        $this->assertEquals($expectedResult, $this->voter->isDue($command, $currentDateTime));
     }
 
     /**
@@ -75,10 +67,6 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
     ): void {
         $command = $this->setupCommand($cronExpression);
 
-        if ($expectedResult === false) {
-            $this->expectException(IsNotDueException::class);
-        }
-
-        $this->assertEquals($expectedResult, $this->rangeIsDueChecker->isDue($command, $currentDateTime));
+        $this->assertEquals($expectedResult, $this->voter->isDue($command, $currentDateTime));
     }
 }
