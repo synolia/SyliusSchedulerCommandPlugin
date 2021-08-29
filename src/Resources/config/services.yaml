@@ -7,11 +7,6 @@ services:
             $logsDir: '%kernel.logs_dir%'
             $projectDir: '%kernel.project_dir%'
 
-    _instanceof:
-        Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface:
-            tags:
-                - { name: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }
-
     Synolia\SyliusSchedulerCommandPlugin\:
         resource: '../../*'
         exclude: '../../{Entity,Migrations,SynoliaSyliusSchedulerCommandPlugin.php}'
@@ -58,6 +53,10 @@ services:
     Synolia\SyliusSchedulerCommandPlugin\Listener\Grid\GoToCommandsButtonGridListener:
         tags:
             - { name: kernel.event_listener, event: sylius.grid.synolia_admin_scheduled_commands, method: onSyliusGridAdmin }
+
+    Synolia\SyliusSchedulerCommandPlugin\Checker\EveryMinuteIsDueChecker:
+        tags:
+            - { name: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }
 
     Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface:
         class: Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoter
