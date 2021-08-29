@@ -12,12 +12,12 @@ use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
 class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
 {
     /** @var SoftLimitThresholdIsDueChecker */
-    private $rangeIsDueChecker;
+    private $softLimitThresholdIsDueChecker;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->rangeIsDueChecker = self::$container->get(SoftLimitThresholdIsDueChecker::class);
+        $this->softLimitThresholdIsDueChecker = self::$container->get(SoftLimitThresholdIsDueChecker::class);
     }
 
     /**
@@ -45,7 +45,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
             $this->expectException(IsNotDueException::class);
         }
 
-        $this->assertEquals($expectedResult, $this->rangeIsDueChecker->isDue($command, $currentDateTime));
+        $this->assertEquals($expectedResult, $this->softLimitThresholdIsDueChecker->isDue($command, $currentDateTime));
     }
 
     /**
@@ -62,7 +62,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
             $this->expectException(IsNotDueException::class);
         }
 
-        $this->assertEquals($expectedResult, $this->rangeIsDueChecker->isDue($command, $currentDateTime));
+        $this->assertEquals($expectedResult, $this->softLimitThresholdIsDueChecker->isDue($command, $currentDateTime));
     }
 
     /**
@@ -79,6 +79,6 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
             $this->expectException(IsNotDueException::class);
         }
 
-        $this->assertEquals($expectedResult, $this->rangeIsDueChecker->isDue($command, $currentDateTime));
+        $this->assertEquals($expectedResult, $this->softLimitThresholdIsDueChecker->isDue($command, $currentDateTime));
     }
 }
