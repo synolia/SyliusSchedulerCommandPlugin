@@ -113,20 +113,30 @@ final class SynoliaSchedulerRunCommand extends Command
         }
 
         foreach ($scheduledCommands as $scheduledCommand) {
-            /** prevent update during running time */
-            $this->entityManager->refresh($this->entityManager->merge($scheduledCommand));
-
             $io->note(\sprintf(
                 'Execute Command "%s" - last execution : %s',
                 $scheduledCommand->getCommand(),
                 $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never'
             ));
-            $this->executeCommand($scheduledCommand, $io);
+
+            try {
+                $this->runScheduledCommand($io, $scheduledCommand);
+            } catch (ConnectionLost $connectionLost) {
+                $this->runScheduledCommand($io, $scheduledCommand);
+            }
         }
 
         $this->release();
 
         return 0;
+    }
+
+    private function runScheduledCommand(SymfonyStyle $io, ScheduledCommandInterface $scheduledCommand): void
+    {
+        /** prevent update during running time */
+        $this->entityManager->refresh($this->entityManager->merge($scheduledCommand));
+
+        $this->executeCommand($scheduledCommand, $io);
     }
 
     private function executeCommand(ScheduledCommandInterface $scheduledCommand, SymfonyStyle $io): void
