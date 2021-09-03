@@ -28,7 +28,7 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
 
         if ($time > self::HOUR_IN_SECONDES) {
             $hours = (int) ($time / self::HOUR_IN_SECONDES) . 'h ';
-            $minutes = (($time % self::HOUR_IN_SECONDES) / self::MINUTE_IN_SECONDES) . 'm ';
+            $minutes = (int) (($time % self::HOUR_IN_SECONDES) / self::MINUTE_IN_SECONDES) . 'm ';
             $seconds = (($time % self::HOUR_IN_SECONDES) % self::MINUTE_IN_SECONDES) . 's';
 
             return $hours . $minutes . $seconds;
@@ -36,12 +36,12 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
 
         if ($time > self::MINUTE_IN_SECONDES) {
             $minutes = (int) ($time / self::MINUTE_IN_SECONDES) . 'm ';
-            $seconds = $time % self::MINUTE_IN_SECONDES . 's';
+            $seconds = (int) $time % self::MINUTE_IN_SECONDES . 's';
 
             return $minutes . $seconds;
         }
 
-        return $time . 's';
+        return (int) $time . 's';
     }
 
     /** {@inheritdoc} */
