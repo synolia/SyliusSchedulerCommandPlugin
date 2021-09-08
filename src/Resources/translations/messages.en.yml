@@ -41,3 +41,8 @@ synolia:
                 configuration:
                     scheduler_command: Scheduled commands
                     scheduler_command_history: Scheduled commands history
+sylius_plus:
+    rbac:
+        parent:
+            commands: Scheduled commands
+            scheduled_commands: Scheduled commands history

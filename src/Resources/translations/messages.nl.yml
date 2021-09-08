@@ -41,3 +41,8 @@ synolia:
                 configuration:
                     scheduler_command: 'Geplande commando''s'
                     scheduler_command_history: Geplande commando geschiedenis
+sylius_plus:
+    rbac:
+        parent:
+            commands: 'Geplande commando''s'
+            scheduled_commands: Geplande commando geschiedenis

@@ -36,3 +36,8 @@ synolia:
                 configuration:
                     scheduler_command: Commandes planifiées
                     scheduler_command_history: Historique des planifications
+sylius_plus:
+    rbac:
+        parent:
+            commands: Commandes planifiées
+            scheduled_commands: Historique des planifications
