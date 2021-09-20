@@ -11,4 +11,8 @@ function fireLog(e) {
 function closeLog(e) {
   e.preventDefault();
   $('#log-modal').modal('hide');
+  //clear updateLog w/o knowing its id
+  for (i = 0; i < 10000; i++) {
+    window.clearInterval(i);
+  }
 }
