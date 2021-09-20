@@ -9,4 +9,17 @@ pre {
 #results {
     border: solid 1px;
     padding: 5px;
+    overflow-y: scroll;
+    height: calc(100% - 150px);
+}
+
+#log-modal {
+    width: calc(100% - 100px);
+    height: calc(100% - 100px);
+}
+
+#log-modal .description,
+#log-modal > .content,
+#log-modal #content {
+    height: 100%;
 }
