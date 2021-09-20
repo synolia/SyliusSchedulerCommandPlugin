@@ -40,10 +40,13 @@ $(document).ready(function () {
       lastSize = data.size;
       $("#current").text(data.file);
       $.each(data.data, function (key, value) {
-        $("#results").append('' + value + '<br/>');
+        $("#results").prepend('' + value + '<br/>');
       });
       if (scroll) {
         scrollToBottom();
+      }
+      if (data.data.length < 1) {
+        $("#results .loader").remove();
       }
     })
       .fail(function (jqXHR) {

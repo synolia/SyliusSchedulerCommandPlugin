@@ -23,3 +23,11 @@ pre {
 #log-modal #content {
     height: 100%;
 }
+
+#results .loader:before {
+    border-color: rgba(0,0,0,.1);
+}
+
+#results .loader:after {
+    border-color: #767676 transparent transparent;
+}

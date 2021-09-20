@@ -11,7 +11,9 @@
         <input id="grep" type="text" placeholder="Search...">
     </div>
 
-    <pre id="results"></pre>
+    <pre id="results">
+        <div class="ui active centered inline loader"></div>
+    </pre>
 
     {{ sylius_template_event('synolia.admin.command.logs.stylesheets') }}
 
