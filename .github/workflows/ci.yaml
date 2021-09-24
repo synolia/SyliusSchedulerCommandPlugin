@@ -180,9 +180,11 @@ jobs:
 
             - name: Run PHPUnit
               run: make phpunit
+              if: always() && steps.end-of-setup-sylius.outcome == 'success'
 
             - name: Configure Behat
               run: make behat-configure
+              if: always() && steps.end-of-setup-sylius.outcome == 'success'
 
             - name: Run behat
               working-directory: ./tests/Application
