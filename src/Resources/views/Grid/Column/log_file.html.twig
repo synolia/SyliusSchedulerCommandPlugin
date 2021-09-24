@@ -1,6 +1,6 @@
 {% if schedulerCommand.logFile is not null and schedulerCommand.logFile is not empty %}
     <div class="ui buttons">
-        <a class="ui labeled icon button " href="{{ viewUrl }}" target="_blank">
+        <a class="ui labeled icon button" href="javascript:void(0);" data-href="{{ viewUrl }}" onclick="fireLog(event)">
             <i class="icon play"></i>
             {{ 'synolia.ui.live_view'|trans }}
         </a>
