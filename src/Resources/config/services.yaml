@@ -53,3 +53,12 @@ services:
     Synolia\SyliusSchedulerCommandPlugin\Listener\Grid\GoToCommandsButtonGridListener:
         tags:
             - { name: kernel.event_listener, event: sylius.grid.synolia_admin_scheduled_commands, method: onSyliusGridAdmin }
+
+    Synolia\SyliusSchedulerCommandPlugin\Checker\EveryMinuteIsDueChecker:
+        tags:
+            - { name: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }
+
+    Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface:
+        class: Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoter
+        arguments:
+            - !tagged_iterator { tag: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }

@@ -93,6 +93,36 @@ sylius_fixtures:
                                 enabled: false
 ```
 
+## Optional services
+```yaml
+services:
+...
+    # By enabling this service, it will be requested to vote after the other EveryMinuteIsDueChecker checker.
+    # Using some cloud providers, even if the master cron is set to run every minute, it is actually not run that often
+    # This service allows you to set a soft threshold limit, so if your provider is actually running the master cron every 5 minutes
+    # This service will execute the cron if we are still in the threshold limit ONLY IF it was not already executed another time in the same range.
+    #
+    # CONFIGURATION SCENARIO: cron set to be run at 01:07 in the scheduler command plugin
+    #
+    # SCENARIO CASES AT 1 CRON PASS EVERY 5 MINUTES FROM THE PROVIDER
+    # cron passes at 01:04 - 1..5 minutes: IS NOT DUE
+    # cron passes at 01:05 - 1..5 minutes: IS NOT DUE
+    # cron passes at 01:06 - 1..5 minutes: IS NOT DUE
+    # cron passes at 01:07 - 1..5 minutes: IS DUE (but it should already be handled by EveryMinuteIsDueChecker)
+    # cron passes at 01:08 - 1..5 minutes: IS DUE
+    # cron passes at 01:09 - 1..5 minutes: IS DUE #should not if another has started during the threshold period
+    # cron passes at 01:10 - 1..5 minutes: IS DUE #should not if another has started during the threshold period
+    # cron passes at 01:11 - 1..5 minutes: IS DUE #should not if another has started during the threshold period
+    # cron passes at 01:12 - 1..5 minutes: IS DUE #should not if another has started during the threshold period
+    # cron passes at 01:13 - 1..5 minutes: IS NOT DUE
+    Synolia\SyliusSchedulerCommandPlugin\Checker\SoftLimitThresholdIsDueChecker:
+        tags:
+            - { name: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }
+        #optionnal, default value is 5 minutes
+        arguments:
+            $threshold: 5 #soft limit threshold in minutes
+```
+
 ## Development
 
 See [How to contribute](CONTRIBUTING.md).

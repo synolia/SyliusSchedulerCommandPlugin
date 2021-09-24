@@ -77,6 +77,13 @@ class ScheduledCommand implements ScheduledCommandInterface
      */
     private $state;
 
+    /**
+     * @var \Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface|null
+     * @ORM\ManyToOne(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface", inversedBy="scheduledCommands")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $owner;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -187,5 +194,17 @@ class ScheduledCommand implements ScheduledCommandInterface
     public function getState(): string
     {
         return $this->state;
+    }
+
+    public function getOwner(): ?CommandInterface
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?CommandInterface $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
     }
 }

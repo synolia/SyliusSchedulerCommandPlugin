@@ -29,7 +29,7 @@ phpunit: phpunit-configure phpunit-run ## Run PHPUnit
 .PHONY: phpunit
 
 
-sylius: sylius-standard install-plugin update-dependencies install-sylius
+sylius: sylius-standard install-plugin update-dependencies install-sylius configure-sylius
 .PHONY: sylius
 
 sylius-standard:
@@ -58,6 +58,11 @@ install-sylius:
 	${YARN} install
 	${YARN} build
 	${CONSOLE} cache:clear
+
+configure-sylius:
+	cd ${TEST_DIRECTORY} && echo '    Synolia\SyliusSchedulerCommandPlugin\Checker\SoftLimitThresholdIsDueChecker:' >> config/services.yaml
+	cd ${TEST_DIRECTORY} && echo '        tags:' >> config/services.yaml
+	cd ${TEST_DIRECTORY} && echo '            - { name: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }' >> config/services.yaml
 
 phpunit-configure:
 	cp phpunit.xml.dist ${TEST_DIRECTORY}/phpunit.xml

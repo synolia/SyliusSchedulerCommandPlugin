@@ -12,6 +12,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
 class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
 {
@@ -20,9 +21,17 @@ class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
         ExecuteScheduleCommand $executeScheduleCommand,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlanner $scheduledCommandPlanner
+        ScheduledCommandPlanner $scheduledCommandPlanner,
+        IsDueVoterInterface $isDueVoter
     ) {
-        $this->beConstructedWith($scheduledCommandManager, $executeScheduleCommand, $commandRepository, $scheduledCommandRepository, $scheduledCommandPlanner);
+        $this->beConstructedWith(
+            $scheduledCommandManager,
+            $executeScheduleCommand,
+            $commandRepository,
+            $scheduledCommandRepository,
+            $scheduledCommandPlanner,
+            $isDueVoter
+        );
     }
 
     function it_is_initializable()

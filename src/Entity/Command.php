@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -73,6 +75,18 @@ class Command implements CommandInterface
      * @ORM\Column(type="boolean")
      */
     private $enabled = true;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface", mappedBy="owner")
+     *
+     * @psalm-var Collection<array-key, \Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface>
+     */
+    private $scheduledCommands;
+
+    public function __construct()
+    {
+        $this->scheduledCommands = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -171,6 +185,38 @@ class Command implements CommandInterface
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<array-key, \Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface>|\Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface[]
+     */
+    public function getScheduledCommands(): Collection
+    {
+        return $this->scheduledCommands;
+    }
+
+    public function addScheduledCommand(ScheduledCommandInterface $scheduledCommand): self
+    {
+        if ($this->scheduledCommands->contains($scheduledCommand)) {
+            return $this;
+        }
+
+        $this->scheduledCommands->add($scheduledCommand);
+
+        return $this;
+    }
+
+    public function removeScheduledCommand(ScheduledCommandInterface $scheduledCommand): self
+    {
+        if (!$this->scheduledCommands->contains($scheduledCommand)) {
+            return $this;
+        }
+
+        $this->scheduledCommands->removeElement($scheduledCommand);
+        // needed to update the owning side of the relationship!
+        $scheduledCommand->setOwner(null);
 
         return $this;
     }

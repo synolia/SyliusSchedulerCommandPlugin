@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Command;
 
-use Cron\CronExpression;
-use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\Exception\ConnectionLost;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -21,6 +20,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
 final class SynoliaSchedulerRunCommand extends Command
 {
@@ -43,12 +43,16 @@ final class SynoliaSchedulerRunCommand extends Command
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner */
     private $scheduledCommandPlanner;
 
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface */
+    private $isDueVoter;
+
     public function __construct(
         EntityManagerInterface $scheduledCommandManager,
         ExecuteScheduleCommand $executeScheduleCommand,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlanner $scheduledCommandPlanner
+        ScheduledCommandPlanner $scheduledCommandPlanner,
+        IsDueVoterInterface $isDueVoter
     ) {
         parent::__construct(static::$defaultName);
 
@@ -57,6 +61,7 @@ final class SynoliaSchedulerRunCommand extends Command
         $this->commandRepository = $commandRepository;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
+        $this->isDueVoter = $isDueVoter;
     }
 
     protected function configure(): void
@@ -108,20 +113,30 @@ final class SynoliaSchedulerRunCommand extends Command
         }
 
         foreach ($scheduledCommands as $scheduledCommand) {
-            /** prevent update during running time */
-            $this->entityManager->refresh($this->entityManager->merge($scheduledCommand));
-
             $io->note(\sprintf(
                 'Execute Command "%s" - last execution : %s',
                 $scheduledCommand->getCommand(),
                 $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never'
             ));
-            $this->executeCommand($scheduledCommand, $io);
+
+            try {
+                $this->runScheduledCommand($io, $scheduledCommand);
+            } catch (ConnectionLost $connectionLost) {
+                $this->runScheduledCommand($io, $scheduledCommand);
+            }
         }
 
         $this->release();
 
         return 0;
+    }
+
+    private function runScheduledCommand(SymfonyStyle $io, ScheduledCommandInterface $scheduledCommand): void
+    {
+        /** prevent update during running time */
+        $this->entityManager->refresh($this->entityManager->merge($scheduledCommand));
+
+        $this->executeCommand($scheduledCommand, $io);
     }
 
     private function executeCommand(ScheduledCommandInterface $scheduledCommand, SymfonyStyle $io): void
@@ -153,19 +168,15 @@ final class SynoliaSchedulerRunCommand extends Command
             $this->changeState($scheduledCommand, ScheduledCommandStateEnum::IN_PROGRESS);
             $result = $this->executeScheduleCommand->executeFromCron($scheduledCommand);
 
-            $this->changeState($scheduledCommand, $this->getStateForResult($result));
+            try {
+                $this->changeState($scheduledCommand, $this->getStateForResult($result));
+            } catch (ConnectionLost $connectionLost) {
+                $this->changeState($scheduledCommand, $this->getStateForResult($result));
+            }
         } catch (\Exception $e) {
             $this->changeState($scheduledCommand, ScheduledCommandStateEnum::ERROR);
             $io->warning($e->getMessage());
             $result = -1;
-        }
-
-        if (false === $this->entityManager->isOpen()) {
-            $io->comment('Entity manager closed by the last command.');
-            $this->entityManager = EntityManager::create(
-                $this->entityManager->getConnection(),
-                $this->entityManager->getConfiguration()
-            );
         }
 
         /** @var ScheduledCommandInterface $scheduledCommand */
@@ -193,22 +204,20 @@ final class SynoliaSchedulerRunCommand extends Command
         return $commands;
     }
 
-    private function shouldExecuteCommand(CommandInterface $scheduledCommand, SymfonyStyle $io): bool
+    private function shouldExecuteCommand(CommandInterface $command, SymfonyStyle $io): bool
     {
-        if ($scheduledCommand->isExecuteImmediately()) {
-            $io->note('Immediately execution asked for : ' . $scheduledCommand->getCommand());
+        if ($command->isExecuteImmediately()) {
+            $io->note('Immediately execution asked for : ' . $command->getCommand());
 
             return true;
         }
 
         // Could be removed as getCommands fetch only enabled commands
-        if (!$scheduledCommand->isEnabled()) {
+        if (!$command->isEnabled()) {
             return false;
         }
 
-        $cron = CronExpression::factory($scheduledCommand->getCronExpression());
-
-        return $cron->isDue() ?? false;
+        return $this->isDueVoter->isDue($command);
     }
 
     private function changeState(ScheduledCommandInterface $scheduledCommand, string $state): void

@@ -41,4 +41,10 @@ interface ScheduledCommandInterface extends ResourceInterface
     public function setState(string $state): self;
 
     public function getState(): string;
+
+    public function getOwner(): ?CommandInterface;
+
+    public function setOwner(?CommandInterface $owner): self;
+
+    public function getCreatedAt(): \DateTime;
 }

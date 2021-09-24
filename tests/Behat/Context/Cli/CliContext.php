@@ -20,6 +20,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
 class CliContext implements Context
 {
@@ -56,6 +57,9 @@ class CliContext implements Context
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner */
     private $scheduledCommandPlanner;
 
+    /** @var \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface */
+    private $isDueVoter;
+
     public function __construct(
         KernelInterface $kernel,
         SharedStorageInterface $sharedStorage,
@@ -63,7 +67,8 @@ class CliContext implements Context
         ExecuteScheduleCommand $executeScheduleCommand,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlanner $scheduledCommandPlanner
+        ScheduledCommandPlanner $scheduledCommandPlanner,
+        IsDueVoterInterface $isDueVoter
     ) {
         $this->kernel = $kernel;
         $this->sharedStorage = $sharedStorage;
@@ -72,6 +77,7 @@ class CliContext implements Context
         $this->commandRepository = $commandRepository;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
+        $this->isDueVoter = $isDueVoter;
     }
 
     /**
@@ -101,7 +107,8 @@ class CliContext implements Context
                 $this->executeScheduleCommand,
                 $this->commandRepository,
                 $this->scheduledCommandRepository,
-                $this->scheduledCommandPlanner
+                $this->scheduledCommandPlanner,
+                $this->isDueVoter
             )
         );
         $this->command = $this->application->find('synolia:scheduler-run');
