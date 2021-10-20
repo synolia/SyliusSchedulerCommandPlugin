@@ -6,19 +6,19 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Fixture;
 
 use Sylius\Bundle\FixturesBundle\Fixture\AbstractFixture;
 use Sylius\Component\Resource\Factory\FactoryInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 
 class SchedulerCommandFixture extends AbstractFixture
 {
-    /** @var RepositoryInterface */
+    /** @var CommandRepositoryInterface */
     private $commandRepository;
 
     /** @var \Sylius\Component\Resource\Factory\FactoryInterface */
     private $commandFactory;
 
     public function __construct(
-        RepositoryInterface $commandRepository,
+        CommandRepositoryInterface $commandRepository,
         FactoryInterface $commandFactory
     ) {
         $this->commandRepository = $commandRepository;

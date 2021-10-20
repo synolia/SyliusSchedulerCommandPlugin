@@ -18,7 +18,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
@@ -48,7 +48,7 @@ class CliContext implements Context
     /** @var SharedStorageInterface */
     protected $sharedStorage;
 
-    /** @var ExecuteScheduleCommand */
+    /** @var ExecuteScheduleCommandInterface */
     protected $executeScheduleCommand;
 
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface */
@@ -64,7 +64,7 @@ class CliContext implements Context
         KernelInterface $kernel,
         SharedStorageInterface $sharedStorage,
         EntityManagerInterface $scheduledCommandManager,
-        ExecuteScheduleCommand $executeScheduleCommand,
+        ExecuteScheduleCommandInterface $executeScheduleCommand,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlanner $scheduledCommandPlanner,

@@ -10,7 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
@@ -18,7 +18,7 @@ class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
 {
     function let(
         EntityManagerInterface $scheduledCommandManager,
-        ExecuteScheduleCommand $executeScheduleCommand,
+        ExecuteScheduleCommandInterface $executeScheduleCommand,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlanner $scheduledCommandPlanner,

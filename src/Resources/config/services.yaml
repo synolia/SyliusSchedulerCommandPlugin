@@ -1,3 +1,7 @@
+parameters:
+    env(SYNOLIA_SCHEDULER_PLUGIN_PING_INTERVAL): 300
+    env(SYNOLIA_SCHEDULER_PLUGIN_KEEP_ALIVE): true
+
 services:
     _defaults:
         autowire: true
@@ -62,3 +66,9 @@ services:
         class: Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoter
         arguments:
             - !tagged_iterator { tag: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }
+
+    Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface:
+        class: Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand
+        bind:
+            $pingInterval: '%env(int:SYNOLIA_SCHEDULER_PLUGIN_PING_INTERVAL)%'
+            $keepConnectionAlive: '%env(bool:SYNOLIA_SCHEDULER_PLUGIN_KEEP_ALIVE)%'

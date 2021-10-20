@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
-class ExecuteScheduleCommand
+class ExecuteScheduleCommand implements ExecuteScheduleCommandInterface
 {
     /** @var ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
@@ -27,18 +27,28 @@ class ExecuteScheduleCommand
     /** @var string */
     private $projectDir;
 
+    /** @var int */
+    private $pingInterval;
+
+    /** @var bool */
+    private $keepConnectionAlive;
+
     public function __construct(
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         EntityManagerInterface $entityManager,
         KernelInterface $kernel,
         string $logsDir,
-        string $projectDir
+        string $projectDir,
+        int $pingInterval = 60,
+        bool $keepConnectionAlive = false
     ) {
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
         $this->logsDir = $logsDir;
         $this->projectDir = $projectDir;
+        $this->pingInterval = $pingInterval;
+        $this->keepConnectionAlive = $keepConnectionAlive;
     }
 
     public function executeImmediate(string $scheduledCommandId): bool
@@ -57,7 +67,8 @@ class ExecuteScheduleCommand
         $scheduledCommand->setExecutedAt(new \DateTime());
         $process->setIdleTimeout(null);
         $process->setTimeout(null);
-        $process->run();
+        $this->startProcess($process);
+
         $result = $process->getExitCode();
 
         if (null === $result) {
@@ -76,7 +87,8 @@ class ExecuteScheduleCommand
         $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
         $process->setIdleTimeout(null);
         $process->setTimeout(null);
-        $process->run();
+        $this->startProcess($process);
+
         $result = $process->getExitCode();
         $scheduledCommand->setCommandEndTime(new \DateTime());
 
@@ -85,6 +97,30 @@ class ExecuteScheduleCommand
         }
 
         return $result;
+    }
+
+    private function startProcess(Process $process): void
+    {
+        if (!$this->keepConnectionAlive) {
+            $process->run();
+
+            return;
+        }
+
+        $process->start();
+        while ($process->isRunning()) {
+            try {
+                $this->entityManager->getConnection()->executeQuery($this->entityManager->getConnection()->getDatabasePlatform()->getDummySelectSQL());
+            } catch (\Doctrine\DBAL\Exception $exception) {
+            }
+
+            for ($i = 0; $i < $this->pingInterval; $i++) {
+                if (!$process->isRunning()) {
+                    return;
+                }
+                \sleep(1);
+            }
+        }
     }
 
     private function getLogOutput(ScheduledCommandInterface $scheduledCommand): ?string

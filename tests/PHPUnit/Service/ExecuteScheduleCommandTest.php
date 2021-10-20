@@ -9,6 +9,7 @@ use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\Command;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\WithDatabaseTrait;
 
@@ -16,7 +17,7 @@ class ExecuteScheduleCommandTest extends WebTestCase
 {
     use WithDatabaseTrait;
 
-    /** @var ExecuteScheduleCommand */
+    /** @var ExecuteScheduleCommandInterface */
     private $executeScheduleCommand;
 
     /** @var EntityManagerInterface */
