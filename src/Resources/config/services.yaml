@@ -72,3 +72,7 @@ services:
         bind:
             $pingInterval: '%env(int:SYNOLIA_SCHEDULER_PLUGIN_PING_INTERVAL)%'
             $keepConnectionAlive: '%env(bool:SYNOLIA_SCHEDULER_PLUGIN_KEEP_ALIVE)%'
+
+    Synolia\SyliusSchedulerCommandPlugin\DoctrineEvent\ScheduledCommandPostRemoveEvent:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

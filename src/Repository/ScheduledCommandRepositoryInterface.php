@@ -22,4 +22,8 @@ interface ScheduledCommandRepositoryInterface extends RepositoryInterface
     public function findAllRunnable(): iterable;
 
     public function findLastCreatedCommand(CommandInterface $command): ?ScheduledCommandInterface;
+
+    public function findAllSinceXDaysWithState(\DateTimeInterface $dateTime, array $states): iterable;
+
+    public function findAllHavingState(array $states): iterable;
 }

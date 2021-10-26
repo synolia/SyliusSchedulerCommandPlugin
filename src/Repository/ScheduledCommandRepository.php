@@ -32,4 +32,26 @@ class ScheduledCommandRepository extends EntityRepository implements ScheduledCo
             return null;
         }
     }
+
+    public function findAllSinceXDaysWithState(\DateTimeInterface $dateTime, array $states): iterable
+    {
+        return $this->createQueryBuilder('scheduled')
+            ->where('scheduled.state IN (:states)')
+            ->andWhere('scheduled.createdAt < :createdAt')
+            ->setParameter('states', $states)
+            ->setParameter('createdAt', $dateTime->format('Y-m-d 00:00:00'))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAllHavingState(array $states): iterable
+    {
+        return $this->createQueryBuilder('scheduled')
+            ->where('scheduled.state IN (:states)')
+            ->setParameter('states', $states)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
