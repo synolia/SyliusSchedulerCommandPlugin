@@ -6,19 +6,20 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Fixture;
 
 use Sylius\Bundle\FixturesBundle\Fixture\AbstractFixture;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
 class SchedulerCommandFixture extends AbstractFixture
 {
-    /** @var CommandRepositoryInterface */
+    /** @var RepositoryInterface */
     private $commandRepository;
 
     /** @var \Sylius\Component\Resource\Factory\FactoryInterface */
     private $commandFactory;
 
     public function __construct(
-        CommandRepositoryInterface $commandRepository,
+        RepositoryInterface $commandRepository,
         FactoryInterface $commandFactory
     ) {
         $this->commandRepository = $commandRepository;
@@ -34,20 +35,20 @@ class SchedulerCommandFixture extends AbstractFixture
             return;
         }
 
-        foreach ($options['scheduled_commands'] as $scheduledCommandArray) {
-            /** @var \Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface $scheduledCommand */
-            $scheduledCommand = $this->commandFactory->createNew();
-            $scheduledCommand
-                ->setName($scheduledCommandArray['name'])
-                ->setCommand($scheduledCommandArray['command'])
-                ->setArguments($scheduledCommandArray['arguments'])
-                ->setCronExpression($scheduledCommandArray['cronExpression'])
-                ->setLogFilePrefix($scheduledCommandArray['logFilePrefix'])
-                ->setPriority($scheduledCommandArray['priority'])
-                ->setExecuteImmediately($scheduledCommandArray['executeImmediately'])
-                ->setEnabled($scheduledCommandArray['enabled'])
+        foreach ($options['scheduled_commands'] as $commandArray) {
+            /** @var CommandInterface $command */
+            $command = $this->commandFactory->createNew();
+            $command
+                ->setName($commandArray['name'])
+                ->setCommand($commandArray['command'])
+                ->setArguments($commandArray['arguments'])
+                ->setCronExpression($commandArray['cronExpression'])
+                ->setLogFilePrefix($commandArray['logFilePrefix'])
+                ->setPriority($commandArray['priority'])
+                ->setExecuteImmediately($commandArray['executeImmediately'])
+                ->setEnabled($commandArray['enabled'])
             ;
-            $this->commandRepository->add($scheduledCommand);
+            $this->commandRepository->add($command);
         }
     }
 
