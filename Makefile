@@ -46,6 +46,9 @@ install-plugin:
 
 update-dependencies:
 	${COMPOSER} config extra.symfony.require "^${SYMFONY_VERSION}"
+# FIX since https://github.com/Sylius/Sylius/pull/13215 is not merged
+	${COMPOSER} require doctrine/dbal:"^2.6" doctrine/orm:"^2.9" --no-scripts --no-update
+
 ifeq ($(SYLIUS_VERSION), 1.9.0)
 ifeq ($(SYMFONY_VERSION), 4.4)
 	${COMPOSER} require sylius/admin-api-bundle --no-scripts --no-update
