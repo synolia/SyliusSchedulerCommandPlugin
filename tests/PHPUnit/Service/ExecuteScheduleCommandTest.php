@@ -29,8 +29,8 @@ class ExecuteScheduleCommandTest extends WebTestCase
         $kernel = self::bootKernel();
         self::initDatabase($kernel);
 
-        $this->executeScheduleCommand = static::getContainer()->get(ExecuteScheduleCommandInterface::class);
-        $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $this->executeScheduleCommand = self::$container->get(ExecuteScheduleCommandInterface::class);
+        $this->entityManager = self::$container->get(EntityManagerInterface::class);
     }
 
     public function testExecuteImmediateWithWrongCommand(): void
@@ -53,7 +53,7 @@ class ExecuteScheduleCommandTest extends WebTestCase
         $this->entityManager->flush();
 
         /** @var ScheduledCommandPlanner $planner */
-        $planner = static::getContainer()->get(ScheduledCommandPlanner::class);
+        $planner = self::$container->get(ScheduledCommandPlanner::class);
         $scheduledCommand = $planner->plan($command);
 
         $commandResult = $this->executeScheduleCommand->executeImmediate((string) $scheduledCommand->getId());
