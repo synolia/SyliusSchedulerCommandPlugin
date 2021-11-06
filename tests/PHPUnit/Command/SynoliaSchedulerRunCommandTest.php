@@ -39,7 +39,6 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         parent::tearDown();
     }
 
-
     public function testExecuteWithoutCommandInDatabase(): void
     {
         $application = new Application(static::$kernel);

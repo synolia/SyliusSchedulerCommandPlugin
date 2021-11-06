@@ -8,25 +8,25 @@ use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Command\Command;
 use Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
 class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
 {
     function let(
         EntityManagerInterface $scheduledCommandManager,
-        ExecuteScheduleCommandInterface $executeScheduleCommand,
+        ScheduleCommandRunnerInterface $scheduleCommandRunner,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlanner $scheduledCommandPlanner,
+        ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         IsDueVoterInterface $isDueVoter
     ) {
         $this->beConstructedWith(
             $scheduledCommandManager,
-            $executeScheduleCommand,
+            $scheduleCommandRunner,
             $commandRepository,
             $scheduledCommandRepository,
             $scheduledCommandPlanner,

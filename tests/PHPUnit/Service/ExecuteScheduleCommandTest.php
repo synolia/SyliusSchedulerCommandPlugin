@@ -8,17 +8,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\Command;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\WithDatabaseTrait;
 
 class ExecuteScheduleCommandTest extends WebTestCase
 {
     use WithDatabaseTrait;
 
-    /** @var ExecuteScheduleCommandInterface */
-    private $executeScheduleCommand;
+    /** @var ScheduleCommandRunnerInterface */
+    private $scheduleCommandRunner;
 
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -29,13 +28,13 @@ class ExecuteScheduleCommandTest extends WebTestCase
         $kernel = self::bootKernel();
         self::initDatabase($kernel);
 
-        $this->executeScheduleCommand = self::$container->get(ExecuteScheduleCommandInterface::class);
+        $this->scheduleCommandRunner = self::$container->get(ScheduleCommandRunnerInterface::class);
         $this->entityManager = self::$container->get(EntityManagerInterface::class);
     }
 
     public function testExecuteImmediateWithWrongCommand(): void
     {
-        $commandResult = $this->executeScheduleCommand->executeImmediate('hello world !');
+        $commandResult = $this->scheduleCommandRunner->runImmediately('hello world !');
 
         $this->assertEquals(false, $commandResult);
     }
@@ -52,11 +51,11 @@ class ExecuteScheduleCommandTest extends WebTestCase
         $this->entityManager->persist($command);
         $this->entityManager->flush();
 
-        /** @var ScheduledCommandPlanner $planner */
-        $planner = self::$container->get(ScheduledCommandPlanner::class);
+        /** @var ScheduledCommandPlannerInterface $planner */
+        $planner = self::$container->get(ScheduledCommandPlannerInterface::class);
         $scheduledCommand = $planner->plan($command);
 
-        $commandResult = $this->executeScheduleCommand->executeImmediate((string) $scheduledCommand->getId());
+        $commandResult = $this->scheduleCommandRunner->runImmediately((string) $scheduledCommand->getId());
         $this->assertEquals(true, $commandResult);
     }
 }

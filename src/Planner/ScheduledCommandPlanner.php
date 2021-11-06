@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SyliusSchedulerCommandPlugin\Service;
+namespace Synolia\SyliusSchedulerCommandPlugin\Planner;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
-class ScheduledCommandPlanner
+class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
 {
     /** @var \Sylius\Component\Resource\Factory\FactoryInterface */
     private $scheduledCommandFactory;
