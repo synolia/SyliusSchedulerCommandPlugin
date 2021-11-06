@@ -2,7 +2,7 @@
 SHELL=/bin/bash
 COMPOSER_ROOT=composer
 TEST_DIRECTORY=tests/Application
-CONSOLE=cd tests/Application && symfony console -e test
+CONSOLE=cd tests/Application && php bin/console -e test
 COMPOSER=cd tests/Application && composer
 YARN=cd tests/Application && yarn
 
@@ -40,16 +40,20 @@ install-plugin:
 	${COMPOSER} config extra.symfony.allow-contrib true
 	${COMPOSER} config minimum-stability "dev"
 	${COMPOSER} config prefer-stable true
-	${COMPOSER} req "${PLUGIN_NAME}:*" --prefer-source --no-scripts
+	${COMPOSER} req ${PLUGIN_NAME}:* --prefer-source --no-scripts
+
 	cp -r install/Application tests
-	cp -r tests/data/* ${TEST_DIRECTORY}/
 
 update-dependencies:
 	${COMPOSER} config extra.symfony.require "^${SYMFONY_VERSION}"
-ifeq ($(SYLIUS_VERSION), 1.9.0)
+	${COMPOSER} require --dev donatj/mock-webserver:^2.1 --no-scripts --no-update
+# FIX since https://github.com/Sylius/Sylius/pull/13215 is not merged
+	${COMPOSER} require doctrine/dbal:"^2.6" doctrine/orm:"^2.9" --no-scripts --no-update
 ifeq ($(SYMFONY_VERSION), 4.4)
 	${COMPOSER} require sylius/admin-api-bundle --no-scripts --no-update
 endif
+ifeq ($(SYLIUS_VERSION), 1.8.0)
+	${COMPOSER} update --no-progress --no-scripts --prefer-dist -n
 endif
 	${COMPOSER} update --no-progress -n
 
@@ -63,6 +67,7 @@ configure-sylius:
 	cd ${TEST_DIRECTORY} && echo '    Synolia\SyliusSchedulerCommandPlugin\Checker\SoftLimitThresholdIsDueChecker:' >> config/services.yaml
 	cd ${TEST_DIRECTORY} && echo '        tags:' >> config/services.yaml
 	cd ${TEST_DIRECTORY} && echo '            - { name: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }' >> config/services.yaml
+	cd ${TEST_DIRECTORY} && echo '        public: true' >> config/services.yaml
 
 phpunit-configure:
 	cp phpunit.xml.dist ${TEST_DIRECTORY}/phpunit.xml

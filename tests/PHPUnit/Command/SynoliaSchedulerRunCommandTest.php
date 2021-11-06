@@ -21,11 +21,24 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
 
     private static $commandName = 'synolia:scheduler-run';
 
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
     public function setUp(): void
     {
         $kernel = static::bootKernel();
         self::initDatabase($kernel);
+
+        $this->entityManager = self::$container->get(EntityManagerInterface::class);
+        $this->entityManager->beginTransaction();
     }
+
+    protected function tearDown(): void
+    {
+        $this->entityManager->rollback();
+        parent::tearDown();
+    }
+
 
     public function testExecuteWithoutCommandInDatabase(): void
     {
@@ -88,10 +101,8 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         $invalidCommandName = 'non:existent';
 
         //remove last test
-        /** @var EntityManagerInterface $em */
-        $em = static::$container->get(EntityManagerInterface::class);
         /** @var CommandRepositoryInterface $repository */
-        $repository = $em->getRepository(ScheduledCommand::class);
+        $repository = $this->entityManager->getRepository(ScheduledCommand::class);
 
         $lastScheduledCommand = $repository->findOneBy(['command' => $invalidCommandName]);
         if ($lastScheduledCommand !== null) {
@@ -117,7 +128,9 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         //assertion
         self::assertStringContainsString('Cannot find non:existent', $commandTester->getDisplay());
 
+        /** @var ScheduledCommand $persistedCommand */
         $persistedCommand = $repository->findOneBy(['command' => $invalidCommandName]);
+        static::$container->get(EntityManagerInterface::class)->refresh($persistedCommand);
 
         self::assertEquals(
             -1,

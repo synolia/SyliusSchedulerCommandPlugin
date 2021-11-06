@@ -18,7 +18,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Enum\ScheduledCommandStateEnum;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand;
+use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
@@ -31,7 +31,7 @@ final class SynoliaSchedulerRunCommand extends Command
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var ExecuteScheduleCommand */
+    /** @var ExecuteScheduleCommandInterface */
     private $executeScheduleCommand;
 
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface */
@@ -48,7 +48,7 @@ final class SynoliaSchedulerRunCommand extends Command
 
     public function __construct(
         EntityManagerInterface $scheduledCommandManager,
-        ExecuteScheduleCommand $executeScheduleCommand,
+        ExecuteScheduleCommandInterface $executeScheduleCommand,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlanner $scheduledCommandPlanner,
@@ -151,7 +151,6 @@ final class SynoliaSchedulerRunCommand extends Command
         } catch (\InvalidArgumentException $e) {
             $scheduledCommand->setLastReturnCode(-1);
             //persist last return code
-            $this->entityManager->merge($scheduledCommand);
             $this->entityManager->flush();
             $io->error('Cannot find ' . $scheduledCommand->getCommand());
 
