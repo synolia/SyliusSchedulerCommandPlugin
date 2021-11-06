@@ -67,6 +67,7 @@ configure-sylius:
 	cd ${TEST_DIRECTORY} && echo '    Synolia\SyliusSchedulerCommandPlugin\Checker\SoftLimitThresholdIsDueChecker:' >> config/services.yaml
 	cd ${TEST_DIRECTORY} && echo '        tags:' >> config/services.yaml
 	cd ${TEST_DIRECTORY} && echo '            - { name: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }' >> config/services.yaml
+	cd ${TEST_DIRECTORY} && echo '        public: true' >> config/services.yaml
 
 phpunit-configure:
 	cp phpunit.xml.dist ${TEST_DIRECTORY}/phpunit.xml

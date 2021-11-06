@@ -100,6 +100,8 @@ jobs:
                 exclude:
                     - sylius: 1.9.0
                       php: 8.0
+                    - sylius: 1.10.0
+                      symfony: 4.4
 
         env:
             APP_ENV: test
@@ -195,7 +197,7 @@ jobs:
               if: failure()
               with:
                   name: logs
-                  path: ./sylius/etc/build
+                  path: ./tests/Application/etc/build
 
         services:
             mariadb:
