@@ -16,10 +16,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
 class CliContext implements Context
@@ -48,32 +48,32 @@ class CliContext implements Context
     /** @var SharedStorageInterface */
     protected $sharedStorage;
 
-    /** @var ExecuteScheduleCommandInterface */
-    protected $executeScheduleCommand;
+    /** @var ScheduleCommandRunnerInterface */
+    protected $scheduleCommandRunner;
 
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface */
+    /** @var CommandRepositoryInterface */
     private $commandRepository;
 
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner */
+    /** @var ScheduledCommandPlannerInterface */
     private $scheduledCommandPlanner;
 
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface */
+    /** @var IsDueVoterInterface */
     private $isDueVoter;
 
     public function __construct(
         KernelInterface $kernel,
         SharedStorageInterface $sharedStorage,
         EntityManagerInterface $scheduledCommandManager,
-        ExecuteScheduleCommandInterface $executeScheduleCommand,
+        ScheduleCommandRunnerInterface $scheduleCommandRunner,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlanner $scheduledCommandPlanner,
+        ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         IsDueVoterInterface $isDueVoter
     ) {
         $this->kernel = $kernel;
         $this->sharedStorage = $sharedStorage;
         $this->scheduledCommandManager = $scheduledCommandManager;
-        $this->executeScheduleCommand = $executeScheduleCommand;
+        $this->scheduleCommandRunner = $scheduleCommandRunner;
         $this->commandRepository = $commandRepository;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
@@ -104,7 +104,7 @@ class CliContext implements Context
         $this->application->add(
             new SynoliaSchedulerRunCommand(
                 $this->scheduledCommandManager,
-                $this->executeScheduleCommand,
+                $this->scheduleCommandRunner,
                 $this->commandRepository,
                 $this->scheduledCommandRepository,
                 $this->scheduledCommandPlanner,

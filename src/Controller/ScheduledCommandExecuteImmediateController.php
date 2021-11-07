@@ -10,26 +10,26 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
 use Webmozart\Assert\Assert;
 
 class ScheduledCommandExecuteImmediateController extends AbstractController
 {
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner */
+    /** @var ScheduledCommandPlannerInterface */
     private $scheduledCommandPlanner;
 
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface */
+    /** @var CommandRepositoryInterface */
     private $commandRepository;
 
-    /** @var \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface */
+    /** @var FlashBagInterface */
     private $flashBag;
 
     /** @var string */
     private $projectDir;
 
     public function __construct(
-        ScheduledCommandPlanner $scheduledCommandPlanner,
+        ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         CommandRepositoryInterface $commandRepository,
         FlashBagInterface $flashBag,
         string $projectDir
@@ -75,12 +75,10 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 
     private function getCommandLine(ScheduledCommandInterface $scheduledCommand): string
     {
-        $commandLine = sprintf(
+        return sprintf(
             '%s/bin/console synolia:scheduler-run --id=%d > /dev/null 2>&1 &',
             $this->projectDir,
             $scheduledCommand->getId(),
         );
-
-        return $commandLine;
     }
 }

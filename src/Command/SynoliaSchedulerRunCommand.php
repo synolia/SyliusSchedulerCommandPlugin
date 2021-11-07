@@ -16,10 +16,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Enum\ScheduledCommandStateEnum;
+use Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface;
-use Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner;
+use Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
 final class SynoliaSchedulerRunCommand extends Command
@@ -31,33 +31,33 @@ final class SynoliaSchedulerRunCommand extends Command
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var ExecuteScheduleCommandInterface */
-    private $executeScheduleCommand;
+    /** @var ScheduleCommandRunnerInterface */
+    private $scheduleCommandRunner;
 
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface */
+    /** @var CommandRepositoryInterface */
     private $commandRepository;
 
     /** @var ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
 
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Service\ScheduledCommandPlanner */
+    /** @var ScheduledCommandPlannerInterface */
     private $scheduledCommandPlanner;
 
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface */
+    /** @var IsDueVoterInterface */
     private $isDueVoter;
 
     public function __construct(
         EntityManagerInterface $scheduledCommandManager,
-        ExecuteScheduleCommandInterface $executeScheduleCommand,
+        ScheduleCommandRunnerInterface $scheduleCommandRunner,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlanner $scheduledCommandPlanner,
+        ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         IsDueVoterInterface $isDueVoter
     ) {
         parent::__construct(static::$defaultName);
 
         $this->entityManager = $scheduledCommandManager;
-        $this->executeScheduleCommand = $executeScheduleCommand;
+        $this->scheduleCommandRunner = $scheduleCommandRunner;
         $this->commandRepository = $commandRepository;
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
@@ -165,7 +165,7 @@ final class SynoliaSchedulerRunCommand extends Command
             );
 
             $this->changeState($scheduledCommand, ScheduledCommandStateEnum::IN_PROGRESS);
-            $result = $this->executeScheduleCommand->executeFromCron($scheduledCommand);
+            $result = $this->scheduleCommandRunner->runFromCron($scheduledCommand);
 
             try {
                 $this->changeState($scheduledCommand, $this->getStateForResult($result));

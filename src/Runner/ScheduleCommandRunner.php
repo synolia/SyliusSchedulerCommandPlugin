@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SyliusSchedulerCommandPlugin\Service;
+namespace Synolia\SyliusSchedulerCommandPlugin\Runner;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
-class ExecuteScheduleCommand implements ExecuteScheduleCommandInterface
+class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 {
     /** @var ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
@@ -51,7 +51,7 @@ class ExecuteScheduleCommand implements ExecuteScheduleCommandInterface
         $this->keepConnectionAlive = $keepConnectionAlive;
     }
 
-    public function executeImmediate(string $scheduledCommandId): bool
+    public function runImmediately(string $scheduledCommandId): bool
     {
         /** @var ScheduledCommandInterface|null $scheduledCommand */
         $scheduledCommand = $this->scheduledCommandRepository->find($scheduledCommandId);
@@ -82,7 +82,7 @@ class ExecuteScheduleCommand implements ExecuteScheduleCommandInterface
         return true;
     }
 
-    public function executeFromCron(ScheduledCommandInterface $scheduledCommand): int
+    public function runFromCron(ScheduledCommandInterface $scheduledCommand): int
     {
         $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
         $process->setIdleTimeout(null);

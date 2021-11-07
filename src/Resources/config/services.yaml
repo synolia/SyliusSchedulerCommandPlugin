@@ -67,8 +67,8 @@ services:
         arguments:
             - !tagged_iterator { tag: !php/const Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface::TAG_ID }
 
-    Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommandInterface:
-        class: Synolia\SyliusSchedulerCommandPlugin\Service\ExecuteScheduleCommand
+    Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface:
+        class: Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunner
         bind:
             $pingInterval: '%env(int:SYNOLIA_SCHEDULER_PLUGIN_PING_INTERVAL)%'
             $keepConnectionAlive: '%env(bool:SYNOLIA_SCHEDULER_PLUGIN_KEEP_ALIVE)%'
