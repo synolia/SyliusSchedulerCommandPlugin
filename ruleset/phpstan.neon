@@ -4,6 +4,7 @@ parameters:
     checkMissingIterableValueType: false
 
     excludes_analyse:
+        - ecs.php
         # Makes PHPStan crash
         - ../src/DependencyInjection/Configuration.php
         - ../src/Migrations/

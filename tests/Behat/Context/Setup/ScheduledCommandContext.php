@@ -52,17 +52,17 @@ final class ScheduledCommandContext implements Context
     {
         /** @var ScheduledCommandInterface $scheduledCommand */
         $scheduledCommand = $this->sharedStorage->get('scheduled_command');
-        $getter = 'get' . \ucfirst($attribute);
-        $attributeType = gettype($scheduledCommand->$getter());
-        $setter = 'set' . \ucfirst($attribute);
+        $getter = 'get' . ucfirst($attribute);
+        $attributeType = \gettype($scheduledCommand->$getter());
+        $setter = 'set' . ucfirst($attribute);
 
-        if ($attributeType === 'double') {
+        if ('double' === $attributeType) {
             $scheduledCommand->$setter((float) $value);
         }
-        if ($attributeType === 'integer') {
+        if ('integer' === $attributeType) {
             $scheduledCommand->$setter((int) $value);
         }
-        if ($scheduledCommand->$getter() === null || $scheduledCommand->$getter() === '') {
+        if (null === $scheduledCommand->$getter() || '' === $scheduledCommand->$getter()) {
             $scheduledCommand->$setter($value);
         }
 

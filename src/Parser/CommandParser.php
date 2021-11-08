@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Webmozart\Assert\Assert;
 
-class CommandParser implements CommandParserInterface
+final class CommandParser implements CommandParserInterface
 {
     /** @var KernelInterface */
     private $kernel;
@@ -40,7 +40,7 @@ class CommandParser implements CommandParserInterface
 
         $stream = fopen('php://memory', 'w+');
 
-        if ($stream === false) {
+        if (false === $stream) {
             throw new \Exception('PHP Memory stream not available');
         }
 
@@ -53,15 +53,15 @@ class CommandParser implements CommandParserInterface
 
     private function extractCommandsFromJson(string $string): array
     {
-        if ($string === '') {
+        if ('' === $string) {
             return [];
         }
 
-        $node = \json_decode($string);
+        $node = json_decode($string);
         $commandsList = [];
 
         foreach ($node->namespaces as $namespace) {
-            if (!in_array($namespace->id, $this->excludedNamespaces, true)) {
+            if (!\in_array($namespace->id, $this->excludedNamespaces, true)) {
                 foreach ($namespace->commands as $command) {
                     $commandsList[$namespace->id][$command] = $command;
                 }

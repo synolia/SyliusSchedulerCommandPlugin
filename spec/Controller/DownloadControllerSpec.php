@@ -10,7 +10,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Controller\DownloadController;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
-class DownloadControllerSpec extends ObjectBehavior
+final class DownloadControllerSpec extends ObjectBehavior
 {
     function let(ScheduledCommandRepositoryInterface $scheduledCommandRepository)
     {

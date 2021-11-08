@@ -9,7 +9,7 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
-class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
+final class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
 {
     /** @var \Sylius\Component\Resource\Factory\FactoryInterface */
     private $scheduledCommandFactory;
@@ -38,11 +38,11 @@ class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
         ;
 
         if (null !== $command->getLogFilePrefix()) {
-            $scheduledCommand->setLogFile(\sprintf(
+            $scheduledCommand->setLogFile(sprintf(
                 '%s-%s-%s.log',
                 $command->getLogFilePrefix(),
                 (new \DateTime())->format('Y-m-d'),
-                \uniqid(),
+                uniqid(),
             ));
         }
 

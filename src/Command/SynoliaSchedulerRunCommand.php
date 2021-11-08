@@ -113,10 +113,10 @@ final class SynoliaSchedulerRunCommand extends Command
         }
 
         foreach ($scheduledCommands as $scheduledCommand) {
-            $io->note(\sprintf(
+            $io->note(sprintf(
                 'Execute Command "%s" - last execution : %s',
                 $scheduledCommand->getCommand(),
-                $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never'
+                null !== $scheduledCommand->getExecutedAt() ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never'
             ));
 
             try {
@@ -133,7 +133,7 @@ final class SynoliaSchedulerRunCommand extends Command
 
     private function runScheduledCommand(SymfonyStyle $io, ScheduledCommandInterface $scheduledCommand): void
     {
-        /** prevent update during running time */
+        /* prevent update during running time */
         $this->entityManager->refresh($this->entityManager->merge($scheduledCommand));
 
         $this->executeCommand($scheduledCommand, $io);
@@ -196,7 +196,7 @@ final class SynoliaSchedulerRunCommand extends Command
     private function getCommands(InputInterface $input): iterable
     {
         $commands = $this->commandRepository->findEnabledCommand();
-        if ($input->getOption('id') !== null) {
+        if (null !== $input->getOption('id')) {
             $commands = $this->scheduledCommandRepository->findBy(['id' => $input->getOption('id')]);
         }
 
@@ -227,7 +227,7 @@ final class SynoliaSchedulerRunCommand extends Command
 
     private function getStateForResult(int $returnResultCode): string
     {
-        if ($returnResultCode !== 0) {
+        if (0 !== $returnResultCode) {
             return ScheduledCommandStateEnum::ERROR;
         }
 

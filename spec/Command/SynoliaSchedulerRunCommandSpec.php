@@ -14,7 +14,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 use Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
-class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
+final class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
 {
     function let(
         EntityManagerInterface $scheduledCommandManager,

@@ -104,7 +104,7 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         $repository = $this->entityManager->getRepository(ScheduledCommand::class);
 
         $lastScheduledCommand = $repository->findOneBy(['command' => $invalidCommandName]);
-        if ($lastScheduledCommand !== null) {
+        if (null !== $lastScheduledCommand) {
             $repository->remove($lastScheduledCommand);
         }
 

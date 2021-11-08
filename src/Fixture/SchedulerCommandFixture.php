@@ -10,7 +10,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
-class SchedulerCommandFixture extends AbstractFixture
+final class SchedulerCommandFixture extends AbstractFixture
 {
     /** @var RepositoryInterface */
     private $commandRepository;

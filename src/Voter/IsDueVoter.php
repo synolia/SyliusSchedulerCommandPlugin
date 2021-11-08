@@ -7,7 +7,7 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Voter;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
-class IsDueVoter implements IsDueVoterInterface
+final class IsDueVoter implements IsDueVoterInterface
 {
     /** @var array<\Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface> */
     private $isDueCheckers;

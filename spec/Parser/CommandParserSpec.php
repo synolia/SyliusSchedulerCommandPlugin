@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Parser\CommandParser;
 
-class CommandParserSpec extends ObjectBehavior
+final class CommandParserSpec extends ObjectBehavior
 {
     function let(KernelInterface $kernel)
     {

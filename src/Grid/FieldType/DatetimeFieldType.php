@@ -35,13 +35,13 @@ final class DatetimeFieldType implements FieldTypeInterface
         }
 
         /** @var \IntlDateFormatter|null $fmt */
-        $fmt = \datefmt_create($this->localeContext->getLocaleCode(), $options['date_format'], $options['time_format']);
+        $fmt = datefmt_create($this->localeContext->getLocaleCode(), $options['date_format'], $options['time_format']);
 
         if (!$fmt instanceof \IntlDateFormatter) {
             return '';
         }
 
-        /** @phpstan-ignore-next-line  */
+        /* @phpstan-ignore-next-line  */
         return $fmt->format($value) ?: '';
     }
 

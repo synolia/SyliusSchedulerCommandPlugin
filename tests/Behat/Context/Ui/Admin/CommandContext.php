@@ -277,7 +277,7 @@ final class CommandContext implements Context
     {
         Assert::startsWith(
             $this->indexPage->getColumnFields('logFile')[1],
-            \sprintf('%s %s', $this->translator->trans('sylius.ui.live_view'), $filename)
+            sprintf('%s %s', $this->translator->trans('sylius.ui.live_view'), $filename)
         );
     }
 

@@ -22,34 +22,34 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 use Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 
-class CliContext implements Context
+final class CliContext implements Context
 {
     /** @var KernelInterface */
-    protected $kernel;
+    private $kernel;
 
     /** @var Application */
-    protected $application;
+    private $application;
 
     /** @var CommandTester */
-    protected $tester;
+    private $tester;
 
     /** @var Command */
-    protected $command;
+    private $command;
 
     /** @var string */
-    protected $filePath;
+    private $filePath;
 
     /** @var RepositoryInterface */
-    protected $scheduledCommandRepository;
+    private $scheduledCommandRepository;
 
     /** @var EntityManagerInterface */
-    protected $scheduledCommandManager;
+    private $scheduledCommandManager;
 
     /** @var SharedStorageInterface */
-    protected $sharedStorage;
+    private $sharedStorage;
 
     /** @var ScheduleCommandRunnerInterface */
-    protected $scheduleCommandRunner;
+    private $scheduleCommandRunner;
 
     /** @var CommandRepositoryInterface */
     private $commandRepository;
@@ -134,17 +134,17 @@ class CliContext implements Context
     {
         /** @var CommandInterface $command */
         $command = $this->sharedStorage->get('command');
-        $getter = 'get' . \ucfirst($attribute);
-        $attributeType = gettype($command->$getter());
-        $setter = 'set' . \ucfirst($attribute);
+        $getter = 'get' . ucfirst($attribute);
+        $attributeType = \gettype($command->$getter());
+        $setter = 'set' . ucfirst($attribute);
 
-        if ($attributeType === 'double') {
+        if ('double' === $attributeType) {
             $command->$setter((float) $value);
         }
-        if ($attributeType === 'integer') {
+        if ('integer' === $attributeType) {
             $command->$setter((int) $value);
         }
-        if ($command->$getter() === null || $command->$getter() === '') {
+        if (null === $command->$getter() || '' === $command->$getter()) {
             $command->$setter($value);
         }
 
@@ -160,7 +160,7 @@ class CliContext implements Context
         $schedule = $this->sharedStorage->get('command');
         $logFile = $this->kernel->getLogDir() . \DIRECTORY_SEPARATOR . $schedule->getLogFile();
 
-        Assert::assertContains($messagePart, \file_get_contents($logFile));
+        Assert::assertContains($messagePart, file_get_contents($logFile));
     }
 
     /**
@@ -172,6 +172,6 @@ class CliContext implements Context
         $schedule = $this->sharedStorage->get('command');
         $logFile = $this->kernel->getLogDir() . \DIRECTORY_SEPARATOR . $schedule->getLogFilePrefix();
 
-        @\unlink($logFile);
+        @unlink($logFile);
     }
 }

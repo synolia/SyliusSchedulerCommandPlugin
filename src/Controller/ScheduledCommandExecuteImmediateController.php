@@ -14,7 +14,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterfac
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface;
 use Webmozart\Assert\Assert;
 
-class ScheduledCommandExecuteImmediateController extends AbstractController
+final class ScheduledCommandExecuteImmediateController extends AbstractController
 {
     /** @var ScheduledCommandPlannerInterface */
     private $scheduledCommandPlanner;
@@ -49,7 +49,7 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 
         $this->executeFromCron($scheduledCommand);
 
-        $this->flashBag->add('success', \sprintf(
+        $this->flashBag->add('success', sprintf(
             'Command "%s" as been planned for execution.',
             $scheduledCommand->getName(),
         ));

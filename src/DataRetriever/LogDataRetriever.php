@@ -17,17 +17,17 @@ final class LogDataRetriever
         string $grepKeyword = '',
         bool $invertGrep = false
     ): array {
-        /** Clear the stat cache to get the latest results */
-        \clearstatcache(true, $filePath);
+        /* Clear the stat cache to get the latest results */
+        clearstatcache(true, $filePath);
 
-        $filesize = \filesize($filePath);
+        $filesize = filesize($filePath);
         if (!is_numeric($filesize)) {
             throw new FileNotFoundException('Log file could not be found.');
         }
 
         $maxLength = ($filesize - $lastFetchedSize);
 
-        /**
+        /*
          * Verify that we don't load more data then allowed.
          */
         if ($maxLength > $this->maxSizeToLoad) {
@@ -35,26 +35,26 @@ final class LogDataRetriever
         }
 
         /**
-         * Actually load the data
+         * Actually load the data.
          */
         $data = [];
         if ($maxLength > 0) {
-            $filePointer = \fopen($filePath, 'rb');
+            $filePointer = fopen($filePath, 'r');
 
             if (false === $filePointer) {
                 throw new FileNotFoundException('Could not load data for the log file.');
             }
 
-            \fseek($filePointer, (int) -$maxLength, \SEEK_END);
-            $data = \explode("\n", (string) \fread($filePointer, (int) $maxLength));
+            fseek($filePointer, (int) -$maxLength, SEEK_END);
+            $data = explode("\n", (string) fread($filePointer, (int) $maxLength));
         }
         $data = $this->grepData($data, $grepKeyword, $invertGrep);
 
-        /**
+        /*
          * If the last entry in the array is an empty string lets remove it.
          */
-        if (\end($data) === '') {
-            \array_pop($data);
+        if ('' === end($data)) {
+            array_pop($data);
         }
 
         return [
@@ -69,7 +69,7 @@ final class LogDataRetriever
      */
     private function grepData(array $data, string $grepKeyword, bool $invertGrep): array
     {
-        $lines = preg_grep("/$grepKeyword/", $data, $invertGrep ? \PREG_GREP_INVERT : 0);
+        $lines = preg_grep("/$grepKeyword/", $data, $invertGrep ? PREG_GREP_INVERT : 0);
 
         return \is_array($lines) ? $lines : [];
     }

@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository")
  * @ORM\Table("synolia_commands")
  */
-class Command implements CommandInterface
+final class Command implements CommandInterface
 {
     /**
      * @var int|null
@@ -49,7 +49,7 @@ class Command implements CommandInterface
     private $cronExpression = '* * * * *';
 
     /**
-     * Log's file name prefix (without path), followed by a time stamp of the execution
+     * Log's file name prefix (without path), followed by a time stamp of the execution.
      *
      * @var string|null
      * @ORM\Column(type="string", nullable=true)
@@ -63,7 +63,7 @@ class Command implements CommandInterface
     private $priority = 0;
 
     /**
-     * If true, command will be execute next time regardless cron expression
+     * If true, command will be execute next time regardless cron expression.
      *
      * @var bool
      * @ORM\Column(type="boolean")

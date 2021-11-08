@@ -33,7 +33,7 @@ final class CleanLogAction extends AbstractController
         }
 
         $filePath = $logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
-        if (!\file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             $this->addFlash('error', $translator->trans('sylius.ui.no_log_file_found'));
 
             return $this->redirectToGrid();

@@ -9,7 +9,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueE
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
 
-class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
+final class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
 {
     /** @var SoftLimitThresholdIsDueChecker */
     private $softLimitThresholdIsDueChecker;
@@ -41,7 +41,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
 
         $this->entityManager->flush();
 
-        if ($expectedResult === false) {
+        if (false === $expectedResult) {
             $this->expectException(IsNotDueException::class);
         }
 
@@ -58,7 +58,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
     ): void {
         $command = $this->setupCommand($cronExpression);
 
-        if ($expectedResult === false) {
+        if (false === $expectedResult) {
             $this->expectException(IsNotDueException::class);
         }
 
@@ -75,7 +75,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
     ): void {
         $command = $this->setupCommand($cronExpression);
 
-        if ($expectedResult === false) {
+        if (false === $expectedResult) {
             $this->expectException(IsNotDueException::class);
         }
 

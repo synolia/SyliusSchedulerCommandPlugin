@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Synolia\SyliusSchedulerCommandPlugin\Form\CommandChoiceType;
 use Synolia\SyliusSchedulerCommandPlugin\Parser\CommandParserInterface;
 
-class CommandChoiceTypeSpec extends ObjectBehavior
+final class CommandChoiceTypeSpec extends ObjectBehavior
 {
     function let(CommandParserInterface $commandParser)
     {

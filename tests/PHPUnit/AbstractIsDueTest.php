@@ -63,12 +63,12 @@ abstract class AbstractIsDueTest extends KernelTestCase
         yield 'Without history, every 10 min - 2021-08-01 01:10' => ['*/10 * * * *', \DateTime::createFromFormat('Y-m-d H:i', '2021-08-01 01:10'), true];
         yield 'Without history, every 10 min - 2021-08-01 01:15' => ['*/10 * * * *', \DateTime::createFromFormat('Y-m-d H:i', '2021-08-01 01:15'), false];
         yield 'Without history, every 10 min - 2021-08-01 01:20' => ['*/10 * * * *', \DateTime::createFromFormat('Y-m-d H:i', '2021-08-01 01:20'), true];
-        yield 'Without history, at 1AM 2021-08-01 01:01' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:01', $today->format('Y-m-d'))), true];
-        yield 'Without history, at 1AM 2021-08-01 01:02' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:02', $today->format('Y-m-d'))), true];
-        yield 'Without history, at 1AM 2021-08-01 01:03' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:03', $today->format('Y-m-d'))), true];
-        yield 'Without history, at 1AM 2021-08-01 01:04' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:04', $today->format('Y-m-d'))), true];
-        yield 'Without history, at 1AM 2021-08-01 01:05' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:05', $today->format('Y-m-d'))), true];
-        yield 'Without history, at 1AM 2021-08-01 01:06' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:06', $today->format('Y-m-d'))), false];
+        yield 'Without history, at 1AM 2021-08-01 01:01' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:01', $today->format('Y-m-d'))), true];
+        yield 'Without history, at 1AM 2021-08-01 01:02' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:02', $today->format('Y-m-d'))), true];
+        yield 'Without history, at 1AM 2021-08-01 01:03' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:03', $today->format('Y-m-d'))), true];
+        yield 'Without history, at 1AM 2021-08-01 01:04' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:04', $today->format('Y-m-d'))), true];
+        yield 'Without history, at 1AM 2021-08-01 01:05' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:05', $today->format('Y-m-d'))), true];
+        yield 'Without history, at 1AM 2021-08-01 01:06' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:06', $today->format('Y-m-d'))), false];
     }
 
     public function isDueWithScheduledHistoryDataProvider(): \Generator
@@ -77,69 +77,69 @@ abstract class AbstractIsDueTest extends KernelTestCase
 
         yield 'With history in the same minute, at 1:07AM - 2021-08-01 01:01' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'With history for the least 5 minutes, at 1:07AM - 2021-08-01 01:08' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:08', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:08', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'With history for the least 5 minutes, at 1:07AM - 2021-08-01 01:09' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:09', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:09', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'With history for the least 5 minutes, at 1:07AM - 2021-08-01 01:10' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:10', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:10', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'With history for the least 5 minutes, at 1:07AM - 2021-08-01 01:11' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:11', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:11', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'With history for the least 5 minutes, at 1:07AM - 2021-08-01 01:12' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:12', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:12', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'With history for the least 5 minutes, at every 10 minutes - 2021-08-01 01:08' => [
             '*/10 * * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:08', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:00', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:08', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:00', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'With history for the least 5 minutes, at every 10 minutes - 2021-08-01 01:09' => [
             '*/10 * * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:09', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:00', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:09', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:00', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'With no history for the least 5 minutes, at every 10 minutes - 2021-08-01 01:10' => [
             '*/10 * * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:10', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:00', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:10', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:00', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'With no history for the least 5 minutes, at 1:07AM - 2021-08-01 01:06' => [
             '0 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:06', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:00', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:06', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:00', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'With no-history for the least 5 minutes, at 1:05AM - 2021-08-01 01:06' => [
             '5 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:06', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:00', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:06', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:00', $today->format('Y-m-d'))),
+            true,
         ];
 
         /*
@@ -159,105 +159,105 @@ abstract class AbstractIsDueTest extends KernelTestCase
          */
         yield 'cron passes at 01:04 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:04', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:04', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:05 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:05', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:05', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:06 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:06', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:06', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:07 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'cron passes at 01:08 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:08', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:08', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'cron passes at 01:09 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:09', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:09', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'cron passes at 01:10 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:10', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:10', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'cron passes at 01:11 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:11', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:11', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'cron passes at 01:12 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:12', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:12', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'cron passes at 01:13 - 1..5 without cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:13', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 00:00', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:13', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 00:00', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:07 - 1..5 but a cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            true
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            true,
         ];
         yield 'cron passes at 01:08 - 1..5 but a cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:08', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:08', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:09 - 1..5 but a cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:09', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:09', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:10 - 1..5 but a cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:10', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:10', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:11 - 1..5 but a cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:11', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:11', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:12 - 1..5 but a cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:12', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:12', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
         yield 'cron passes at 01:13 - 1..5 but a cron already passed in the soft limit threshold' => [
             '7 1 * * *',
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:13', $today->format('Y-m-d'))),
-            \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
-            false
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:13', $today->format('Y-m-d'))),
+            \DateTime::createFromFormat('Y-m-d H:i', sprintf('%s 01:07', $today->format('Y-m-d'))),
+            false,
         ];
     }
 }

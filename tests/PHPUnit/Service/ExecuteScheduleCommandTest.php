@@ -12,7 +12,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterfac
 use Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\WithDatabaseTrait;
 
-class ExecuteScheduleCommandTest extends WebTestCase
+final class ExecuteScheduleCommandTest extends WebTestCase
 {
     use WithDatabaseTrait;
 
@@ -36,7 +36,7 @@ class ExecuteScheduleCommandTest extends WebTestCase
     {
         $commandResult = $this->scheduleCommandRunner->runImmediately('hello world !');
 
-        $this->assertEquals(false, $commandResult);
+        $this->assertFalse($commandResult);
     }
 
     public function testExecuteImmediateWithGoodCommand(): void
@@ -56,6 +56,6 @@ class ExecuteScheduleCommandTest extends WebTestCase
         $scheduledCommand = $planner->plan($command);
 
         $commandResult = $this->scheduleCommandRunner->runImmediately((string) $scheduledCommand->getId());
-        $this->assertEquals(true, $commandResult);
+        $this->assertTrue($commandResult);
     }
 }

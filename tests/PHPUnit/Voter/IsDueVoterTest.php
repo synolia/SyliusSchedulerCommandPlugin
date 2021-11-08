@@ -8,7 +8,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
 
-class IsDueVoterTest extends AbstractIsDueTest
+final class IsDueVoterTest extends AbstractIsDueTest
 {
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface */
     private $voter;

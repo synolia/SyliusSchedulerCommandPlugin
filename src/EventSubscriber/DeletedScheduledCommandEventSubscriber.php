@@ -8,7 +8,7 @@ use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
-class DeletedScheduledCommandEventSubscriber implements EventSubscriberInterface
+final class DeletedScheduledCommandEventSubscriber implements EventSubscriberInterface
 {
     /** @var string */
     private $logsDir;
@@ -37,7 +37,7 @@ class DeletedScheduledCommandEventSubscriber implements EventSubscriberInterface
 
         $filePath = $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile();
 
-        if (!\file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             return;
         }
 

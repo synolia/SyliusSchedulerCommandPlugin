@@ -33,7 +33,7 @@ final class DownloadController extends AbstractController
         }
 
         $filePath = $this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
-        if (!\file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 

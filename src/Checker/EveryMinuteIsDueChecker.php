@@ -9,9 +9,9 @@ use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueE
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
 /**
- * This checker only works if current date/time is checked every minutes
+ * This checker only works if current date/time is checked every minutes.
  */
-class EveryMinuteIsDueChecker implements IsDueCheckerInterface
+final class EveryMinuteIsDueChecker implements IsDueCheckerInterface
 {
     public static function getDefaultPriority(): int
     {

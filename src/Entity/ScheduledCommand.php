@@ -11,7 +11,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Enum\ScheduledCommandStateEnum;
  * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository")
  * @ORM\Table("synolia_scheduled_commands")
  */
-class ScheduledCommand implements ScheduledCommandInterface
+final class ScheduledCommand implements ScheduledCommandInterface
 {
     /**
      * @var int|null
@@ -52,7 +52,7 @@ class ScheduledCommand implements ScheduledCommandInterface
     private $lastReturnCode;
 
     /**
-     * Log's file name (without path)
+     * Log's file name (without path).
      *
      * @var string|null
      * @ORM\Column(type="string", nullable=true)

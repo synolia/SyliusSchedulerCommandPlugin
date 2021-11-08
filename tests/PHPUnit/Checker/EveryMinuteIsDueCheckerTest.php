@@ -8,7 +8,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Checker\EveryMinuteIsDueChecker;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
 
-class EveryMinuteIsDueCheckerTest extends AbstractIsDueTest
+final class EveryMinuteIsDueCheckerTest extends AbstractIsDueTest
 {
     /**
      * @dataProvider isDueUsingCronExpressionDataProvider
@@ -21,7 +21,7 @@ class EveryMinuteIsDueCheckerTest extends AbstractIsDueTest
         $checker = new EveryMinuteIsDueChecker();
         $command = $this->setupCommand($cronExpression);
 
-        if ($expectedResult === false) {
+        if (false === $expectedResult) {
             $this->expectException(IsNotDueException::class);
         }
 

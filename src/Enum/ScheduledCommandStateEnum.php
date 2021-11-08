@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Enum;
 
-class ScheduledCommandStateEnum
+final class ScheduledCommandStateEnum
 {
     public const WAITING = 'waiting';
 

@@ -8,7 +8,7 @@ use Lorisleiva\CronTranslator\CronTranslator;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 use Sylius\Component\Locale\Context\LocaleNotFoundException;
 
-class CronExpressionHumanizer implements HumanizerInterface
+final class CronExpressionHumanizer implements HumanizerInterface
 {
     /** @var \Sylius\Component\Locale\Context\LocaleContextInterface */
     private $localeContext;
@@ -20,7 +20,7 @@ class CronExpressionHumanizer implements HumanizerInterface
 
     public function humanize(string $expression): string
     {
-        if (!\class_exists(CronTranslator::class) || '' === $expression) {
+        if (!class_exists(CronTranslator::class) || '' === $expression) {
             return $expression;
         }
 
@@ -38,7 +38,7 @@ class CronExpressionHumanizer implements HumanizerInterface
         try {
             $locale = $this->localeContext->getLocaleCode();
 
-            if (\strlen($locale) === 2) {
+            if (2 === mb_strlen($locale)) {
                 return $locale;
             }
 

@@ -37,8 +37,8 @@ final class EmptyLogsController extends AbstractController
 
         foreach ($commandIds as $commandId) {
             $command = $this->scheduledCommandRepository->find($commandId);
-            if ($command !== null && $command->getLogFile() !== null) {
-                @\file_put_contents($this->logsDir . \DIRECTORY_SEPARATOR . $command->getLogFile(), '');
+            if (null !== $command && null !== $command->getLogFile()) {
+                @file_put_contents($this->logsDir . \DIRECTORY_SEPARATOR . $command->getLogFile(), '');
             }
         }
 

@@ -53,7 +53,7 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
         );
 
         $filePath = $this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
-        if (\file_exists($filePath)) {
+        if (file_exists($filePath)) {
             $size = filesize($filePath);
         }
 

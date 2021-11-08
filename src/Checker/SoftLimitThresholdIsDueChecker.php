@@ -9,7 +9,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueE
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
-class SoftLimitThresholdIsDueChecker implements IsDueCheckerInterface
+final class SoftLimitThresholdIsDueChecker implements IsDueCheckerInterface
 {
     /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
@@ -49,12 +49,12 @@ class SoftLimitThresholdIsDueChecker implements IsDueCheckerInterface
         }
 
         $previousRunDate = $cron->getPreviousRunDate();
-        $previousRunDateThreshold = (clone $previousRunDate)->add(new \DateInterval(\sprintf('PT%dM', $this->threshold)));
+        $previousRunDateThreshold = (clone $previousRunDate)->add(new \DateInterval(sprintf('PT%dM', $this->threshold)));
 
         $lastCreatedScheduledCommand = $this->scheduledCommandRepository->findLastCreatedCommand($command);
 
         // if never, do my command is valid for the least "threshold" minutes
-        if ($lastCreatedScheduledCommand === null) {
+        if (null === $lastCreatedScheduledCommand) {
             if ($dateTime->getTimestamp() >= $previousRunDate->getTimestamp() && $dateTime->getTimestamp() <= $previousRunDateThreshold->getTimestamp()) {
                 return true;
             }

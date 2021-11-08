@@ -8,7 +8,7 @@ use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ScheduledCommandExecutionTimeType implements FieldTypeInterface
+final class ScheduledCommandExecutionTimeType implements FieldTypeInterface
 {
     private const HOUR_IN_SECONDES = 3600;
 
@@ -19,7 +19,7 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
-        if ($scheduleCommand->getExecutedAt() === null) {
+        if (null === $scheduleCommand->getExecutedAt()) {
             return '';
         }
 

@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
-class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
+final class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 {
     /** @var ScheduledCommandRepositoryInterface */
     private $scheduledCommandRepository;
@@ -114,18 +114,18 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
             } catch (\Doctrine\DBAL\Exception $exception) {
             }
 
-            for ($i = 0; $i < $this->pingInterval; $i++) {
+            for ($i = 0; $i < $this->pingInterval; ++$i) {
                 if (!$process->isRunning()) {
                     return;
                 }
-                \sleep(1);
+                sleep(1);
             }
         }
     }
 
     private function getLogOutput(ScheduledCommandInterface $scheduledCommand): ?string
     {
-        if ($scheduledCommand->getLogFile() === null || $scheduledCommand->getLogFile() === '') {
+        if (null === $scheduledCommand->getLogFile() || '' === $scheduledCommand->getLogFile()) {
             return null;
         }
 

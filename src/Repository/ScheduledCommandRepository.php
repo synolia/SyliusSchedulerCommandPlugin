@@ -10,7 +10,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Enum\ScheduledCommandStateEnum;
 
-class ScheduledCommandRepository extends EntityRepository implements ScheduledCommandRepositoryInterface
+final class ScheduledCommandRepository extends EntityRepository implements ScheduledCommandRepositoryInterface
 {
     public function findAllRunnable(): iterable
     {

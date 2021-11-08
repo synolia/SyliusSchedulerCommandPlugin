@@ -7,7 +7,7 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Repository;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
-class CommandRepository extends EntityRepository implements CommandRepositoryInterface
+final class CommandRepository extends EntityRepository implements CommandRepositoryInterface
 {
     /**
      * @return CommandInterface[]
