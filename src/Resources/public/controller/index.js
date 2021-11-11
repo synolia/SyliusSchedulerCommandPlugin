@@ -36,7 +36,7 @@ $(document).ready(function () {
   //Set up an interval for updating the log. Change updateTime in the PHPTail constructor to change this
   var updateLog = setInterval(function () {
     //This function queries the server for updates.
-    $.getJSON(route + '?refresh=1&lastsize=' + lastSize + '&grep-keywords=' + grep + '&invert=' + invert, function (data) {
+    $.getJSON(sy_route + '?refresh=1&lastsize=' + lastSize + '&grep-keywords=' + grep + '&invert=' + invert, function (data) {
       lastSize = data.size;
       $("#current").text(data.file);
       $.each(data.data, function (key, value) {
@@ -53,7 +53,7 @@ $(document).ready(function () {
         $("#results").append(jqXHR.responseText);
         clearInterval(updateLog);
       });
-  }, updateTime);
+  }, sy_updateTime);
 
   //Some window scroll event to keep the menu at the top
   $(window).scroll(function (e) {
