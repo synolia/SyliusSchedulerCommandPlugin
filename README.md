@@ -98,6 +98,32 @@ sylius_fixtures:
                                 enabled: false
 ```
 
+## Commands
+### synolia:scheduler-run
+
+Execute scheduled commands.
+
+* options:
+  * --id (run only a specific scheduled command)
+
+**Run all scheduled commands :** php bin/console synolia:scheduler-run
+
+**Run one scheduled command :** php bin/console synolia:scheduler-run --id=5
+
+### synolia:scheduler:purge-history
+
+Purge scheduled command history greater than {X} days old.
+
+* options: 
+  * --all (purge everything)
+  * --days (number of days to keep)
+  * --state (array of schedule states)
+  * --dry-run
+
+**Example to remove all finished and in error scheduled commands after 7 days :**
+
+php bin/console synolia:scheduler:purge-history --state=finished --state=error --days=7
+
 ## Optional services
 ```yaml
 services:

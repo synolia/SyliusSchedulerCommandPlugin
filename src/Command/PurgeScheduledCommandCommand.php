@@ -34,6 +34,8 @@ class PurgeScheduledCommandCommand extends Command
     /** @var LoggerInterface */
     private $logger;
 
+    private SymfonyStyle $io;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
@@ -50,7 +52,7 @@ class PurgeScheduledCommandCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Purge scheduled command history lesser than {X} days old.')
+            ->setDescription('Purge scheduled command history greater than {X} days old.')
             ->addOption('all', 'p', InputOption::VALUE_NONE, 'Remove all schedules with specified state (default is finished).')
             ->addOption('days', 'd', InputOption::VALUE_OPTIONAL, '{X} days old', self::DEFAULT_PURGE_PERIODE_IN_DAYS)
             ->addOption('state', 's', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'State of scheduled history to be cleaned', [self::DEFAULT_STATE])
@@ -60,28 +62,16 @@ class PurgeScheduledCommandCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
+        $this->io = new SymfonyStyle($input, $output);
+
         $purgeAll = $input->getOption('all');
-        $daysOld = $input->getOption('days');
+        $daysOld = (int) $input->getOption('days');
         $state = $input->getOption('state');
         /** @var bool $dryRun */
         $dryRun = $input->getOption('dry-run') ?? false;
 
-        if (!\is_numeric($daysOld)) {
-            throw new \Exception('Invalid days provided.');
-        }
-
-        $maxDate = new \DateTime();
-        $maxDate->modify(\sprintf('-%d days', $daysOld));
-
-        $io->note(\sprintf(
-            'Schedules lesser than %s days(s) (%s) will be purged.',
-            $daysOld,
-            $maxDate->format('Y-m-d')
-        ));
-
         /** @var ScheduledCommandInterface[] $schedules */
-        $schedules = $this->getScheduledHistory($purgeAll, $maxDate, $state);
+        $schedules = $this->getScheduledHistory($purgeAll, $daysOld, $state);
 
         $counter = 0;
         foreach ($schedules as $schedule) {
@@ -108,11 +98,26 @@ class PurgeScheduledCommandCommand extends Command
         return 0;
     }
 
-    private function getScheduledHistory(bool $purgeAll, \DateTimeInterface $maxDate, array $states): iterable
+    private function getScheduledHistory(bool $purgeAll, int $daysOld, array $states): iterable
     {
         if ($purgeAll) {
+            $this->io->note(\sprintf(
+                'All schedules with states ["%s"] will be purged.',
+                \implode(',', $states),
+            ));
+
             return $this->scheduledCommandRepository->findAllHavingState($states);
         }
+
+        $maxDate = new \DateTime();
+        $maxDate->modify(\sprintf('-%d days', $daysOld));
+
+        $this->io->note(\sprintf(
+            'Schedules with states ["%s"] lesser than %s days(s) (%s) will be purged.',
+            \implode(',', $states),
+            $daysOld,
+            $maxDate->format('Y-m-d')
+        ));
 
         return $this->scheduledCommandRepository->findAllSinceXDaysWithState($maxDate, $states);
     }
