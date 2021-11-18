@@ -62,6 +62,11 @@
 
         composer require dragonmantank/cron-expression
 
+5. Till `symfony/recipes-contrib` is updated for the v3, you must add `sylius_scheduler_command.yaml` from `install/Application/config/{packages,routes}` to your project by respecting the same folder architecture.
+
+        cp -R vendor/synolia/sylius-scheduler-command-plugin/install/Application/config/packages/* config/packages/
+        cp -R vendor/synolia/sylius-scheduler-command-plugin/install/Application/config/routes/* config/routes/
+
 ## Usage
 
 * Log into admin panel
