@@ -60,7 +60,7 @@
 
 4. (optional) Showing humanized cron expression
 
-        composer require dragonmantank/cron-expression
+        composer require lorisleiva/cron-translator
 
 5. Till `symfony/recipes-contrib` is updated for the v3, you must add `sylius_scheduler_command.yaml` from `install/Application/config/{packages,routes}` to your project by respecting the same folder architecture.
 
