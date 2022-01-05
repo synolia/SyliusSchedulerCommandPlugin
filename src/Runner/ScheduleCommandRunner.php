@@ -6,6 +6,7 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Runner;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
@@ -66,7 +67,8 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 
         $scheduledCommand->setExecutedAt(new \DateTime());
         $process->setIdleTimeout(null);
-        $process->setTimeout(null);
+        $process->setTimeout($scheduledCommand->getTimeout());
+        $process->setIdleTimeout($scheduledCommand->getIdleTimeout());
         $this->startProcess($process);
 
         $result = $process->getExitCode();
@@ -86,8 +88,13 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
     {
         $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
         $process->setIdleTimeout(null);
-        $process->setTimeout(null);
-        $this->startProcess($process);
+        $process->setTimeout($scheduledCommand->getTimeout());
+        $process->setIdleTimeout($scheduledCommand->getIdleTimeout());
+
+        try {
+            $this->startProcess($process);
+        } catch (ProcessTimedOutException $processTimedOutException) {
+        }
 
         $result = $process->getExitCode();
         $scheduledCommand->setCommandEndTime(new \DateTime());
@@ -109,6 +116,8 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 
         $process->start();
         while ($process->isRunning()) {
+            $process->checkTimeout();
+
             try {
                 $this->entityManager->getConnection()->executeQuery($this->entityManager->getConnection()->getDatabasePlatform()->getDummySelectSQL());
             } catch (\Doctrine\DBAL\Exception $exception) {

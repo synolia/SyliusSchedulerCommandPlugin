@@ -227,6 +227,10 @@ final class SynoliaSchedulerRunCommand extends Command
 
     private function getStateForResult(int $returnResultCode): string
     {
+        if ($returnResultCode === 143) {
+            return ScheduledCommandStateEnum::TERMINATION;
+        }
+
         if ($returnResultCode !== 0) {
             return ScheduledCommandStateEnum::ERROR;
         }

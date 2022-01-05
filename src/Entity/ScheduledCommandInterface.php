@@ -47,4 +47,12 @@ interface ScheduledCommandInterface extends ResourceInterface
     public function setOwner(?CommandInterface $owner): self;
 
     public function getCreatedAt(): \DateTime;
+
+    public function getTimeout(): ?int;
+
+    public function setTimeout(?int $timeout): self;
+
+    public function getIdleTimeout(): ?int;
+
+    public function setIdleTimeout(?int $timeout): self;
 }

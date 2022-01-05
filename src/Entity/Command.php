@@ -76,6 +76,12 @@ class Command implements CommandInterface
      */
     private $enabled = true;
 
+    /** @ORM\Column(type="integer", nullable=true) */
+    private ?int $timeout = null;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private ?int $idleTimeout = null;
+
     /**
      * @ORM\OneToMany(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface", mappedBy="owner")
      *
@@ -217,6 +223,30 @@ class Command implements CommandInterface
         $this->scheduledCommands->removeElement($scheduledCommand);
         // needed to update the owning side of the relationship!
         $scheduledCommand->setOwner(null);
+
+        return $this;
+    }
+
+    public function getTimeout(): ?int
+    {
+        return $this->timeout;
+    }
+
+    public function setTimeout(?int $timeout): CommandInterface
+    {
+        $this->timeout = $timeout;
+
+        return $this;
+    }
+
+    public function getIdleTimeout(): ?int
+    {
+        return $this->idleTimeout;
+    }
+
+    public function setIdleTimeout(?int $idleTimeout): CommandInterface
+    {
+        $this->idleTimeout = $idleTimeout;
 
         return $this;
     }

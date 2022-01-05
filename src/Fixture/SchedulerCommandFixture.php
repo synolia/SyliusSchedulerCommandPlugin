@@ -45,6 +45,8 @@ class SchedulerCommandFixture extends AbstractFixture
                 ->setCronExpression($commandArray['cronExpression'])
                 ->setLogFilePrefix($commandArray['logFilePrefix'])
                 ->setPriority($commandArray['priority'])
+                ->setTimeout($commandArray['timeout'] ?? null)
+                ->setIdleTimeout($commandArray['idle_timeout'] ?? null)
                 ->setExecuteImmediately($commandArray['executeImmediately'])
                 ->setEnabled($commandArray['enabled'])
             ;
@@ -71,6 +73,8 @@ class SchedulerCommandFixture extends AbstractFixture
             ->scalarNode('cronExpression')->isRequired()->end()
             ->scalarNode('logFilePrefix')->defaultValue('')->end()
             ->integerNode('priority')->isRequired()->end()
+            ->integerNode('timeout')->defaultNull()->end()
+            ->integerNode('idle_timeout')->defaultNull()->end()
             ->booleanNode('executeImmediately')->defaultFalse()->end()
             ->booleanNode('enabled')->defaultTrue()->end()
             ->end()

@@ -34,6 +34,8 @@ class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
             ->setName($command->getName())
             ->setCommand($command->getCommand())
             ->setArguments($command->getArguments())
+            ->setTimeout($command->getTimeout())
+            ->setIdleTimeout($command->getIdleTimeout())
             ->setOwner($command)
         ;
 
