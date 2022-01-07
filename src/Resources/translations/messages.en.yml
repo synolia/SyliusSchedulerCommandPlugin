@@ -35,6 +35,7 @@ synolia:
             in_progress: In Progress
             finished: Finished
             error: Error
+            termination: Cancelled
     menu:
         admin:
             main:

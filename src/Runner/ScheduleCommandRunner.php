@@ -66,7 +66,6 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
         );
 
         $scheduledCommand->setExecutedAt(new \DateTime());
-        $process->setIdleTimeout(null);
         $process->setTimeout($scheduledCommand->getTimeout());
         $process->setIdleTimeout($scheduledCommand->getIdleTimeout());
         $this->startProcess($process);
@@ -87,7 +86,6 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
     public function runFromCron(ScheduledCommandInterface $scheduledCommand): int
     {
         $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
-        $process->setIdleTimeout(null);
         $process->setTimeout($scheduledCommand->getTimeout());
         $process->setIdleTimeout($scheduledCommand->getIdleTimeout());
 
@@ -128,6 +126,8 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
                     return;
                 }
                 \sleep(1);
+
+                $process->checkTimeout();
             }
         }
     }

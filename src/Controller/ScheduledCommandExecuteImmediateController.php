@@ -60,7 +60,6 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
     public function executeFromCron(ScheduledCommandInterface $scheduledCommand): int
     {
         $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
-        $process->setIdleTimeout(null);
         $process->setTimeout($scheduledCommand->getTimeout());
         $process->setIdleTimeout($scheduledCommand->getIdleTimeout());
         $process->run();
