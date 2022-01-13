@@ -147,9 +147,6 @@ final class SynoliaSchedulerRunCommand extends Command
 
     private function executeCommand(ScheduledCommandInterface $scheduledCommand, SymfonyStyle $io): void
     {
-        $scheduledCommand->setExecutedAt(new \DateTime());
-        $this->entityManager->flush();
-
         try {
             /** @var Application $application */
             $application = $this->getApplication();
@@ -170,6 +167,7 @@ final class SynoliaSchedulerRunCommand extends Command
                 . ' ' . $scheduledCommand->getArguments() . '</comment>'
             );
 
+            $scheduledCommand->setExecutedAt(new \DateTime());
             $this->changeState($scheduledCommand, ScheduledCommandStateEnum::IN_PROGRESS);
             $result = $this->scheduleCommandRunner->runFromCron($scheduledCommand);
 
