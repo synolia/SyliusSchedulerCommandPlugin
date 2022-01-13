@@ -79,10 +79,6 @@ jobs:
               run: (test -f grumphp.yml && vendor/bin/grumphp run) || echo Grumphp ruleset file does not exist, skipping step
               if: always() && steps.end-of-setup.outcome == 'success'
 
-            - name: PHPSpec - Run
-              run: vendor/bin/phpspec run
-              if: always() && steps.end-of-setup.outcome == 'success'
-
             - name: Checks security issues - Run
               run: symfony security:check
               if: always() && steps.end-of-setup.outcome == 'success'

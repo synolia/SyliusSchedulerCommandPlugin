@@ -7,6 +7,7 @@ namespace Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Context\Cli;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
+use Psr\Log\LoggerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -60,6 +61,8 @@ class CliContext implements Context
     /** @var IsDueVoterInterface */
     private $isDueVoter;
 
+    private LoggerInterface $logger;
+
     public function __construct(
         KernelInterface $kernel,
         SharedStorageInterface $sharedStorage,
@@ -68,7 +71,8 @@ class CliContext implements Context
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlannerInterface $scheduledCommandPlanner,
-        IsDueVoterInterface $isDueVoter
+        IsDueVoterInterface $isDueVoter,
+        LoggerInterface $logger
     ) {
         $this->kernel = $kernel;
         $this->sharedStorage = $sharedStorage;
@@ -78,6 +82,7 @@ class CliContext implements Context
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
         $this->isDueVoter = $isDueVoter;
+        $this->logger = $logger;
     }
 
     /**
@@ -108,7 +113,8 @@ class CliContext implements Context
                 $this->commandRepository,
                 $this->scheduledCommandRepository,
                 $this->scheduledCommandPlanner,
-                $this->isDueVoter
+                $this->isDueVoter,
+                $this->logger
             )
         );
         $this->command = $this->application->find('synolia:scheduler-run');
