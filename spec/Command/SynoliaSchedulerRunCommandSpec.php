@@ -6,6 +6,7 @@ namespace spec\Synolia\SyliusSchedulerCommandPlugin\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Synolia\SyliusSchedulerCommandPlugin\Command\SynoliaSchedulerRunCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface;
@@ -22,7 +23,8 @@ class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlannerInterface $scheduledCommandPlanner,
-        IsDueVoterInterface $isDueVoter
+        IsDueVoterInterface $isDueVoter,
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $scheduledCommandManager,
@@ -30,7 +32,8 @@ class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
             $commandRepository,
             $scheduledCommandRepository,
             $scheduledCommandPlanner,
-            $isDueVoter
+            $isDueVoter,
+            $logger
         );
     }
 

@@ -6,6 +6,7 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Command;
 
 use Doctrine\DBAL\Exception\ConnectionLost;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
@@ -46,13 +47,16 @@ final class SynoliaSchedulerRunCommand extends Command
     /** @var IsDueVoterInterface */
     private $isDueVoter;
 
+    private LoggerInterface $logger;
+
     public function __construct(
         EntityManagerInterface $scheduledCommandManager,
         ScheduleCommandRunnerInterface $scheduleCommandRunner,
         CommandRepositoryInterface $commandRepository,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlannerInterface $scheduledCommandPlanner,
-        IsDueVoterInterface $isDueVoter
+        IsDueVoterInterface $isDueVoter,
+        LoggerInterface $logger
     ) {
         parent::__construct(static::$defaultName);
 
@@ -62,6 +66,7 @@ final class SynoliaSchedulerRunCommand extends Command
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
         $this->isDueVoter = $isDueVoter;
+        $this->logger = $logger;
     }
 
     protected function configure(): void
@@ -72,12 +77,6 @@ final class SynoliaSchedulerRunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->lock()) {
-            $output->writeln('The command is already running in another process.');
-
-            return 0;
-        }
-
         $io = new SymfonyStyle($input, $output);
 
         $scheduledCommandId = $input->getOption('id');
@@ -103,6 +102,13 @@ final class SynoliaSchedulerRunCommand extends Command
             if ($this->shouldExecuteCommand($command, $io)) {
                 $this->scheduledCommandPlanner->plan($command);
             }
+        }
+
+        if (!$this->lock()) {
+            $output->writeln('The command is already running in another process.');
+            $this->logger->info('Scheduler is already running.');
+
+            return 0;
         }
 
         /** @var ScheduledCommandInterface[] $scheduledCommands */
@@ -141,9 +147,6 @@ final class SynoliaSchedulerRunCommand extends Command
 
     private function executeCommand(ScheduledCommandInterface $scheduledCommand, SymfonyStyle $io): void
     {
-        $scheduledCommand->setExecutedAt(new \DateTime());
-        $this->entityManager->flush();
-
         try {
             /** @var Application $application */
             $application = $this->getApplication();
@@ -164,6 +167,7 @@ final class SynoliaSchedulerRunCommand extends Command
                 . ' ' . $scheduledCommand->getArguments() . '</comment>'
             );
 
+            $scheduledCommand->setExecutedAt(new \DateTime());
             $this->changeState($scheduledCommand, ScheduledCommandStateEnum::IN_PROGRESS);
             $result = $this->scheduleCommandRunner->runFromCron($scheduledCommand);
 
