@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Synolia\SyliusSchedulerCommandPlugin\EventSubscriber;
+namespace Synolia\SyliusSchedulerCommandPlugin\DoctrineEvent;
 
-use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
-class DeletedScheduledCommandEventSubscriber implements EventSubscriberInterface
+class ScheduledCommandPostRemoveEvent implements EventSubscriber
 {
     /** @var string */
     private $logsDir;
@@ -18,14 +19,16 @@ class DeletedScheduledCommandEventSubscriber implements EventSubscriberInterface
         $this->logsDir = $logsDir;
     }
 
-    public static function getSubscribedEvents(): array
+    public function getSubscribedEvents(): array
     {
-        return ['synolia.scheduled_command.pre_delete' => ['deleteLogFile']];
+        return [
+            Events::postRemove,
+        ];
     }
 
-    public function deleteLogFile(ResourceControllerEvent $event): void
+    public function postRemove(LifecycleEventArgs $eventArgs): void
     {
-        $scheduledCommand = $event->getSubject();
+        $scheduledCommand = $eventArgs->getEntity();
 
         if (!$scheduledCommand instanceof ScheduledCommandInterface) {
             return;
