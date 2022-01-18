@@ -30,6 +30,7 @@ synolia:
             in_progress: En cours
             finished: Terminée
             error: En erreur
+            termination: Annulée
     menu:
         admin:
             main:

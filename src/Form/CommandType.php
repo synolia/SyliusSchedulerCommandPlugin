@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
@@ -23,6 +24,12 @@ final class CommandType extends AbstractType
             ->add('cronExpression')
             ->add('logFilePrefix')
             ->add('priority')
+            ->add('timeout', IntegerType::class, [
+                'required' => false,
+            ])
+            ->add('idle_timeout', IntegerType::class, [
+                'required' => false,
+            ])
             ->add('executeImmediately')
             ->add('enabled')
         ;

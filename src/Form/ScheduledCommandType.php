@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
@@ -20,6 +21,12 @@ final class ScheduledCommandType extends AbstractType
             ->add('name')
             ->add('command', CommandChoiceType::class)
             ->add('arguments')
+            ->add('timeout', IntegerType::class, [
+                'required' => false,
+            ])
+            ->add('idle_timeout', IntegerType::class, [
+                'required' => false,
+            ])
             ->add('logFile')
         ;
     }
