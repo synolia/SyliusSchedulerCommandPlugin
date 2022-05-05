@@ -2,12 +2,12 @@
 SHELL=/bin/bash
 COMPOSER_ROOT=composer
 TEST_DIRECTORY=tests/Application
-CONSOLE=cd tests/Application && php bin/console -e test
+CONSOLE=cd tests/Application && php bin/console
 COMPOSER=cd tests/Application && composer
 YARN=cd tests/Application && yarn
 
-SYLIUS_VERSION=1.10.0
-SYMFONY_VERSION=5.2
+SYLIUS_VERSION=1.11.0
+SYMFONY_VERSION=5.4
 PLUGIN_NAME=synolia/sylius-scheduler-command-plugin
 
 ###
@@ -52,13 +52,10 @@ update-dependencies:
 ifeq ($(SYMFONY_VERSION), 4.4)
 	${COMPOSER} require sylius/admin-api-bundle --no-scripts --no-update
 endif
-ifeq ($(SYLIUS_VERSION), 1.8.0)
-	${COMPOSER} update --no-progress --no-scripts --prefer-dist -n
-endif
 	${COMPOSER} update --no-progress -n
 
 install-sylius:
-	${CONSOLE} sylius:install -n -s scheduler_command
+	${CONSOLE} sylius:install -n -s
 	${YARN} install
 	${YARN} build
 	${CONSOLE} cache:clear

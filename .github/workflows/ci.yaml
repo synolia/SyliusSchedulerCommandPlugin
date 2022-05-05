@@ -10,16 +10,14 @@ on:
             - README.md
 
 jobs:
-
     analysis:
         name: PHP ${{ matrix.php }} Symfony ${{ matrix.symfony }}
         runs-on: ubuntu-18.04
-
         strategy:
             fail-fast: false
             matrix:
                 php: [7.4, 8.0]
-                symfony: [4.4.*, 5.2.*]
+                symfony: [4.4.*, 5.2.*, 5.3.*, 5.4.*]
 
         env:
             APP_ENV: test
@@ -90,14 +88,18 @@ jobs:
             fail-fast: false
             matrix:
                 php: [7.4, 8.0]
-                sylius: [1.9.0, 1.10.0]
-                symfony: [4.4, 5.2]
+                sylius: [1.9.0, 1.10.0, 1.11.0]
+                symfony: [4.4, 5.2, 5.3, 5.4]
                 node: [10.x]
                 exclude:
                     - sylius: 1.9.0
                       php: 8.0
                     - sylius: 1.10.0
                       symfony: 4.4
+                    - sylius: 1.11.0
+                      symfony: 4.4
+                    - sylius: 1.11.0
+                      php: 7.4
 
         env:
             APP_ENV: test
