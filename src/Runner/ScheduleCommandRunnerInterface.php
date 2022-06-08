@@ -10,5 +10,7 @@ interface ScheduleCommandRunnerInterface
 {
     public function runImmediately(string $scheduledCommandId): bool;
 
-    public function runFromCron(ScheduledCommandInterface $scheduledCommand): int;
+    public function syncRun(ScheduledCommandInterface $scheduledCommand): int;
+
+    public function asyncRun(ScheduledCommandInterface $scheduledCommand): int;
 }

@@ -12,11 +12,9 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
 {
-    /** @var \Sylius\Component\Resource\Factory\FactoryInterface */
-    private $scheduledCommandFactory;
+    private FactoryInterface $scheduledCommandFactory;
 
-    /** @var \Doctrine\ORM\EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     private LoggerInterface $logger;
 
@@ -32,6 +30,11 @@ class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
 
     public function plan(CommandInterface $command): ScheduledCommandInterface
     {
+        // disable execute immediately for next run
+        if ($command->isExecuteImmediately()) {
+            $command->setExecuteImmediately(false);
+        }
+
         /** @var ScheduledCommandInterface $scheduledCommand */
         $scheduledCommand = $this->scheduledCommandFactory->createNew();
 

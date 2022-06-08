@@ -12,14 +12,11 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 final class EmptyLogsController extends AbstractController
 {
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
+    private ScheduledCommandRepositoryInterface $scheduledCommandRepository;
 
-    /** @var TranslatorInterface */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /** @var string */
-    private $logsDir;
+    private string $logsDir;
 
     public function __construct(
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,

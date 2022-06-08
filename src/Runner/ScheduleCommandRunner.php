@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Enum\ScheduledCommandStateEnum;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface;
 
 class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
@@ -61,7 +62,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
         }
 
         $process = Process::fromShellCommandline(
-            $this->getCommandLine($scheduledCommand),
+            $this->getCommandLineForSyncExecution($scheduledCommand),
             $this->kernel->getProjectDir()
         );
 
@@ -83,9 +84,13 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
         return true;
     }
 
-    public function runFromCron(ScheduledCommandInterface $scheduledCommand): int
+    public function syncRun(ScheduledCommandInterface $scheduledCommand): int
     {
-        $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
+        $scheduledCommand->setExecutedAt(new \DateTime());
+        $scheduledCommand->setState(ScheduledCommandStateEnum::IN_PROGRESS);
+        $this->entityManager->flush();
+
+        $process = Process::fromShellCommandline($this->getCommandLineForSyncExecution($scheduledCommand));
         $process->setTimeout($scheduledCommand->getTimeout());
         $process->setIdleTimeout($scheduledCommand->getIdleTimeout());
 
@@ -102,6 +107,55 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
         }
 
         return $result;
+    }
+
+    public function asyncRun(ScheduledCommandInterface $scheduledCommand): int
+    {
+        $process = Process::fromShellCommandline($this->getCommandLineForSingleAsyncExecution($scheduledCommand));
+        $process->setTimeout($scheduledCommand->getTimeout());
+        $process->setIdleTimeout($scheduledCommand->getIdleTimeout());
+        $process->run();
+        $result = $process->getExitCode();
+        $scheduledCommand->setCommandEndTime(new \DateTime());
+
+        if (null === $result) {
+            $result = 0;
+        }
+
+        return $result;
+    }
+
+    private function getCommandLineForSyncExecution(ScheduledCommandInterface $scheduledCommand): string
+    {
+        $commandLine = sprintf(
+            '%s/bin/console %s %s',
+            $this->projectDir,
+            $scheduledCommand->getCommand(),
+            $scheduledCommand->getArguments() ?? ''
+        );
+
+        $logOutput = $this->getLogOutput($scheduledCommand);
+        if (null !== $logOutput) {
+            $commandLine = sprintf(
+                '%s/bin/console %s %s >> %s 2>> %s',
+                $this->projectDir,
+                $scheduledCommand->getCommand(),
+                $scheduledCommand->getArguments() ?? '',
+                $logOutput,
+                $logOutput
+            );
+        }
+
+        return $commandLine;
+    }
+
+    private function getCommandLineForSingleAsyncExecution(ScheduledCommandInterface $scheduledCommand): string
+    {
+        return sprintf(
+            '%s/bin/console synolia:scheduler-run --id=%d > /dev/null 2>&1 &',
+            $this->projectDir,
+            $scheduledCommand->getId(),
+        );
     }
 
     private function startProcess(Process $process): void
@@ -139,29 +193,5 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
         }
 
         return $this->logsDir . \DIRECTORY_SEPARATOR . $scheduledCommand->getLogFile();
-    }
-
-    private function getCommandLine(ScheduledCommandInterface $scheduledCommand): string
-    {
-        $commandLine = sprintf(
-            '%s/bin/console %s %s',
-            $this->projectDir,
-            $scheduledCommand->getCommand(),
-            $scheduledCommand->getArguments() ?? ''
-        );
-
-        $logOutput = $this->getLogOutput($scheduledCommand);
-        if (null !== $logOutput) {
-            $commandLine = sprintf(
-                '%s/bin/console %s %s >> %s 2>> %s',
-                $this->projectDir,
-                $scheduledCommand->getCommand(),
-                $scheduledCommand->getArguments() ?? '',
-                $logOutput,
-                $logOutput
-            );
-        }
-
-        return $commandLine;
     }
 }
