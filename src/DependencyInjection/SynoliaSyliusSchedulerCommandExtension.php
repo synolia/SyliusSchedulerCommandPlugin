@@ -25,7 +25,7 @@ final class SynoliaSyliusSchedulerCommandExtension extends Extension implements 
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function prepend(ContainerBuilder $container): void
     {

@@ -1,9 +1,9 @@
 parameters:
-    level: max
+    level: 8
     reportUnmatchedIgnoredErrors: false
     checkMissingIterableValueType: false
 
-    excludes_analyse:
+    excludePaths:
         # Makes PHPStan crash
         - ../src/DependencyInjection/Configuration.php
         - ../src/Migrations/

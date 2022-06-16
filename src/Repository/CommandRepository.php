@@ -14,6 +14,9 @@ class CommandRepository extends EntityRepository implements CommandRepositoryInt
      */
     public function findEnabledCommand(): iterable
     {
-        return $this->findBy(['enabled' => true], ['priority' => 'DESC']);
+        /** @var iterable<CommandInterface> $commands */
+        $commands = $this->findBy(['enabled' => true], ['priority' => 'DESC']);
+
+        return $commands;
     }
 }

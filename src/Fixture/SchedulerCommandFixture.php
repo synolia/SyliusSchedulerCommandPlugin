@@ -27,7 +27,7 @@ class SchedulerCommandFixture extends AbstractFixture
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function load(array $options): void
     {
@@ -55,7 +55,7 @@ class SchedulerCommandFixture extends AbstractFixture
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getName(): string
     {
