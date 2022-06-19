@@ -73,7 +73,7 @@ phpunit-configure:
 	cp phpunit.xml.dist ${TEST_DIRECTORY}/phpunit.xml
 
 phpunit-run:
-	cd ${TEST_DIRECTORY} && ./vendor/bin/phpunit --process-isolation --do-not-cache-result
+	cd ${TEST_DIRECTORY} && ./vendor/bin/phpunit
 
 behat-configure: ## Configure Behat
 	(cd ${TEST_DIRECTORY} && cp behat.yml.dist behat.yml)
