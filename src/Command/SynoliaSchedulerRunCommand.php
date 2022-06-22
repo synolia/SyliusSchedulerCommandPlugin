@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Command;
 
+use Doctrine\DBAL\Exception\ConnectionLost;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application;
@@ -101,6 +102,34 @@ final class SynoliaSchedulerRunCommand extends Command
             if ($this->shouldExecuteCommand($command, $io)) {
                 $planned = $this->scheduledCommandPlanner->plan($command);
                 $this->scheduleCommandRunner->asyncRun($planned);
+            }
+        }
+
+        if (!$this->lock()) {
+            $output->writeln('The command is already running in another process.');
+            $this->logger->info('Scheduler is already running.');
+
+            return 0;
+        }
+
+        /** @var ScheduledCommandInterface[] $scheduledCommands */
+        $scheduledCommands = $this->scheduledCommandRepository->findAllRunnable();
+
+        if (0 === \count($scheduledCommands)) {
+            $io->success('Nothing to do.');
+        }
+
+        foreach ($scheduledCommands as $scheduledCommand) {
+            $io->note(\sprintf(
+                'Execute Command "%s" - last execution : %s',
+                $scheduledCommand->getCommand(),
+                $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never'
+            ));
+
+            try {
+                $this->runScheduledCommand($io, $scheduledCommand);
+            } catch (ConnectionLost $connectionLost) {
+                $this->runScheduledCommand($io, $scheduledCommand);
             }
         }
 
