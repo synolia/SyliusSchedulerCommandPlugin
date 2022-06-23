@@ -1,0 +1,4 @@
+synolia:
+    forms:
+        constraints:
+            cannot_use_slash: You cannot use a "%%DIRECTORY_SEPARATOR%%" for security reason
