@@ -25,7 +25,7 @@ final class LogDataRetriever
             throw new FileNotFoundException('Log file could not be found.');
         }
 
-        $maxLength = ($filesize - $lastFetchedSize);
+        $maxLength = $filesize - $lastFetchedSize;
 
         /**
          * Verify that we don't load more data then allowed.
@@ -46,7 +46,7 @@ final class LogDataRetriever
             }
 
             \fseek($filePointer, (int) -$maxLength, \SEEK_END);
-            $data = \explode("\n", (string) \fread($filePointer, (int) $maxLength));
+            $data = \explode("\n", (string) \fread($filePointer, $maxLength));
         }
         $data = $this->grepData($data, $grepKeyword, $invertGrep);
 

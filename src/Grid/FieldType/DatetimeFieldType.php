@@ -25,7 +25,7 @@ final class DatetimeFieldType implements FieldTypeInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render(Field $field, $data, array $options): string
     {

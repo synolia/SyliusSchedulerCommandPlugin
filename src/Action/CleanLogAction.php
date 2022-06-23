@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository;
 
 final class CleanLogAction extends AbstractController
@@ -18,6 +19,7 @@ final class CleanLogAction extends AbstractController
         string $command,
         string $logsDir
     ): Response {
+        /** @var ScheduledCommand|null $scheduleCommand */
         $scheduleCommand = $commandRepository->find($command);
 
         if (null === $scheduleCommand) {

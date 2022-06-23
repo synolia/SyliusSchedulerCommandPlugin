@@ -105,7 +105,7 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
         yield [[ScheduledCommandStateEnum::WAITING], ScheduledCommandStateEnum::WAITING];
         yield [
             [ScheduledCommandStateEnum::FINISHED, ScheduledCommandStateEnum::WAITING],
-            ScheduledCommandStateEnum::FINISHED . ',' . ScheduledCommandStateEnum::WAITING
+            ScheduledCommandStateEnum::FINISHED . ',' . ScheduledCommandStateEnum::WAITING,
         ];
     }
 

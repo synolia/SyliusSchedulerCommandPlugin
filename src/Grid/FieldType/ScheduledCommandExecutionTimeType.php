@@ -15,7 +15,7 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
     private const MINUTE_IN_SECONDES = 60;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
@@ -44,7 +44,7 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
         return (int) $time . 's';
     }
 
-    /** {@inheritdoc} */
+    /** @inheritdoc */
     public function configureOptions(OptionsResolver $resolver): void
     {
     }
