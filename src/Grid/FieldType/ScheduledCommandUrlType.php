@@ -32,7 +32,7 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
@@ -68,7 +68,7 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
         );
     }
 
-    /** {@inheritdoc} */
+    /** @inheritdoc */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('template');
