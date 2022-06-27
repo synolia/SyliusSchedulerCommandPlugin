@@ -90,7 +90,7 @@ class PurgeScheduledCommandCommand extends Command
             if ($counter % self::DEFAULT_BATCH === 0) {
                 $this->entityManager->flush();
             }
-            $counter++;
+            ++$counter;
         }
 
         $this->entityManager->flush();

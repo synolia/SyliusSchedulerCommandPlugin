@@ -1,6 +1,6 @@
 sylius_fixtures:
     suites:
-        scheduler_command:
+        default:
             listeners:
                 orm_purger: ~
                 logger: ~

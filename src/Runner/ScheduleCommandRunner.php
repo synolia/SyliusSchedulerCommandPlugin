@@ -121,10 +121,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
             } catch (\Doctrine\DBAL\Exception $exception) {
             }
 
-            for ($i = 0; $i < $this->pingInterval; $i++) {
-                if (!$process->isRunning()) {
-                    return;
-                }
+            for ($i = 0; $i < $this->pingInterval; ++$i) {
                 \sleep(1);
 
                 $process->checkTimeout();

@@ -14,7 +14,10 @@ class ScheduledCommandRepository extends EntityRepository implements ScheduledCo
 {
     public function findAllRunnable(): iterable
     {
-        return $this->findBy(['state' => ScheduledCommandStateEnum::WAITING]);
+        /** @var iterable<ScheduledCommandInterface> $command */
+        $command = $this->findBy(['state' => ScheduledCommandStateEnum::WAITING]);
+
+        return $command;
     }
 
     public function findLastCreatedCommand(CommandInterface $command): ?ScheduledCommandInterface

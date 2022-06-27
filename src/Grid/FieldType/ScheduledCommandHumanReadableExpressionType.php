@@ -27,7 +27,7 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function render(Field $field, $scheduleCommand, array $options): string
     {
@@ -40,7 +40,7 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
         );
     }
 
-    /** {@inheritdoc} */
+    /** @inheritdoc */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('template');
