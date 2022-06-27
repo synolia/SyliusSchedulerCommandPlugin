@@ -6,6 +6,7 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
@@ -18,12 +19,16 @@ final class CommandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class, [
+                'empty_data' => '',
+            ])
             ->add('command', CommandChoiceType::class)
             ->add('arguments')
             ->add('cronExpression')
             ->add('logFilePrefix')
-            ->add('priority')
+            ->add('priority', IntegerType::class, [
+                'empty_data' => 0,
+            ])
             ->add('timeout', IntegerType::class, [
                 'required' => false,
             ])

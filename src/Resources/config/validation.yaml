@@ -13,3 +13,18 @@ Synolia\SyliusSchedulerCommandPlugin\Entity\Command:
         priority:
             - NotBlank: ~
             - PositiveOrZero: ~
+        logFilePrefix:
+            - Callback: [ Synolia\SyliusSchedulerCommandPlugin\Validator\LogfilePrefixPropertyValidator, validate ]
+
+Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand:
+    properties:
+        name:
+            - NotNull: ~
+            - NotBlank: ~
+            - Length:
+                min: 2
+        command:
+            - NotBlank: ~
+        logFile:
+            - Callback: [ Synolia\SyliusSchedulerCommandPlugin\Validator\LogfilePropertyValidator, validate ]
+
