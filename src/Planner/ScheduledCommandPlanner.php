@@ -44,7 +44,7 @@ class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
             ->setOwner($command)
         ;
 
-        if (null !== $command->getLogFilePrefix()) {
+        if (null !== $command->getLogFilePrefix() && '' !== $command->getLogFilePrefix()) {
             $scheduledCommand->setLogFile(\sprintf(
                 '%s-%s-%s.log',
                 $command->getLogFilePrefix(),
