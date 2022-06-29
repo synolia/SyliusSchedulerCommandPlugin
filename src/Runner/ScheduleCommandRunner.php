@@ -122,6 +122,9 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
             }
 
             for ($i = 0; $i < $this->pingInterval; ++$i) {
+                if (!$process->isRunning()) {
+                    return;
+                }
                 \sleep(1);
 
                 $process->checkTimeout();

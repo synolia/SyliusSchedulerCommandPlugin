@@ -14,7 +14,7 @@ default:
                 - synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.command
                 - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context
             filters:
-                tags: '@managing_command && @ui'
+                tags: '@managing_command&&@ui'
 
         ui_managing_scheduled_command:
             contexts:
@@ -30,7 +30,7 @@ default:
                 - synolia_sylius_scheduler_command_plugin.behat.context.ui.admin.scheduled_command
                 - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context
             filters:
-                tags: '@managing_scheduled_command && @ui'
+                tags: '@managing_scheduled_command&&@ui'
 
         cli_run_command:
             contexts:
@@ -40,4 +40,4 @@ default:
 
                 - synolia_sylius_scheduler_command_plugin.behat.context.cli.cli_context
             filters:
-                tags: "@cli && @cli_run_command"
+                tags: "@cli&&@cli_run_command"
