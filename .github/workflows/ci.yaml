@@ -157,7 +157,7 @@ jobs:
                       node-${{ matrix.node }}-yarn-
 
             - name: Install Sylius-Standard and Plugin
-              run: make install -e SYLIUS_VERSION=${{ matrix.sylius }} SYMFONY_VERSION=${{ matrix.symfony }}
+              run: make install -e SYLIUS_VERSION=${{ matrix.sylius }} SYMFONY_VERSION=${{ matrix.symfony }} PHP_VERSION=${{ matrix.php }}
 
             - name: Output PHP version for Symfony CLI
               working-directory: ./tests/Application
