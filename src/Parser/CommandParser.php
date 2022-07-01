@@ -60,6 +60,10 @@ class CommandParser implements CommandParserInterface
         $node = \json_decode($string);
         $commandsList = [];
 
+        if (null === $node || !\is_array($node->namespaces)) {
+            return [];
+        }
+
         foreach ($node->namespaces as $namespace) {
             if (!in_array($namespace->id, $this->excludedNamespaces, true)) {
                 foreach ($namespace->commands as $command) {

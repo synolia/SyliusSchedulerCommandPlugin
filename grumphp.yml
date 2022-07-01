@@ -8,9 +8,9 @@ grumphp:
         git_blacklist:
             keywords:
                 - 'var_dump'
-                - 'dump('
+                - 'dump\('
                 - 'print_r'
-                - 'die('
+                - 'die\('
                 - 'console\.'
             triggered_by: [php, twig, js]
         jsonlint:
