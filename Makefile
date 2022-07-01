@@ -19,7 +19,9 @@ install: sylius ## Install Plugin on Sylius [SyliusVersion=1.11] [SymfonyVersion
 .PHONY: install
 
 reset: ## Remove dependencies
-	${CONSOLE} doctrine:database:drop --force --if-exists
+ifneq ("$(wildcard tests/Application/bin/console)","")
+	${CONSOLE} doctrine:database:drop --force --if-exists || true
+endif
 	rm -rf tests/Application
 .PHONY: reset
 
@@ -35,17 +37,12 @@ sylius: sylius-standard update-dependencies install-plugin install-sylius config
 
 sylius-standard:
 	${COMPOSER_ROOT} create-project sylius/sylius-standard ${TEST_DIRECTORY} "~${SYLIUS_VERSION}" --no-install --no-scripts
+	${COMPOSER} config allow-plugins.symfony/flex true
 	${COMPOSER} require sylius/sylius:"~${SYLIUS_VERSION}"
 
 update-dependencies:
 	${COMPOSER} config extra.symfony.require "^${SYMFONY_VERSION}"
 	${COMPOSER} require --dev donatj/mock-webserver:^2.1 --no-scripts --no-update
-ifeq ($(shell [[ $(SYMFONY_VERSION) == 4.4 && $(PHP_VERSION) == 7.4 ]] && echo true ),true)
-	${COMPOSER} require sylius/admin-api-bundle:1.10 --no-scripts --no-update
-endif
-ifeq ($(SYLIUS_VERSION), 1.8.0)
-	${COMPOSER} update --no-progress --no-scripts --prefer-dist -n
-endif
 	${COMPOSER} require symfony/asset:^${SYMFONY_VERSION} --no-scripts --no-update
 	${COMPOSER} update --no-progress -n
 
@@ -58,7 +55,7 @@ install-plugin:
 	cp -r install/Application tests
 
 install-sylius:
-	${CONSOLE} sylius:install -n -s
+	${CONSOLE} sylius:install -n -s default
 	${YARN} install
 	${YARN} build
 	${CONSOLE} cache:clear
@@ -81,6 +78,7 @@ behat-configure: ## Configure Behat
 	(cd ${TEST_DIRECTORY} && sed -i "s#vendor/sylius/sylius/features#vendor/${PLUGIN_NAME}/features#g" behat.yml)
 	(cd ${TEST_DIRECTORY} && sed -i "s#@cli#@javascript#g" behat.yml)
 	(cd ${TEST_DIRECTORY} && sed -i '2i \ \ \ \ - { resource: "../vendor/${PLUGIN_NAME}/tests/Behat/Resources/services.yml\" }' config/services_test.yaml)
+	${CONSOLE} cache:clear
 
 grumphp: ## Run GrumPHP
 	vendor/bin/grumphp run
