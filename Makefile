@@ -37,7 +37,7 @@ sylius: sylius-standard update-dependencies install-plugin install-sylius config
 
 sylius-standard:
 	${COMPOSER_ROOT} create-project sylius/sylius-standard ${TEST_DIRECTORY} "~${SYLIUS_VERSION}" --no-install --no-scripts
-	${COMPOSER} config allow-plugins.symfony/flex true
+	${COMPOSER} config allow-plugins true
 	${COMPOSER} require sylius/sylius:"~${SYLIUS_VERSION}"
 
 update-dependencies:
