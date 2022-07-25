@@ -17,7 +17,8 @@
         "symfony/lock": "^4.4|^5.4",
         "symfony/service-contracts": "^1.1|^2.0",
         "symfony/framework-bundle": "^4.4|^5.4",
-        "symfony/process": "^4.4|^5.4"
+        "symfony/process": "^4.4|^5.4",
+        "webmozart/assert": "^1.9"
     },
     "require-dev": {
         "behat/behat": "3.10.0",
@@ -52,8 +53,7 @@
         "symfony/debug-bundle": "5.4.3",
         "symfony/dotenv": "5.4.5",
         "symfony/intl": "5.4.10",
-        "symfony/web-profiler-bundle": "5.4.10",
-        "webmozart/assert": "1.11.0"
+        "symfony/web-profiler-bundle": "5.4.10"
     },
     "suggest": {
         "lorisleiva/cron-translator": "Allow showing humanized and translated cron expression."
