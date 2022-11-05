@@ -29,7 +29,7 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         $kernel = static::bootKernel();
         self::initDatabase($kernel);
 
-        $this->entityManager = self::$container->get(EntityManagerInterface::class);
+        $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->entityManager->beginTransaction();
     }
 
@@ -129,7 +129,7 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
 
         /** @var ScheduledCommand $persistedCommand */
         $persistedCommand = $repository->findOneBy(['command' => $invalidCommandName]);
-        static::$container->get(EntityManagerInterface::class)->refresh($persistedCommand);
+        static::getContainer()->get(EntityManagerInterface::class)->refresh($persistedCommand);
 
         self::assertEquals(
             -1,
@@ -151,7 +151,7 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
     private function save(CommandInterface $command): void
     {
         /** @var EntityManagerInterface $em */
-        $em = static::$container->get(EntityManagerInterface::class);
+        $em = static::getContainer()->get(EntityManagerInterface::class);
         $em->persist($command);
         $em->flush();
     }

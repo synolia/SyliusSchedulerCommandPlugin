@@ -17,7 +17,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
     public function setUp(): void
     {
         parent::setUp();
-        $this->softLimitThresholdIsDueChecker = self::$container->get(SoftLimitThresholdIsDueChecker::class);
+        $this->softLimitThresholdIsDueChecker = static::getContainer()->get(SoftLimitThresholdIsDueChecker::class);
     }
 
     /**

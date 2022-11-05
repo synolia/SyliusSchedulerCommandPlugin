@@ -17,7 +17,7 @@ class IsDueVoterTest extends AbstractIsDueTest
     {
         parent::setUp();
 
-        $this->voter = self::$container->get(IsDueVoterInterface::class);
+        $this->voter = static::getContainer()->get(IsDueVoterInterface::class);
     }
 
     /**
