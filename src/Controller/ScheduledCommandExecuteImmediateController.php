@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Process\Process;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
@@ -22,25 +22,20 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
     /** @var CommandRepositoryInterface */
     private $commandRepository;
 
-    /** @var FlashBagInterface */
-    private $flashBag;
-
     /** @var string */
     private $projectDir;
 
     public function __construct(
         ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         CommandRepositoryInterface $commandRepository,
-        FlashBagInterface $flashBag,
         string $projectDir
     ) {
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
         $this->commandRepository = $commandRepository;
-        $this->flashBag = $flashBag;
         $this->projectDir = $projectDir;
     }
 
-    public function executeImmediate(string $commandId): Response
+    public function executeImmediate(Request $request, string $commandId): Response
     {
         $command = $this->commandRepository->find($commandId);
         Assert::isInstanceOf($command, CommandInterface::class);
@@ -49,7 +44,7 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 
         $this->executeFromCron($scheduledCommand);
 
-        $this->flashBag->add('success', \sprintf(
+        $request->getSession()->getFlashBag()->add('success', \sprintf(
             'Command "%s" as been planned for execution.',
             $scheduledCommand->getName(),
         ));
