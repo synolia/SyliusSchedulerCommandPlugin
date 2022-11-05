@@ -12,6 +12,7 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
+        "ext-intl": "*",
         "dragonmantank/cron-expression": "^3.0",
         "sylius/sylius": "^1.9",
         "symfony/framework-bundle": "^4.4|^5.4|^6.0",
