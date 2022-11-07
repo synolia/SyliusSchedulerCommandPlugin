@@ -3,10 +3,10 @@
 From the plugin root directory, run the following commands:
 
 ```bash
-$ make install -e SYLIUS_VERSION=XX SYMFONY_VERSION=YY
+$ make install -e SYLIUS_VERSION=XX SYMFONY_VERSION=YY PHP_VERSION=ZZ
 ```
 
-Default values : XX=1.9.0 and YY=5.2
+Default values : XX=1.12.0 and YY=6.1 and ZZ=8.1
 
 To be able to setup the plugin database, remember to configure you database credentials
 in `install/Application/.env.local` and `install/Application/.env.test.local`.

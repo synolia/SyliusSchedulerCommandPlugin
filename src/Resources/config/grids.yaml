@@ -94,8 +94,8 @@ sylius_grid:
                     sortable: ~
                     label: synolia.ui.scheduled_command.last_execution
                     options:
-                        date_format: !php/const \Symfony\Polyfill\Intl\Icu\IntlDateFormatter::SHORT
-                        time_format: !php/const \Symfony\Polyfill\Intl\Icu\IntlDateFormatter::SHORT
+                        date_format: !php/const \IntlDateFormatter::SHORT
+                        time_format: !php/const \IntlDateFormatter::SHORT
                 commandExecutionTime:
                     type: scheduled_command_execution_time
                     label: synolia.ui.scheduled_command.command_execution_time
