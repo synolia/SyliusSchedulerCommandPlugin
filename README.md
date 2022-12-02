@@ -1,5 +1,6 @@
 [![License](https://img.shields.io/packagist/l/synolia/sylius-scheduler-command-plugin.svg)](https://github.com/synolia/SyliusSchedulerCommandPlugin/blob/master/LICENSE)
-![Tests](https://github.com/synolia/SyliusSchedulerCommandPlugin/workflows/CI/badge.svg?branch=master)
+[![CI - Analysis](https://github.com/synolia/SyliusSchedulerCommandPlugin/actions/workflows/analysis.yaml/badge.svg?branch=master)](https://github.com/synolia/SyliusSchedulerCommandPlugin/actions/workflows/analysis.yaml)
+[![CI - Sylius](https://github.com/synolia/SyliusSchedulerCommandPlugin/actions/workflows/sylius.yaml/badge.svg?branch=master)](https://github.com/synolia/SyliusSchedulerCommandPlugin/actions/workflows/sylius.yaml)
 [![Version](https://img.shields.io/packagist/v/synolia/sylius-scheduler-command-plugin.svg)](https://packagist.org/packages/synolia/sylius-scheduler-command-plugin)
 [![Total Downloads](https://poser.pugx.org/synolia/sylius-scheduler-command-plugin/downloads)](https://packagist.org/packages/synolia/sylius-scheduler-command-plugin)
 
