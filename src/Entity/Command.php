@@ -65,7 +65,7 @@ class Command implements CommandInterface
     private ?int $idleTimeout = null;
 
     /** @ORM\OneToMany(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface", mappedBy="owner") */
-    private \Doctrine\Common\Collections\ArrayCollection $scheduledCommands;
+    private Collection $scheduledCommands;
 
     public function __construct()
     {
