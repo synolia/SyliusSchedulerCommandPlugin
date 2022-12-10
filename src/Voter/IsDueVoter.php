@@ -22,7 +22,7 @@ class IsDueVoter implements IsDueVoterInterface
         foreach ($this->isDueCheckers as $checker) {
             try {
                 return $checker->isDue($command, $dateTime);
-            } catch (IsNotDueException $isNotDueException) {
+            } catch (IsNotDueException) {
                 continue;
             }
         }

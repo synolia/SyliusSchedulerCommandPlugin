@@ -12,16 +12,12 @@ use Webmozart\Assert\Assert;
 
 class CommandParser implements CommandParserInterface
 {
-    private \Symfony\Component\HttpKernel\KernelInterface $kernel;
-
     /** @var string[] */
     private array $excludedNamespaces;
 
-    public function __construct(KernelInterface $kernel, array $excludedNamespaces = [])
+    public function __construct(private KernelInterface $kernel, array $excludedNamespaces = [])
     {
         Assert::allString($excludedNamespaces);
-
-        $this->kernel = $kernel;
         $this->excludedNamespaces = $excludedNamespaces;
     }
 

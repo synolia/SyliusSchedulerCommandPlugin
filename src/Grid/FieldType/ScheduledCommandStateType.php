@@ -11,11 +11,8 @@ use Twig\Environment;
 
 final class ScheduledCommandStateType implements FieldTypeInterface
 {
-    private \Twig\Environment $twig;
-
-    public function __construct(Environment $twig)
+    public function __construct(private Environment $twig)
     {
-        $this->twig = $twig;
     }
 
     /**

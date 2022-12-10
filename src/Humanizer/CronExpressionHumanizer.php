@@ -10,11 +10,8 @@ use Sylius\Component\Locale\Context\LocaleNotFoundException;
 
 class CronExpressionHumanizer implements HumanizerInterface
 {
-    private \Sylius\Component\Locale\Context\LocaleContextInterface $localeContext;
-
-    public function __construct(LocaleContextInterface $localeContext)
+    public function __construct(private LocaleContextInterface $localeContext)
     {
-        $this->localeContext = $localeContext;
     }
 
     public function humanize(string $expression): string
@@ -27,7 +24,7 @@ class CronExpressionHumanizer implements HumanizerInterface
 
         try {
             return CronTranslator::translate($expression, $locale);
-        } catch (\Throwable $throwable) {
+        } catch (\Throwable) {
             return $expression;
         }
     }
@@ -42,7 +39,7 @@ class CronExpressionHumanizer implements HumanizerInterface
             }
 
             return mb_substr($locale, 0, 2);
-        } catch (LocaleNotFoundException $localeNotFoundException) {
+        } catch (LocaleNotFoundException) {
             return 'en';
         }
     }

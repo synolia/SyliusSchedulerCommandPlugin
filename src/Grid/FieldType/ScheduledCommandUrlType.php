@@ -12,20 +12,8 @@ use Twig\Environment;
 
 final class ScheduledCommandUrlType implements FieldTypeInterface
 {
-    private \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator;
-
-    private \Twig\Environment $twig;
-
-    private string $logsDir;
-
-    public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        Environment $twig,
-        string $logsDir,
-    ) {
-        $this->urlGenerator = $urlGenerator;
-        $this->twig = $twig;
-        $this->logsDir = $logsDir;
+    public function __construct(private UrlGeneratorInterface $urlGenerator, private Environment $twig, private string $logsDir)
+    {
     }
 
     /**

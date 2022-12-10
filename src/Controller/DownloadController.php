@@ -10,14 +10,8 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 final class DownloadController extends AbstractController
 {
-    private \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface $scheduledCommandRepository;
-
-    private string $logsDir;
-
-    public function __construct(ScheduledCommandRepositoryInterface $scheduledCommandRepository, string $logsDir)
+    public function __construct(private ScheduledCommandRepositoryInterface $scheduledCommandRepository, private string $logsDir)
     {
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->logsDir = $logsDir;
     }
 
     public function downloadLogFile(string $command): Response

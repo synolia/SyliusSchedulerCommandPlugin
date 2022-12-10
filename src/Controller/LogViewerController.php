@@ -14,29 +14,14 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 final class LogViewerController extends AbstractController
 {
-    /** @var int The time in milliseconds between two AJAX requests to the server. */
-    private int $updateTime;
-
-    private \Synolia\SyliusSchedulerCommandPlugin\DataRetriever\LogDataRetriever $logDataRetriever;
-
-    private \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface $scheduledCommandRepository;
-
-    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
-
-    private string $logsDir;
-
     public function __construct(
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        LogDataRetriever $logDataRetriever,
-        TranslatorInterface $translator,
-        string $logsDir,
-        int $updateTime = 2000,
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private LogDataRetriever $logDataRetriever,
+        private TranslatorInterface $translator,
+        private string $logsDir,
+        /** @var int The time in milliseconds between two AJAX requests to the server. */
+        private int $updateTime = 2000,
     ) {
-        $this->logDataRetriever = $logDataRetriever;
-        $this->updateTime = $updateTime;
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->translator = $translator;
-        $this->logsDir = $logsDir;
     }
 
     public function getLogs(Request $request, string $command): JsonResponse

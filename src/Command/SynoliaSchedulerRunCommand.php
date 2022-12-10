@@ -29,38 +29,16 @@ final class SynoliaSchedulerRunCommand extends Command
 
     protected static $defaultName = 'synolia:scheduler-run';
 
-    private \Doctrine\ORM\EntityManagerInterface $entityManager;
-
-    private \Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface $scheduleCommandRunner;
-
-    private \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface $commandRepository;
-
-    private \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface $scheduledCommandRepository;
-
-    private \Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface $scheduledCommandPlanner;
-
-    private \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface $isDueVoter;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        EntityManagerInterface $scheduledCommandManager,
-        ScheduleCommandRunnerInterface $scheduleCommandRunner,
-        CommandRepositoryInterface $commandRepository,
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlannerInterface $scheduledCommandPlanner,
-        IsDueVoterInterface $isDueVoter,
-        LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private ScheduleCommandRunnerInterface $scheduleCommandRunner,
+        private CommandRepositoryInterface $commandRepository,
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private ScheduledCommandPlannerInterface $scheduledCommandPlanner,
+        private IsDueVoterInterface $isDueVoter,
+        private LoggerInterface $logger,
     ) {
         parent::__construct(static::$defaultName);
-
-        $this->entityManager = $scheduledCommandManager;
-        $this->scheduleCommandRunner = $scheduleCommandRunner;
-        $this->commandRepository = $commandRepository;
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->scheduledCommandPlanner = $scheduledCommandPlanner;
-        $this->isDueVoter = $isDueVoter;
-        $this->logger = $logger;
     }
 
     protected function configure(): void
@@ -121,7 +99,7 @@ final class SynoliaSchedulerRunCommand extends Command
 
             try {
                 $this->runScheduledCommand($io, $scheduledCommand);
-            } catch (ConnectionLost $connectionLost) {
+            } catch (ConnectionLost) {
                 $this->runScheduledCommand($io, $scheduledCommand);
             }
         }
@@ -167,7 +145,7 @@ final class SynoliaSchedulerRunCommand extends Command
 
             try {
                 $this->changeState($scheduledCommand, $this->getStateForResult($result));
-            } catch (ConnectionLost $connectionLost) {
+            } catch (ConnectionLost) {
                 $this->changeState($scheduledCommand, $this->getStateForResult($result));
             }
         } catch (\Exception $e) {

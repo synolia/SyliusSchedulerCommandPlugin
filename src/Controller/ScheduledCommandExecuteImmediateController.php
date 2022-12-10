@@ -16,20 +16,8 @@ use Webmozart\Assert\Assert;
 
 class ScheduledCommandExecuteImmediateController extends AbstractController
 {
-    private \Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface $scheduledCommandPlanner;
-
-    private \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface $commandRepository;
-
-    private string $projectDir;
-
-    public function __construct(
-        ScheduledCommandPlannerInterface $scheduledCommandPlanner,
-        CommandRepositoryInterface $commandRepository,
-        string $projectDir,
-    ) {
-        $this->scheduledCommandPlanner = $scheduledCommandPlanner;
-        $this->commandRepository = $commandRepository;
-        $this->projectDir = $projectDir;
+    public function __construct(private ScheduledCommandPlannerInterface $scheduledCommandPlanner, private CommandRepositoryInterface $commandRepository, private string $projectDir)
+    {
     }
 
     public function executeImmediate(Request $request, string $commandId): Response

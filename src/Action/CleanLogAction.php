@@ -43,7 +43,7 @@ final class CleanLogAction extends AbstractController
 
         try {
             file_put_contents($filePath, '');
-        } catch (\Throwable $throwable) {
+        } catch (\Throwable) {
             $this->addFlash('error', $translator->trans('sylius.ui.error_emptying_log_file'));
         }
 

@@ -11,24 +11,18 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 class SoftLimitThresholdIsDueChecker implements IsDueCheckerInterface
 {
-    private \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface $scheduledCommandRepository;
-
-    /**
-     * Threshold in minutes
-     */
-    private int $threshold;
-
     public static function getDefaultPriority(): int
     {
         return -100;
     }
 
     public function __construct(
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        int $threshold = 5,
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        /**
+         * Threshold in minutes
+         */
+        private int $threshold = 5,
     ) {
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->threshold = $threshold;
     }
 
     /**

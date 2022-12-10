@@ -12,20 +12,8 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 final class EmptyLogsController extends AbstractController
 {
-    private \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface $scheduledCommandRepository;
-
-    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
-
-    private string $logsDir;
-
-    public function __construct(
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        TranslatorInterface $translator,
-        string $logsDir,
-    ) {
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->logsDir = $logsDir;
-        $this->translator = $translator;
+    public function __construct(private ScheduledCommandRepositoryInterface $scheduledCommandRepository, private TranslatorInterface $translator, private string $logsDir)
+    {
     }
 
     public function emptyLogs(Request $request): Response
