@@ -27,7 +27,8 @@ class DownloadControllerSpec extends ObjectBehavior
         $command = 'about';
         $scheduledCommand = new ScheduledCommand();
         $scheduledCommand->setName('Displays project information')
-            ->setCommand($command);
+            ->setCommand($command)
+        ;
 
         $scheduledCommandRepository->find($command)->willReturn($scheduledCommand);
 

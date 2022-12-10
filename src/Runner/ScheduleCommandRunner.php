@@ -13,26 +13,19 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 {
-    /** @var ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
+    private \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface $scheduledCommandRepository;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private \Doctrine\ORM\EntityManagerInterface $entityManager;
 
-    /** @var KernelInterface */
-    private $kernel;
+    private \Symfony\Component\HttpKernel\KernelInterface $kernel;
 
-    /** @var string */
-    private $logsDir;
+    private string $logsDir;
 
-    /** @var string */
-    private $projectDir;
+    private string $projectDir;
 
-    /** @var int */
-    private $pingInterval;
+    private int $pingInterval;
 
-    /** @var bool */
-    private $keepConnectionAlive;
+    private bool $keepConnectionAlive;
 
     public function __construct(
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
@@ -41,7 +34,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
         string $logsDir,
         string $projectDir,
         int $pingInterval = 60,
-        bool $keepConnectionAlive = false
+        bool $keepConnectionAlive = false,
     ) {
         $this->scheduledCommandRepository = $scheduledCommandRepository;
         $this->entityManager = $entityManager;
@@ -62,7 +55,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 
         $process = Process::fromShellCommandline(
             $this->getCommandLine($scheduledCommand),
-            $this->kernel->getProjectDir()
+            $this->kernel->getProjectDir(),
         );
 
         $scheduledCommand->setExecutedAt(new \DateTime());
@@ -147,7 +140,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
             '%s/bin/console %s %s',
             $this->projectDir,
             $scheduledCommand->getCommand(),
-            $scheduledCommand->getArguments() ?? ''
+            $scheduledCommand->getArguments() ?? '',
         );
 
         $logOutput = $this->getLogOutput($scheduledCommand);
@@ -158,7 +151,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
                 $scheduledCommand->getCommand(),
                 $scheduledCommand->getArguments() ?? '',
                 $logOutput,
-                $logOutput
+                $logOutput,
             );
         }
 

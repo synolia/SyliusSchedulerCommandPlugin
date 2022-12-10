@@ -12,11 +12,10 @@ use Webmozart\Assert\Assert;
 
 class CommandParser implements CommandParserInterface
 {
-    /** @var KernelInterface */
-    private $kernel;
+    private \Symfony\Component\HttpKernel\KernelInterface $kernel;
 
     /** @var string[] */
-    private $excludedNamespaces;
+    private array $excludedNamespaces;
 
     public function __construct(KernelInterface $kernel, array $excludedNamespaces = [])
     {
@@ -35,7 +34,7 @@ class CommandParser implements CommandParserInterface
             [
                 'command' => 'list',
                 '--format' => 'json',
-            ]
+            ],
         );
 
         $stream = fopen('php://memory', 'w+');
@@ -57,7 +56,7 @@ class CommandParser implements CommandParserInterface
             return [];
         }
 
-        $node = \json_decode($string);
+        $node = \json_decode($string, null, 512, \JSON_THROW_ON_ERROR);
         $commandsList = [];
 
         if (null === $node || !\is_array($node->namespaces)) {

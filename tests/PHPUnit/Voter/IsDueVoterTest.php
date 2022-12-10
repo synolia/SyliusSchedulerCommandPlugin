@@ -27,7 +27,7 @@ class IsDueVoterTest extends AbstractIsDueTest
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
         \DateTimeInterface $lastCommandDateTime,
-        bool $expectedResult
+        bool $expectedResult,
     ): void {
         $command = $this->setupCommand($cronExpression);
 
@@ -50,7 +50,7 @@ class IsDueVoterTest extends AbstractIsDueTest
     public function testIsDueWithoutScheduledHistory(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
-        bool $expectedResult
+        bool $expectedResult,
     ): void {
         $command = $this->setupCommand($cronExpression);
 
@@ -63,7 +63,7 @@ class IsDueVoterTest extends AbstractIsDueTest
     public function testIsDueUsingCronExpression(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
-        bool $expectedResult
+        bool $expectedResult,
     ): void {
         $command = $this->setupCommand($cronExpression);
 

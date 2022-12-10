@@ -29,23 +29,17 @@ final class SynoliaSchedulerRunCommand extends Command
 
     protected static $defaultName = 'synolia:scheduler-run';
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private \Doctrine\ORM\EntityManagerInterface $entityManager;
 
-    /** @var ScheduleCommandRunnerInterface */
-    private $scheduleCommandRunner;
+    private \Synolia\SyliusSchedulerCommandPlugin\Runner\ScheduleCommandRunnerInterface $scheduleCommandRunner;
 
-    /** @var CommandRepositoryInterface */
-    private $commandRepository;
+    private \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface $commandRepository;
 
-    /** @var ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
+    private \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface $scheduledCommandRepository;
 
-    /** @var ScheduledCommandPlannerInterface */
-    private $scheduledCommandPlanner;
+    private \Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface $scheduledCommandPlanner;
 
-    /** @var IsDueVoterInterface */
-    private $isDueVoter;
+    private \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface $isDueVoter;
 
     private LoggerInterface $logger;
 
@@ -56,7 +50,7 @@ final class SynoliaSchedulerRunCommand extends Command
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         IsDueVoterInterface $isDueVoter,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         parent::__construct(static::$defaultName);
 
@@ -122,7 +116,7 @@ final class SynoliaSchedulerRunCommand extends Command
             $io->note(\sprintf(
                 'Execute Command "%s" - last execution : %s',
                 $scheduledCommand->getCommand(),
-                $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never'
+                $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never',
             ));
 
             try {
@@ -164,7 +158,7 @@ final class SynoliaSchedulerRunCommand extends Command
         try {
             $io->writeln(
                 '<info>Execute</info> : <comment>' . $scheduledCommand->getCommand()
-                . ' ' . $scheduledCommand->getArguments() . '</comment>'
+                . ' ' . $scheduledCommand->getArguments() . '</comment>',
             );
 
             $scheduledCommand->setExecutedAt(new \DateTime());

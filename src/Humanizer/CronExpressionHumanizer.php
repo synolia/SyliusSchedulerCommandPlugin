@@ -10,8 +10,7 @@ use Sylius\Component\Locale\Context\LocaleNotFoundException;
 
 class CronExpressionHumanizer implements HumanizerInterface
 {
-    /** @var \Sylius\Component\Locale\Context\LocaleContextInterface */
-    private $localeContext;
+    private \Sylius\Component\Locale\Context\LocaleContextInterface $localeContext;
 
     public function __construct(LocaleContextInterface $localeContext)
     {

@@ -53,7 +53,7 @@ final class CommandContext implements Context
         CreatePageInterface $createPage,
         UpdatePageInterface $updatePage,
         CommandRepositoryInterface $commandRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->currentPageResolver = $currentPageResolver;
@@ -155,7 +155,7 @@ final class CommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Command has been successfully created.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -166,7 +166,7 @@ final class CommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Command has been successfully updated.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -177,7 +177,7 @@ final class CommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Command has been successfully deleted.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -188,7 +188,7 @@ final class CommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Log file successfully emptied.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -277,7 +277,7 @@ final class CommandContext implements Context
     {
         Assert::startsWith(
             $this->indexPage->getColumnFields('logFile')[1],
-            \sprintf('%s %s', $this->translator->trans('sylius.ui.live_view'), $filename)
+            \sprintf('%s %s', $this->translator->trans('sylius.ui.live_view'), $filename),
         );
     }
 
@@ -297,7 +297,7 @@ final class CommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'command has no defined log file.',
-            NotificationType::failure()
+            NotificationType::failure(),
         );
     }
 
@@ -308,7 +308,7 @@ final class CommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'The log files have been emptied.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -328,7 +328,8 @@ final class CommandContext implements Context
     {
         $command = new Command();
         $command->setName('About project')
-            ->setCommand('about');
+            ->setCommand('about')
+        ;
 
         return $command;
     }

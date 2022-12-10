@@ -10,11 +10,9 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 final class DownloadController extends AbstractController
 {
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
+    private \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface $scheduledCommandRepository;
 
-    /** @var string */
-    private $logsDir;
+    private string $logsDir;
 
     public function __construct(ScheduledCommandRepositoryInterface $scheduledCommandRepository, string $logsDir)
     {

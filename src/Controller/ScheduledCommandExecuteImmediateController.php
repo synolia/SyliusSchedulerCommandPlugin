@@ -16,19 +16,16 @@ use Webmozart\Assert\Assert;
 
 class ScheduledCommandExecuteImmediateController extends AbstractController
 {
-    /** @var ScheduledCommandPlannerInterface */
-    private $scheduledCommandPlanner;
+    private \Synolia\SyliusSchedulerCommandPlugin\Planner\ScheduledCommandPlannerInterface $scheduledCommandPlanner;
 
-    /** @var CommandRepositoryInterface */
-    private $commandRepository;
+    private \Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepositoryInterface $commandRepository;
 
-    /** @var string */
-    private $projectDir;
+    private string $projectDir;
 
     public function __construct(
         ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         CommandRepositoryInterface $commandRepository,
-        string $projectDir
+        string $projectDir,
     ) {
         $this->scheduledCommandPlanner = $scheduledCommandPlanner;
         $this->commandRepository = $commandRepository;

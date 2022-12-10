@@ -24,7 +24,7 @@ class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         IsDueVoterInterface $isDueVoter,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->beConstructedWith(
             $scheduledCommandManager,
@@ -33,7 +33,7 @@ class SynoliaSchedulerRunCommandSpec extends ObjectBehavior
             $scheduledCommandRepository,
             $scheduledCommandPlanner,
             $isDueVoter,
-            $logger
+            $logger,
         );
     }
 

@@ -10,7 +10,7 @@
     "description": "Scheduler Command Plugin.",
     "license": "MIT",
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "ext-json": "*",
         "ext-intl": "*",
         "dragonmantank/cron-expression": "^3.0",
@@ -56,7 +56,8 @@
         "symfony/debug-bundle": "6.0.11",
         "symfony/dotenv": "6.0.5",
         "symfony/intl": "6.0.15",
-        "symfony/web-profiler-bundle": "6.0.14"
+        "symfony/web-profiler-bundle": "6.0.14",
+        "symplify/easy-coding-standard": "10.3.3"
     },
     "suggest": {
         "lorisleiva/cron-translator": "Allow showing humanized and translated cron expression."

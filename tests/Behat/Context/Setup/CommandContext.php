@@ -25,7 +25,7 @@ final class CommandContext implements Context
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $commandFactory,
-        CommandRepositoryInterface $commandRepository
+        CommandRepositoryInterface $commandRepository,
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->commandFactory = $commandFactory;
@@ -40,7 +40,8 @@ final class CommandContext implements Context
         /** @var ScheduledCommandInterface $command */
         $command = $this->commandFactory->createNew();
         $command->setCommand($code)
-            ->setName($name);
+            ->setName($name)
+        ;
 
         $this->sharedStorage->set('command', $command);
         $this->commandRepository->add($command);

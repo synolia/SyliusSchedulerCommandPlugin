@@ -57,7 +57,7 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
                 $days,
                 $now->format('Y-m-d'),
             ),
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
@@ -76,7 +76,7 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
                 $days,
                 $now->format('Y-m-d'),
             ),
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
@@ -93,9 +93,9 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
         self::assertStringContainsString(
             \sprintf(
                 'Schedules with states ["%s"]',
-                $expected
+                $expected,
             ),
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
@@ -114,7 +114,7 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
         $scheduledCommand = $this->generateScheduleCommand(
             'about',
             'about',
-            ScheduledCommandStateEnum::FINISHED
+            ScheduledCommandStateEnum::FINISHED,
         );
 
         $this->save($scheduledCommand);
@@ -137,14 +137,14 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
         $scheduledCommand = $this->generateScheduleCommand(
             'about',
             'about',
-            ScheduledCommandStateEnum::FINISHED
+            ScheduledCommandStateEnum::FINISHED,
         );
         $this->save($scheduledCommand);
 
         $scheduledCommand = $this->generateScheduleCommand(
             'about1',
             'about1',
-            ScheduledCommandStateEnum::FINISHED
+            ScheduledCommandStateEnum::FINISHED,
         );
         $this->save($scheduledCommand);
 
