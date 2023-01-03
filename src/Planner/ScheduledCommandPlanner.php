@@ -12,8 +12,11 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
 {
-    public function __construct(private FactoryInterface $scheduledCommandFactory, private EntityManagerInterface $entityManager, private LoggerInterface $logger)
-    {
+    public function __construct(
+        private FactoryInterface $scheduledCommandFactory,
+        private EntityManagerInterface $entityManager,
+        private LoggerInterface $logger,
+    ) {
     }
 
     public function plan(CommandInterface $command): ScheduledCommandInterface

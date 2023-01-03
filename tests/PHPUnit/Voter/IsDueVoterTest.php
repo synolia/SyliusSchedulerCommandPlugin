@@ -10,8 +10,7 @@ use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
 
 class IsDueVoterTest extends AbstractIsDueTest
 {
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface */
-    private $voter;
+    private ?IsDueVoterInterface $voter = null;
 
     public function setUp(): void
     {

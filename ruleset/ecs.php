@@ -13,4 +13,7 @@ return static function (ECSConfig $ecsConfig): void {
     ]);
 
     $ecsConfig->import(dirname(__DIR__) . '/vendor/sylius-labs/coding-standard/ecs.php');
+
+    /** @phpstan-ignore-next-line  */
+    $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\Classes\RequireMultiLineMethodSignatureSniff::class);
 };

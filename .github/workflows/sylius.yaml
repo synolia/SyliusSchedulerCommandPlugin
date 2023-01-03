@@ -11,7 +11,7 @@ name: Sylius
 jobs:
     sylius:
         name: 'PHPUnit-Behat (PHP ${{ matrix.php }} Sylius ${{ matrix.sylius }} Symfony ${{ matrix.symfony }})'
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
         strategy:
             fail-fast: false
             matrix:

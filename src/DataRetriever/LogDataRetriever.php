@@ -9,7 +9,7 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 final class LogDataRetriever
 {
     /** @var int Maximum amount of bytes this application can load into memory. Default is 2 Megabyte = 2097152 byte */
-    private $maxSizeToLoad = 2_097_152;
+    private int $maxSizeToLoad = 2_097_152;
 
     public function getLog(
         string $filePath,

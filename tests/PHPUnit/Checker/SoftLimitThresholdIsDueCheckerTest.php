@@ -11,8 +11,7 @@ use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
 
 class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
 {
-    /** @var SoftLimitThresholdIsDueChecker */
-    private $softLimitThresholdIsDueChecker;
+    private ?SoftLimitThresholdIsDueChecker $softLimitThresholdIsDueChecker = null;
 
     public function setUp(): void
     {

@@ -16,8 +16,11 @@ use Webmozart\Assert\Assert;
 
 class ScheduledCommandExecuteImmediateController extends AbstractController
 {
-    public function __construct(private ScheduledCommandPlannerInterface $scheduledCommandPlanner, private CommandRepositoryInterface $commandRepository, private string $projectDir)
-    {
+    public function __construct(
+        private ScheduledCommandPlannerInterface $scheduledCommandPlanner,
+        private CommandRepositoryInterface $commandRepository,
+        private string $projectDir,
+    ) {
     }
 
     public function executeImmediate(Request $request, string $commandId): Response

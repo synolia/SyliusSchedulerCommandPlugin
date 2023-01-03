@@ -11,7 +11,7 @@ name: Analysis
 jobs:
     analysis:
         name: 'PHP ${{ matrix.php }} Symfony ${{ matrix.symfony }}'
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
         strategy:
             fail-fast: false
             matrix:

@@ -13,8 +13,15 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 {
-    public function __construct(private ScheduledCommandRepositoryInterface $scheduledCommandRepository, private EntityManagerInterface $entityManager, private KernelInterface $kernel, private string $logsDir, private string $projectDir, private int $pingInterval = 60, private bool $keepConnectionAlive = false)
-    {
+    public function __construct(
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private EntityManagerInterface $entityManager,
+        private KernelInterface $kernel,
+        private string $logsDir,
+        private string $projectDir,
+        private int $pingInterval = 60,
+        private bool $keepConnectionAlive = false,
+    ) {
     }
 
     public function runImmediately(string $scheduledCommandId): bool

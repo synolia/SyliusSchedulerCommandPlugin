@@ -19,10 +19,9 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
 {
     use WithDatabaseTrait;
 
-    private static $commandName = 'synolia:scheduler-run';
+    private static string $commandName = 'synolia:scheduler-run';
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private ?EntityManagerInterface $entityManager = null;
 
     public function setUp(): void
     {

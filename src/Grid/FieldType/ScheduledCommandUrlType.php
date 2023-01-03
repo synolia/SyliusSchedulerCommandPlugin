@@ -12,8 +12,11 @@ use Twig\Environment;
 
 final class ScheduledCommandUrlType implements FieldTypeInterface
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator, private Environment $twig, private string $logsDir)
-    {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        private Environment $twig,
+        private string $logsDir,
+    ) {
     }
 
     /**

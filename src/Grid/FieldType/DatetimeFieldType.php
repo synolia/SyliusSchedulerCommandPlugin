@@ -12,8 +12,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class DatetimeFieldType implements FieldTypeInterface
 {
-    public function __construct(private DataExtractorInterface $dataExtractor, private LocaleContextInterface $localeContext)
-    {
+    public function __construct(
+        private DataExtractorInterface $dataExtractor,
+        private LocaleContextInterface $localeContext,
+    ) {
     }
 
     /**

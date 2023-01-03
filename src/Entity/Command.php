@@ -16,6 +16,7 @@ class Command implements CommandInterface
 {
     /**
      * @var int|null
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")

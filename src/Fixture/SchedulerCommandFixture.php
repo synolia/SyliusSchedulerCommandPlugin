@@ -12,8 +12,10 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
 class SchedulerCommandFixture extends AbstractFixture
 {
-    public function __construct(private RepositoryInterface $commandRepository, private FactoryInterface $commandFactory)
-    {
+    public function __construct(
+        private RepositoryInterface $commandRepository,
+        private FactoryInterface $commandFactory,
+    ) {
     }
 
     /**
