@@ -25,28 +25,15 @@ class PurgeScheduledCommandCommand extends Command
 
     protected static $defaultName = 'synolia:scheduler:purge-history';
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
-
-    /** @var LoggerInterface */
-    private $logger;
-
     private SymfonyStyle $io;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        LoggerInterface $logger,
-        ?string $name = null
+        private EntityManagerInterface $entityManager,
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private LoggerInterface $logger,
+        ?string $name = null,
     ) {
         parent::__construct($name);
-
-        $this->entityManager = $entityManager;
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->logger = $logger;
     }
 
     protected function configure(): void
@@ -116,7 +103,7 @@ class PurgeScheduledCommandCommand extends Command
             'Schedules with states ["%s"] lesser than %s days(s) (%s) will be purged.',
             \implode(',', $states),
             $daysOld,
-            $maxDate->format('Y-m-d')
+            $maxDate->format('Y-m-d'),
         ));
 
         return $this->scheduledCommandRepository->findAllSinceXDaysWithState($maxDate, $states);

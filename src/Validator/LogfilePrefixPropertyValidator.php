@@ -15,7 +15,7 @@ class LogfilePrefixPropertyValidator
             return;
         }
 
-        if (strpos($object, DIRECTORY_SEPARATOR) !== false) {
+        if (str_contains($object, DIRECTORY_SEPARATOR)) {
             $context
                 ->buildViolation('synolia.forms.constraints.cannot_use_slash', [
                     '%%DIRECTORY_SEPARATOR%%' => DIRECTORY_SEPARATOR,

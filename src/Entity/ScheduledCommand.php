@@ -15,67 +15,43 @@ class ScheduledCommand implements ScheduledCommandInterface
 {
     /**
      * @var int|null
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $name = '';
+    /** @ORM\Column(type="string") */
+    private string $name = '';
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $command = '';
+    /** @ORM\Column(type="string") */
+    private string $command = '';
 
-    /**
-     * @var string|null
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $arguments;
+    /** @ORM\Column(type="string", nullable=true) */
+    private ?string $arguments = null;
 
-    /**
-     * @var \DateTime|null
-     * @ORM\Column(name="executed_at", type="datetime", nullable=true)
-     */
-    private $executedAt;
+    /** @ORM\Column(name="executed_at", type="datetime", nullable=true) */
+    private ?\DateTime $executedAt = null;
 
-    /**
-     * @var int|null
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $lastReturnCode;
+    /** @ORM\Column(type="integer", nullable=true) */
+    private ?int $lastReturnCode = null;
 
     /**
      * Log's file name (without path)
      *
-     * @var string|null
      * @ORM\Column(type="string", nullable=true)
      */
-    private $logFile;
+    private ?string $logFile = null;
 
-    /**
-     * @var \DateTime|null
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $commandEndTime;
+    /** @ORM\Column(type="datetime", nullable=true) */
+    private ?\DateTime $commandEndTime = null;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
-     */
-    private $createdAt;
+    /** @ORM\Column(name="created_at", type="datetime", nullable=false) */
+    private \DateTime $createdAt;
 
-    /**
-     * @var string
-     * @ORM\Column(name="state", type="string")
-     */
-    private $state;
+    /** @ORM\Column(name="state", type="string") */
+    private string $state = ScheduledCommandStateEnum::WAITING;
 
     /** @ORM\Column(type="integer", nullable=true) */
     private ?int $timeout = null;
@@ -84,16 +60,14 @@ class ScheduledCommand implements ScheduledCommandInterface
     private ?int $idleTimeout = null;
 
     /**
-     * @var \Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface|null
      * @ORM\ManyToOne(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface", inversedBy="scheduledCommands")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $owner;
+    private ?\Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface $owner = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->state = ScheduledCommandStateEnum::WAITING;
     }
 
     public function getId(): ?int

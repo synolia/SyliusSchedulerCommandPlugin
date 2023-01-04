@@ -11,12 +11,8 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 class ScheduledCommandPostRemoveEvent implements EventSubscriber
 {
-    /** @var string */
-    private $logsDir;
-
-    public function __construct(string $logsDir)
+    public function __construct(private string $logsDir)
     {
-        $this->logsDir = $logsDir;
     }
 
     public function getSubscribedEvents(): array

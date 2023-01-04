@@ -12,18 +12,8 @@ use Twig\Environment;
 
 final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInterface
 {
-    /** @var Environment */
-    private $twig;
-
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Humanizer\HumanizerInterface */
-    private $humanizer;
-
-    public function __construct(
-        Environment $twig,
-        HumanizerInterface $humanizer
-    ) {
-        $this->twig = $twig;
-        $this->humanizer = $humanizer;
+    public function __construct(private Environment $twig, private HumanizerInterface $humanizer)
+    {
     }
 
     /**
@@ -36,7 +26,7 @@ final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInte
             [
                 'schedulerCommand' => $scheduleCommand,
                 'value' => $this->humanizer->humanize($scheduleCommand->getCronExpression()),
-            ]
+            ],
         );
     }
 

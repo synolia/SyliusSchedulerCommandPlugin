@@ -16,65 +16,48 @@ class Command implements CommandInterface
 {
     /**
      * @var int|null
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $name = '';
+    /** @ORM\Column(type="string") */
+    private string $name = '';
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $command = '';
+    /** @ORM\Column(type="string") */
+    private string $command = '';
 
-    /**
-     * @var string|null
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $arguments;
+    /** @ORM\Column(type="string", nullable=true) */
+    private ?string $arguments = null;
 
     /**
      * @see https://abunchofutils.com/u/computing/cron-format-helper/
      *
-     * @var string
      * @ORM\Column(type="string")
      */
-    private $cronExpression = '* * * * *';
+    private string $cronExpression = '* * * * *';
 
     /**
      * Log's file name prefix (without path), followed by a time stamp of the execution
      *
-     * @var string|null
      * @ORM\Column(type="string", nullable=true)
      */
-    private $logFilePrefix;
+    private ?string $logFilePrefix = null;
 
-    /**
-     * @var int
-     * @ORM\Column(type="integer")
-     */
-    private $priority = 0;
+    /** @ORM\Column(type="integer") */
+    private int $priority = 0;
 
     /**
      * If true, command will be execute next time regardless cron expression
      *
-     * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $executeImmediately = false;
+    private bool $executeImmediately = false;
 
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $enabled = true;
+    /** @ORM\Column(type="boolean") */
+    private bool $enabled = true;
 
     /** @ORM\Column(type="integer", nullable=true) */
     private ?int $timeout = null;
@@ -82,12 +65,8 @@ class Command implements CommandInterface
     /** @ORM\Column(type="integer", nullable=true) */
     private ?int $idleTimeout = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface", mappedBy="owner")
-     *
-     * @psalm-var Collection<array-key, \Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface>
-     */
-    private $scheduledCommands;
+    /** @ORM\OneToMany(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface", mappedBy="owner") */
+    private Collection $scheduledCommands;
 
     public function __construct()
     {

@@ -29,44 +29,16 @@ final class SynoliaSchedulerRunCommand extends Command
 
     protected static $defaultName = 'synolia:scheduler-run';
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var ScheduleCommandRunnerInterface */
-    private $scheduleCommandRunner;
-
-    /** @var CommandRepositoryInterface */
-    private $commandRepository;
-
-    /** @var ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
-
-    /** @var ScheduledCommandPlannerInterface */
-    private $scheduledCommandPlanner;
-
-    /** @var IsDueVoterInterface */
-    private $isDueVoter;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        EntityManagerInterface $scheduledCommandManager,
-        ScheduleCommandRunnerInterface $scheduleCommandRunner,
-        CommandRepositoryInterface $commandRepository,
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        ScheduledCommandPlannerInterface $scheduledCommandPlanner,
-        IsDueVoterInterface $isDueVoter,
-        LoggerInterface $logger
+        private EntityManagerInterface $entityManager,
+        private ScheduleCommandRunnerInterface $scheduleCommandRunner,
+        private CommandRepositoryInterface $commandRepository,
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private ScheduledCommandPlannerInterface $scheduledCommandPlanner,
+        private IsDueVoterInterface $isDueVoter,
+        private LoggerInterface $logger,
     ) {
         parent::__construct(static::$defaultName);
-
-        $this->entityManager = $scheduledCommandManager;
-        $this->scheduleCommandRunner = $scheduleCommandRunner;
-        $this->commandRepository = $commandRepository;
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->scheduledCommandPlanner = $scheduledCommandPlanner;
-        $this->isDueVoter = $isDueVoter;
-        $this->logger = $logger;
     }
 
     protected function configure(): void
@@ -122,12 +94,12 @@ final class SynoliaSchedulerRunCommand extends Command
             $io->note(\sprintf(
                 'Execute Command "%s" - last execution : %s',
                 $scheduledCommand->getCommand(),
-                $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never'
+                $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never',
             ));
 
             try {
                 $this->runScheduledCommand($io, $scheduledCommand);
-            } catch (ConnectionLost $connectionLost) {
+            } catch (ConnectionLost) {
                 $this->runScheduledCommand($io, $scheduledCommand);
             }
         }
@@ -164,7 +136,7 @@ final class SynoliaSchedulerRunCommand extends Command
         try {
             $io->writeln(
                 '<info>Execute</info> : <comment>' . $scheduledCommand->getCommand()
-                . ' ' . $scheduledCommand->getArguments() . '</comment>'
+                . ' ' . $scheduledCommand->getArguments() . '</comment>',
             );
 
             $scheduledCommand->setExecutedAt(new \DateTime());
@@ -173,7 +145,7 @@ final class SynoliaSchedulerRunCommand extends Command
 
             try {
                 $this->changeState($scheduledCommand, $this->getStateForResult($result));
-            } catch (ConnectionLost $connectionLost) {
+            } catch (ConnectionLost) {
                 $this->changeState($scheduledCommand, $this->getStateForResult($result));
             }
         } catch (\Exception $e) {

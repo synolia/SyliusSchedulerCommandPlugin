@@ -31,7 +31,7 @@ class ScheduledCommandRepository extends EntityRepository implements ScheduledCo
                         ->getQuery()
                         ->getOneOrNullResult()
             ;
-        } catch (NonUniqueResultException $e) {
+        } catch (NonUniqueResultException) {
             return null;
         }
     }

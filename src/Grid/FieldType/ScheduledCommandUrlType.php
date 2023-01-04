@@ -12,23 +12,11 @@ use Twig\Environment;
 
 final class ScheduledCommandUrlType implements FieldTypeInterface
 {
-    /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface */
-    private $urlGenerator;
-
-    /** @var Environment */
-    private $twig;
-
-    /** @var string */
-    private $logsDir;
-
     public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        Environment $twig,
-        string $logsDir
+        private UrlGeneratorInterface $urlGenerator,
+        private Environment $twig,
+        private string $logsDir,
     ) {
-        $this->urlGenerator = $urlGenerator;
-        $this->twig = $twig;
-        $this->logsDir = $logsDir;
     }
 
     /**
@@ -42,14 +30,14 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
             'sylius_admin_scheduler_view_log_file',
             [
                 'command' => $scheduleCommand->getId(),
-            ]
+            ],
         );
 
         $url = $this->urlGenerator->generate(
             'download_schedule_log_file',
             [
                 'command' => $scheduleCommand->getId(),
-            ]
+            ],
         );
 
         $filePath = $this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile();
@@ -64,7 +52,7 @@ final class ScheduledCommandUrlType implements FieldTypeInterface
                 'url' => $url,
                 'viewUrl' => $viewUrl,
                 'size' => $size,
-            ]
+            ],
         );
     }
 

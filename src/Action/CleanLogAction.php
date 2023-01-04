@@ -17,7 +17,7 @@ final class CleanLogAction extends AbstractController
         TranslatorInterface $translator,
         CommandRepository $commandRepository,
         string $command,
-        string $logsDir
+        string $logsDir,
     ): Response {
         /** @var ScheduledCommand|null $scheduleCommand */
         $scheduleCommand = $commandRepository->find($command);
@@ -43,7 +43,7 @@ final class CleanLogAction extends AbstractController
 
         try {
             file_put_contents($filePath, '');
-        } catch (\Throwable $throwable) {
+        } catch (\Throwable) {
             $this->addFlash('error', $translator->trans('sylius.ui.error_emptying_log_file'));
         }
 
@@ -57,7 +57,7 @@ final class CleanLogAction extends AbstractController
         return $this->redirectToRoute(
             'synolia_admin_command_index',
             [],
-            Response::HTTP_MOVED_PERMANENTLY
+            Response::HTTP_MOVED_PERMANENTLY,
         );
     }
 }

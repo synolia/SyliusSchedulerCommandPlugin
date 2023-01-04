@@ -44,7 +44,7 @@ final class ScheduledCommandContext implements Context
         NotificationCheckerInterface $notificationChecker,
         IndexPageInterface $indexPage,
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->currentPageResolver = $currentPageResolver;
@@ -99,7 +99,7 @@ final class ScheduledCommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Command has been successfully created.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -110,7 +110,7 @@ final class ScheduledCommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Command has been successfully updated.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -121,7 +121,7 @@ final class ScheduledCommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Command has been successfully deleted.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -132,7 +132,7 @@ final class ScheduledCommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Log file successfully emptied.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -221,7 +221,7 @@ final class ScheduledCommandContext implements Context
     {
         Assert::startsWith(
             $this->indexPage->getColumnFields('logFile')[1],
-            \sprintf('%s %s', $this->translator->trans('sylius.ui.live_view'), $filename)
+            \sprintf('%s %s', $this->translator->trans('sylius.ui.live_view'), $filename),
         );
     }
 
@@ -232,7 +232,7 @@ final class ScheduledCommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'Scheduled command has no defined log file.',
-            NotificationType::failure()
+            NotificationType::failure(),
         );
     }
 
@@ -243,7 +243,7 @@ final class ScheduledCommandContext implements Context
     {
         $this->notificationChecker->checkNotification(
             'The log files have been emptied.',
-            NotificationType::success()
+            NotificationType::success(),
         );
     }
 
@@ -261,7 +261,8 @@ final class ScheduledCommandContext implements Context
     {
         $command = new Command();
         $command->setName('About project')
-            ->setCommand('about');
+            ->setCommand('about')
+        ;
 
         return $command;
     }

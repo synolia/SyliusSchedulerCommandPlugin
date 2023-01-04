@@ -14,33 +14,14 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 final class LogViewerController extends AbstractController
 {
-    /** @var int The time in milliseconds between two AJAX requests to the server. */
-    private $updateTime;
-
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\DataRetriever\LogDataRetriever */
-    private $logDataRetriever;
-
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
-
-    /** @var \Symfony\Contracts\Translation\TranslatorInterface */
-    private $translator;
-
-    /** @var string */
-    private $logsDir;
-
     public function __construct(
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        LogDataRetriever $logDataRetriever,
-        TranslatorInterface $translator,
-        string $logsDir,
-        int $updateTime = 2000
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private LogDataRetriever $logDataRetriever,
+        private TranslatorInterface $translator,
+        private string $logsDir,
+        /** @var int The time in milliseconds between two AJAX requests to the server. */
+        private int $updateTime = 2000,
     ) {
-        $this->logDataRetriever = $logDataRetriever;
-        $this->updateTime = $updateTime;
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->translator = $translator;
-        $this->logsDir = $logsDir;
     }
 
     public function getLogs(Request $request, string $command): JsonResponse
@@ -58,7 +39,7 @@ final class LogViewerController extends AbstractController
                 $this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile(),
                 (int) $request->get('lastsize'),
                 (string) $request->get('grep-keywords'),
-                (bool) $request->get('invert')
+                (bool) $request->get('invert'),
             );
 
             return new JsonResponse([

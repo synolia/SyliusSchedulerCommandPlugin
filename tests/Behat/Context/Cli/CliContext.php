@@ -72,7 +72,7 @@ class CliContext implements Context
         ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         ScheduledCommandPlannerInterface $scheduledCommandPlanner,
         IsDueVoterInterface $isDueVoter,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->kernel = $kernel;
         $this->sharedStorage = $sharedStorage;
@@ -114,8 +114,8 @@ class CliContext implements Context
                 $this->scheduledCommandRepository,
                 $this->scheduledCommandPlanner,
                 $this->isDueVoter,
-                $this->logger
-            )
+                $this->logger,
+            ),
         );
         $this->command = $this->application->find('synolia:scheduler-run');
         $this->tester = new CommandTester($this->command);

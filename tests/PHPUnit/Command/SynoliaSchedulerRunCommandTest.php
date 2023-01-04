@@ -19,10 +19,9 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
 {
     use WithDatabaseTrait;
 
-    private static $commandName = 'synolia:scheduler-run';
+    private static string $commandName = 'synolia:scheduler-run';
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private ?EntityManagerInterface $entityManager = null;
 
     public function setUp(): void
     {
@@ -113,7 +112,8 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         $command = (new Factory(Command::class))->createNew();
         $command
             ->setCronExpression('* * * * *')
-            ->setCommand('non:existent');
+            ->setCommand('non:existent')
+        ;
 
         $this->save($command);
 
@@ -133,7 +133,7 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
 
         self::assertEquals(
             -1,
-            $persistedCommand->getLastReturnCode()
+            $persistedCommand->getLastReturnCode(),
         );
     }
 
@@ -143,7 +143,8 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         $command = (new Factory(Command::class))->createNew();
         $command
             ->setCronExpression($cron)
-            ->setCommand('about');
+            ->setCommand('about')
+        ;
 
         return $command;
     }

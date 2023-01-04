@@ -10,7 +10,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 class IsDueVoter implements IsDueVoterInterface
 {
     /** @var array<\Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface> */
-    private $isDueCheckers;
+    private array $isDueCheckers;
 
     public function __construct(\Traversable $checkers)
     {
@@ -22,7 +22,7 @@ class IsDueVoter implements IsDueVoterInterface
         foreach ($this->isDueCheckers as $checker) {
             try {
                 return $checker->isDue($command, $dateTime);
-            } catch (IsNotDueException $isNotDueException) {
+            } catch (IsNotDueException) {
                 continue;
             }
         }

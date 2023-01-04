@@ -16,7 +16,7 @@ class EveryMinuteIsDueCheckerTest extends AbstractIsDueTest
     public function testIsDue(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
-        bool $expectedResult
+        bool $expectedResult,
     ): void {
         $checker = new EveryMinuteIsDueChecker();
         $command = $this->setupCommand($cronExpression);

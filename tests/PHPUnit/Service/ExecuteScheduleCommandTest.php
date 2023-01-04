@@ -16,11 +16,9 @@ class ExecuteScheduleCommandTest extends WebTestCase
 {
     use WithDatabaseTrait;
 
-    /** @var ScheduleCommandRunnerInterface */
-    private $scheduleCommandRunner;
+    private ?ScheduleCommandRunnerInterface $scheduleCommandRunner = null;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private ?EntityManagerInterface $entityManager = null;
 
     public function setUp(): void
     {

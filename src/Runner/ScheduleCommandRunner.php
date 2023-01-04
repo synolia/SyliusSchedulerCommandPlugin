@@ -13,43 +13,15 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 {
-    /** @var ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var KernelInterface */
-    private $kernel;
-
-    /** @var string */
-    private $logsDir;
-
-    /** @var string */
-    private $projectDir;
-
-    /** @var int */
-    private $pingInterval;
-
-    /** @var bool */
-    private $keepConnectionAlive;
-
     public function __construct(
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        EntityManagerInterface $entityManager,
-        KernelInterface $kernel,
-        string $logsDir,
-        string $projectDir,
-        int $pingInterval = 60,
-        bool $keepConnectionAlive = false
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private EntityManagerInterface $entityManager,
+        private KernelInterface $kernel,
+        private string $logsDir,
+        private string $projectDir,
+        private int $pingInterval = 60,
+        private bool $keepConnectionAlive = false,
     ) {
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->entityManager = $entityManager;
-        $this->kernel = $kernel;
-        $this->logsDir = $logsDir;
-        $this->projectDir = $projectDir;
-        $this->pingInterval = $pingInterval;
-        $this->keepConnectionAlive = $keepConnectionAlive;
     }
 
     public function runImmediately(string $scheduledCommandId): bool
@@ -62,7 +34,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 
         $process = Process::fromShellCommandline(
             $this->getCommandLine($scheduledCommand),
-            $this->kernel->getProjectDir()
+            $this->kernel->getProjectDir(),
         );
 
         $scheduledCommand->setExecutedAt(new \DateTime());
@@ -91,7 +63,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 
         try {
             $this->startProcess($process);
-        } catch (ProcessTimedOutException $processTimedOutException) {
+        } catch (ProcessTimedOutException) {
         }
 
         $result = $process->getExitCode();
@@ -118,7 +90,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
 
             try {
                 $this->entityManager->getConnection()->executeQuery($this->entityManager->getConnection()->getDatabasePlatform()->getDummySelectSQL());
-            } catch (\Doctrine\DBAL\Exception $exception) {
+            } catch (\Doctrine\DBAL\Exception) {
             }
 
             for ($i = 0; $i < $this->pingInterval; ++$i) {
@@ -147,7 +119,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
             '%s/bin/console %s %s',
             $this->projectDir,
             $scheduledCommand->getCommand(),
-            $scheduledCommand->getArguments() ?? ''
+            $scheduledCommand->getArguments() ?? '',
         );
 
         $logOutput = $this->getLogOutput($scheduledCommand);
@@ -158,7 +130,7 @@ class ScheduleCommandRunner implements ScheduleCommandRunnerInterface
                 $scheduledCommand->getCommand(),
                 $scheduledCommand->getArguments() ?? '',
                 $logOutput,
-                $logOutput
+                $logOutput,
             );
         }
 

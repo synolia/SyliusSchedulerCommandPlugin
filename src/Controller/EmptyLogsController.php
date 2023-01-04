@@ -12,23 +12,11 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryIn
 
 final class EmptyLogsController extends AbstractController
 {
-    /** @var \Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
-
-    /** @var TranslatorInterface */
-    private $translator;
-
-    /** @var string */
-    private $logsDir;
-
     public function __construct(
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        TranslatorInterface $translator,
-        string $logsDir
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private TranslatorInterface $translator,
+        private string $logsDir,
     ) {
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->logsDir = $logsDir;
-        $this->translator = $translator;
     }
 
     public function emptyLogs(Request $request): Response
@@ -47,7 +35,7 @@ final class EmptyLogsController extends AbstractController
         return $this->redirectToRoute(
             'synolia_admin_command_index',
             [],
-            Response::HTTP_MOVED_PERMANENTLY
+            Response::HTTP_MOVED_PERMANENTLY,
         );
     }
 }
