@@ -49,8 +49,8 @@ else
 endif
 
 update-dependencies:
-	${COMPOSER} config extra.symfony.require "^${SYMFONY_VERSION}"
-	${COMPOSER} require symfony/asset:^${SYMFONY_VERSION} --no-scripts --no-update
+	${COMPOSER} config extra.symfony.require "~${SYMFONY_VERSION}"
+	${COMPOSER} require symfony/asset:~${SYMFONY_VERSION} --no-scripts --no-update
 	${COMPOSER} update --no-progress -n
 
 install-plugin:
