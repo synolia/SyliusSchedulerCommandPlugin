@@ -63,7 +63,7 @@ install-plugin:
 
 install-sylius:
 	${CONSOLE} doctrine:database:create -n
-	${CONSOLE} doctrine:migrations:generate -n
+	${CONSOLE} doctrine:migrations:migrate -n
 	${CONSOLE} messenger:setup-transports -n
 	${CONSOLE} sylius:fixtures:load default -n
 	${YARN} install
