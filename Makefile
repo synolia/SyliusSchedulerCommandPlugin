@@ -62,7 +62,10 @@ install-plugin:
 	cp -r install/Application tests
 
 install-sylius:
-	${CONSOLE} sylius:install -n -s default
+	${CONSOLE} doctrine:database:create -n
+	${CONSOLE} doctrine:migrations:generate -n
+	${CONSOLE} messenger:setup-transports -n
+	${CONSOLE} sylius:fixtures:load default -n
 	${YARN} install
 	${YARN} build
 	${CONSOLE} cache:clear
