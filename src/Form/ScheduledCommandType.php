@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
 
 final class ScheduledCommandType extends AbstractType
@@ -26,9 +27,21 @@ final class ScheduledCommandType extends AbstractType
             ->add('arguments')
             ->add('timeout', IntegerType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Constraints\PositiveOrZero(),
+                ],
+                'attr' => [
+                    'min' => 0,
+                ],
             ])
             ->add('idle_timeout', IntegerType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Constraints\PositiveOrZero(),
+                ],
+                'attr' => [
+                    'min' => 0,
+                ],
             ])
             ->add('logFile')
         ;
