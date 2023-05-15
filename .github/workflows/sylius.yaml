@@ -48,18 +48,18 @@ jobs:
                     coverage: none
             -
                 name: 'Setup Node'
-                uses: actions/setup-node@v1
+                uses: actions/setup-node@v3
                 with:
                     node-version: '${{ matrix.node }}'
             -
-                uses: actions/checkout@v2
+                uses: actions/checkout@v3
             -
                 name: 'Composer - Get Cache Directory'
                 id: composer-cache
-                run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
+                run: 'echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT'
             -
                 name: 'Composer - Set cache'
-                uses: actions/cache@v2
+                uses: actions/cache@v3
                 id: cache-composer
                 with:
                     path: '${{ steps.composer-cache.outputs.dir }}'
@@ -75,10 +75,10 @@ jobs:
             -
                 name: 'Yarn - Get cache directory'
                 id: yarn-cache
-                run: 'echo "::set-output name=dir::$(yarn cache dir)"'
+                run: 'echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT'
             -
                 name: 'Yarn - Set Cache'
-                uses: actions/cache@v2
+                uses: actions/cache@v3
                 with:
                     path: '${{ steps.yarn-cache.outputs.dir }}'
                     key: 'node-${{ matrix.node }}-yarn-${{ hashFiles(''**/package.json **/yarn.lock'') }}'
