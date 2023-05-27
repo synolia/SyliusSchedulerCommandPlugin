@@ -92,6 +92,7 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         self::assertStringContainsString('Immediately execution asked for : about', $commandTester->getDisplay());
         self::assertStringContainsString('Execute Command "about" - last execution : never', $commandTester->getDisplay());
         self::assertStringNotContainsString('Nothing to do', $commandTester->getDisplay());
+        self::assertFalse($scheduledCommand->isExecuteImmediately());
     }
 
     public function testExecuteNonExistentCommand(): void

@@ -80,7 +80,7 @@ phpunit-configure:
 	cp phpunit.xml.dist ${TEST_DIRECTORY}/phpunit.xml
 
 phpunit-run:
-	cd ${TEST_DIRECTORY} && ./vendor/bin/phpunit
+	cd ${TEST_DIRECTORY} && ./vendor/bin/phpunit --testdox
 
 behat-configure: ## Configure Behat
 	(cd ${TEST_DIRECTORY} && cp behat.yml.dist behat.yml)
