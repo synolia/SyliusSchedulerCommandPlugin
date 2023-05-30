@@ -73,6 +73,8 @@ final class SynoliaSchedulerRunCommand extends Command
             // delayed execution just after, to keep cron comparison effective
             if ($this->shouldExecuteCommand($command, $io)) {
                 $this->scheduledCommandPlanner->plan($command);
+                // The execution is planned, and does not need to be launched again in the future.
+                $command->setExecuteImmediately(false);
             }
         }
 
