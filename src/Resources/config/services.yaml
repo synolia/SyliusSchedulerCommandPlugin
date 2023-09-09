@@ -22,7 +22,7 @@ services:
 
     Synolia\SyliusSchedulerCommandPlugin\Parser\CommandParser:
         arguments:
-            $excludedNamespaces: ['_global']
+            $excludedNamespaces: ['_complete']
 
     app.grid_field.scheduled_command.url:
         class: Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType\ScheduledCommandUrlType
