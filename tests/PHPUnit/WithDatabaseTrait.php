@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit;
 
 use Doctrine\ORM\Tools\SchemaTool;
+use Sylius\Bundle\FixturesBundle\Loader\SuiteLoaderInterface;
+use Sylius\Bundle\FixturesBundle\Suite\SuiteRegistryInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 trait WithDatabaseTrait
@@ -24,6 +26,12 @@ trait WithDatabaseTrait
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->updateSchema($metadatas);
 
-        // If you are using the Doctrine Fixtures Bundle you could load these here
+        /** @var SuiteRegistryInterface $suiteRegistry */
+        $suiteRegistry = $kernel->getContainer()->get(SuiteRegistryInterface::class);
+        $suite = $suiteRegistry->getSuite('default');
+
+        /** @var SuiteLoaderInterface $suiteLoader */
+        $suiteLoader = $kernel->getContainer()->get(SuiteLoaderInterface::class);
+        $suiteLoader->load($suite);
     }
 }

@@ -9,18 +9,31 @@ use Psr\Log\LoggerInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface;
+use Synolia\SyliusSchedulerCommandPlugin\Enum\ScheduledCommandStateEnum;
+use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 class ScheduledCommandPlanner implements ScheduledCommandPlannerInterface
 {
     public function __construct(
         private FactoryInterface $scheduledCommandFactory,
         private EntityManagerInterface $entityManager,
+        private ScheduledCommandRepository $scheduledCommandRepository,
         private LoggerInterface $logger,
     ) {
     }
 
     public function plan(CommandInterface $command): ScheduledCommandInterface
     {
+        /** @var ScheduledCommandInterface[] $scheduledCommands */
+        $scheduledCommands = $this->scheduledCommandRepository->findBy([
+            'command' => $command->getCommand(),
+            'state' => ScheduledCommandStateEnum::WAITING,
+        ]);
+
+        if (0 !== count($scheduledCommands)) {
+            return array_shift($scheduledCommands);
+        }
+
         /** @var ScheduledCommandInterface $scheduledCommand */
         $scheduledCommand = $this->scheduledCommandFactory->createNew();
 

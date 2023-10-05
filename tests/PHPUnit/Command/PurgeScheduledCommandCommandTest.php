@@ -25,10 +25,15 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
 
     private ReflectionClass $reflectionClass;
 
+    public static function setUpBeforeClass(): void
+    {
+        $kernel = self::bootKernel();
+        self::initDatabase($kernel);
+    }
+
     public function setUp(): void
     {
-        $kernel = static::bootKernel();
-        self::initDatabase($kernel);
+        parent::setUp();
 
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->entityManager->beginTransaction();

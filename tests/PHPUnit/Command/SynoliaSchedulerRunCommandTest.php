@@ -23,10 +23,15 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
 
     private ?EntityManagerInterface $entityManager = null;
 
+    public static function setUpBeforeClass(): void
+    {
+        $kernel = self::bootKernel();
+        self::initDatabase($kernel);
+    }
+
     public function setUp(): void
     {
-        $kernel = static::bootKernel();
-        self::initDatabase($kernel);
+        parent::setUp();
 
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->entityManager->beginTransaction();
