@@ -20,11 +20,15 @@ class ExecuteScheduleCommandTest extends WebTestCase
 
     private ?EntityManagerInterface $entityManager = null;
 
+    public static function setUpBeforeClass(): void
+    {
+        $kernel = self::bootKernel();
+        self::initDatabase($kernel);
+    }
+
     public function setUp(): void
     {
         parent::setUp();
-        $kernel = self::bootKernel();
-        self::initDatabase($kernel);
 
         $this->scheduleCommandRunner = static::getContainer()->get(ScheduleCommandRunnerInterface::class);
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);

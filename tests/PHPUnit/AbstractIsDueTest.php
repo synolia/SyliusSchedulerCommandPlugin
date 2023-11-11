@@ -17,11 +17,15 @@ abstract class AbstractIsDueTest extends KernelTestCase
     /** @var EntityManagerInterface */
     protected $entityManager;
 
+    public static function setUpBeforeClass(): void
+    {
+        $kernel = self::bootKernel();
+        self::initDatabase($kernel);
+    }
+
     public function setUp(): void
     {
         parent::setUp();
-        $kernel = self::bootKernel();
-        self::initDatabase($kernel);
 
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->entityManager->beginTransaction();
