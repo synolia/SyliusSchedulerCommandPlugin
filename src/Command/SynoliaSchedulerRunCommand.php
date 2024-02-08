@@ -114,7 +114,7 @@ final class SynoliaSchedulerRunCommand extends Command
     private function runScheduledCommand(SymfonyStyle $io, ScheduledCommandInterface $scheduledCommand): void
     {
         /** prevent update during running time */
-        $this->entityManager->refresh($this->entityManager->merge($scheduledCommand));
+        $this->scheduledCommandRepository->find($scheduledCommand->getId());
 
         $this->executeCommand($scheduledCommand, $io);
     }
@@ -156,8 +156,6 @@ final class SynoliaSchedulerRunCommand extends Command
             $result = -1;
         }
 
-        /** @var ScheduledCommandInterface $scheduledCommand */
-        $scheduledCommand = $this->entityManager->merge($scheduledCommand);
         $scheduledCommand->setLastReturnCode($result);
         $this->entityManager->flush();
 
