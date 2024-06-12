@@ -3,6 +3,7 @@ parameters:
     env(SYNOLIA_SCHEDULER_PLUGIN_KEEP_ALIVE): true
     env(SYNOLIA_SCHEDULER_PLUGIN_LOGS_DIR): '%kernel.logs_dir%'
     env(SYNOLIA_SCHEDULER_PLUGIN_TIMEFORMAT_24H): false
+    env(SYNOLIA_SCHEDULER_PLUGIN_TIMEZONE): null
 
 services:
     _defaults:
