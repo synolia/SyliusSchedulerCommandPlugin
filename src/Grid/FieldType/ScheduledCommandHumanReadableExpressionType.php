@@ -6,11 +6,13 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Grid\FieldType;
 
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Synolia\SyliusSchedulerCommandPlugin\Humanizer\HumanizerInterface;
 use Twig\Environment;
 
-final class ScheduledCommandHumanReadableExpressionType implements FieldTypeInterface
+#[AutoconfigureTag('sylius.grid_field', attributes: ['type' => 'scheduled_human_readable_expression'])]
+final readonly class ScheduledCommandHumanReadableExpressionType implements FieldTypeInterface
 {
     public function __construct(private Environment $twig, private HumanizerInterface $humanizer)
     {
