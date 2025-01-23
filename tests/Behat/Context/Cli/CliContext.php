@@ -98,7 +98,7 @@ class CliContext implements Context
      */
     public function iShouldSeeInTheMessage(string $messagePart): void
     {
-        Assert::assertContains($messagePart, $this->tester->getDisplay());
+        Assert::assertStringContainsString($messagePart, $this->tester->getDisplay());
     }
 
     /**
