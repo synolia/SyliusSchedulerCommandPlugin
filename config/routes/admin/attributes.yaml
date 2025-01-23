@@ -1,5 +1,0 @@
-controllers:
-    resource:
-        path: ../../../src/Controller/
-        namespace: Synolia\SyliusSchedulerCommandPlugin\Controller
-    type: attribute

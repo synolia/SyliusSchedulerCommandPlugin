@@ -1,5 +1,0 @@
-imports:
-    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/config/resources.yaml" }
-    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/config/grids.yaml" }
-    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/config/services.yaml" }
-    - { resource: "@SynoliaSyliusSchedulerCommandPlugin/config/ui.yaml" }

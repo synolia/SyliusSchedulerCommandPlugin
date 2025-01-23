@@ -5,7 +5,7 @@ parameters:
         - ../src
     excludePaths:
         - ../src/DependencyInjection/Configuration.php?
-        - ../migrations
+        - ../src/Migrations?
         - ../tests
         - ../spec
 

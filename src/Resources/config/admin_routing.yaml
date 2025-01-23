@@ -23,3 +23,9 @@ synolia_admin_scheduled_commands:
             index:
                 icon: 'box'
     type: sylius.resource
+
+controllers:
+    resource:
+        path: ../../Controller/
+        namespace: Synolia\SyliusSchedulerCommandPlugin\Controller
+    type: attribute
