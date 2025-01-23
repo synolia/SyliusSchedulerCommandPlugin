@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\Command;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
-abstract class AbstractIsDueTest extends KernelTestCase
+abstract class AbstractIsDueTestCase extends KernelTestCase
 {
     use WithDatabaseTrait;
 
