@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\Voter;
 
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Synolia\SyliusSchedulerCommandPlugin\Checker\IsDueCheckerInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
@@ -12,7 +12,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 class IsDueVoter implements IsDueVoterInterface
 {
     public function __construct(
-        #[TaggedIterator(IsDueCheckerInterface::class)]
+        #[AutowireIterator(IsDueCheckerInterface::class)]
         private readonly iterable $checkers,
     ) {
     }
