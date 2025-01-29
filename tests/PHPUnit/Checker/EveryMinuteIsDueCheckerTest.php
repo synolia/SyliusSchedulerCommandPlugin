@@ -6,9 +6,9 @@ namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Checker;
 
 use Synolia\SyliusSchedulerCommandPlugin\Checker\EveryMinuteIsDueChecker;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
-use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
+use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTestCase;
 
-class EveryMinuteIsDueCheckerTest extends AbstractIsDueTest
+class EveryMinuteIsDueCheckerTest extends AbstractIsDueTestCase
 {
     /**
      * @dataProvider isDueUsingCronExpressionDataProvider

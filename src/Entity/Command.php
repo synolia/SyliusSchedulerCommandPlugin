@@ -12,6 +12,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository;
 
 /**
  * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\CommandRepository")
+ *
  * @ORM\Table("synolia_commands")
  */
 #[ORM\Entity(repositoryClass: CommandRepository::class)]
@@ -22,7 +23,9 @@ class Command implements CommandInterface
      * @var int|null
      *
      * @ORM\Id()
+     *
      * @ORM\GeneratedValue()
+     *
      * @ORM\Column(type="integer")
      */
     #[ORM\Id]
@@ -82,8 +85,12 @@ class Command implements CommandInterface
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $idleTimeout = null;
 
-    /** @ORM\OneToMany(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface", mappedBy="owner") */
-    #[ORM\OneToMany(targetEntity: ScheduledCommandInterface::class, mappedBy: 'owner')]
+    /**
+     * @var Collection<int, ScheduledCommandInterface>
+     *
+     * @ORM\OneToMany(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface", mappedBy="owner")
+     */
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: ScheduledCommandInterface::class)]
     private Collection $scheduledCommands;
 
     public function __construct()
@@ -192,9 +199,6 @@ class Command implements CommandInterface
         return $this;
     }
 
-    /**
-     * @return Collection<array-key, \Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface>|\Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommandInterface[]
-     */
     public function getScheduledCommands(): Collection
     {
         return $this->scheduledCommands;

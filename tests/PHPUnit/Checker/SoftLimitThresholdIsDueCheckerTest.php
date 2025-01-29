@@ -7,9 +7,9 @@ namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Checker;
 use Synolia\SyliusSchedulerCommandPlugin\Checker\SoftLimitThresholdIsDueChecker;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
-use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
+use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTestCase;
 
-class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTest
+class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTestCase
 {
     private ?SoftLimitThresholdIsDueChecker $softLimitThresholdIsDueChecker = null;
 

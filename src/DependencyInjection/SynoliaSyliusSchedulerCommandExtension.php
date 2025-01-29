@@ -16,9 +16,9 @@ final class SynoliaSyliusSchedulerCommandExtension extends Extension implements 
     use PrependDoctrineMigrationsTrait;
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @inheritDoc
      */
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');

@@ -6,9 +6,9 @@ namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Voter;
 
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
-use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTest;
+use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTestCase;
 
-class IsDueVoterTest extends AbstractIsDueTest
+class IsDueVoterTest extends AbstractIsDueTestCase
 {
     private ?IsDueVoterInterface $voter = null;
 

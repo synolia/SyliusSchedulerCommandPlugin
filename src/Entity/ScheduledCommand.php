@@ -11,6 +11,7 @@ use Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository;
 
 /**
  * @ORM\Entity(repositoryClass="Synolia\SyliusSchedulerCommandPlugin\Repository\ScheduledCommandRepository")
+ *
  * @ORM\Table("synolia_scheduled_commands")
  */
 #[ORM\Entity(repositoryClass: ScheduledCommandRepository::class)]
@@ -21,7 +22,9 @@ class ScheduledCommand implements ScheduledCommandInterface
      * @var int|null
      *
      * @ORM\Id()
+     *
      * @ORM\GeneratedValue()
+     *
      * @ORM\Column(type="integer")
      */
     #[ORM\Id]
@@ -79,11 +82,12 @@ class ScheduledCommand implements ScheduledCommandInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface", inversedBy="scheduledCommands")
+     *
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     #[ORM\ManyToOne(targetEntity: CommandInterface::class, inversedBy: 'scheduledCommands')]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    private ?\Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface $owner = null;
+    private ?CommandInterface $owner = null;
 
     public function __construct()
     {
