@@ -23,7 +23,7 @@
     </span>
 {% endif %}
 {% if schedulerCommand.state == 'termination' %}
-    <span class="ui red label">
+    <span class="ui orange label">
         <i class="bell icon"></i>
         {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
     </span>
