@@ -78,7 +78,7 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         $command = $application->find(self::$commandName);
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
-        self::assertStringContainsString('Execute Command "about" - last execution : never', $commandTester->getDisplay());
+        self::assertStringContainsString('Execute Command "about"', $commandTester->getDisplay());
         self::assertStringNotContainsString('Nothing to do', $commandTester->getDisplay());
     }
 
@@ -95,7 +95,7 @@ final class SynoliaSchedulerRunCommandTest extends KernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
         self::assertStringContainsString('Immediately execution asked for : about', $commandTester->getDisplay());
-        self::assertStringContainsString('Execute Command "about" - last execution : never', $commandTester->getDisplay());
+        self::assertStringContainsString('Execute Command "about"', $commandTester->getDisplay());
         self::assertStringNotContainsString('Nothing to do', $commandTester->getDisplay());
         self::assertFalse($scheduledCommand->isExecuteImmediately());
     }

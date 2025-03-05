@@ -109,7 +109,9 @@ Execute scheduled commands.
 
 **Run all scheduled commands :** php bin/console synolia:scheduler-run
 
-**Run one scheduled command :** php bin/console synolia:scheduler-run --id=5
+**Run one scheduled command :** php bin/console synolia:scheduler-run --only-one
+
+**Run a specific scheduled command :** php bin/console synolia:scheduler-run --id=5
 
 ### synolia:scheduler:purge-history
 

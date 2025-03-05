@@ -44,6 +44,7 @@ final class SynoliaSchedulerRunCommand extends Command
     protected function configure(): void
     {
         $this->addOption('id', 'i', InputOption::VALUE_OPTIONAL, 'Command ID');
+        $this->addOption('only-one', 'o', InputOption::VALUE_NONE, 'Launch only one command');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -57,12 +58,12 @@ final class SynoliaSchedulerRunCommand extends Command
             $scheduledCommand = $this->scheduledCommandRepository->find((int) $scheduledCommandId);
 
             if (!$scheduledCommand instanceof ScheduledCommandInterface) {
-                return 0;
+                return Command::SUCCESS;
             }
 
             $this->executeCommand($scheduledCommand, $io);
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $commands = $this->getCommands($input);
@@ -81,7 +82,7 @@ final class SynoliaSchedulerRunCommand extends Command
             $output->writeln('The command is already running in another process.');
             $this->logger->info('Scheduler is already running.');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         /** @var ScheduledCommandInterface[] $scheduledCommands */
@@ -93,9 +94,8 @@ final class SynoliaSchedulerRunCommand extends Command
 
         foreach ($scheduledCommands as $scheduledCommand) {
             $io->note(\sprintf(
-                'Execute Command "%s" - last execution : %s',
+                'Execute Command "%s"',
                 $scheduledCommand->getCommand(),
-                $scheduledCommand->getExecutedAt() !== null ? $scheduledCommand->getExecutedAt()->format('d/m/Y H:i:s') : 'never',
             ));
 
             try {
@@ -103,11 +103,15 @@ final class SynoliaSchedulerRunCommand extends Command
             } catch (ConnectionLost) {
                 $this->runScheduledCommand($io, $scheduledCommand);
             }
+
+            if (true === $input->getOption('only-one')) {
+                break;
+            }
         }
 
         $this->release();
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function runScheduledCommand(SymfonyStyle $io, ScheduledCommandInterface $scheduledCommand): void
