@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Synolia\SyliusSchedulerCommandPlugin\EventSubscriber;
 
+use Doctrine\DBAL\Exception;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleSignalEvent;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
@@ -43,7 +44,7 @@ final class ConsoleSubscriber implements EventSubscriberInterface
             $commandCode = $event->getCommand()?->getName() ?? 'no_command';
             /** @var ScheduledCommand|null $schedulerCommand */
             $schedulerCommand = $this->scheduledCommandRepository->findOneBy(['command' => $commandCode], ['id' => 'DESC']);
-        } catch (\Throwable) {
+        } catch (Exception) {
             return;
         }
 
