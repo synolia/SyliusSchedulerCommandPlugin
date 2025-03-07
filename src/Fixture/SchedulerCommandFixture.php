@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Fixture;
 
 use Sylius\Bundle\FixturesBundle\Fixture\AbstractFixture;
-use Sylius\Component\Resource\Factory\FactoryInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Resource\Factory\FactoryInterface;
+use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 

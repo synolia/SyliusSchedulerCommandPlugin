@@ -14,7 +14,7 @@
         "ext-json": "*",
         "ext-intl": "*",
         "dragonmantank/cron-expression": "^3.4",
-        "sylius/sylius": "^1.12",
+        "sylius/sylius": "^1.14",
         "symfony/framework-bundle": "^5.4|^6.0",
         "symfony/lock": "^6.4",
         "symfony/polyfill-intl-icu": "^1.26",
