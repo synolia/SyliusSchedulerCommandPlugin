@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Checker;
 
 use Cron\CronExpression;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Sylius\Calendar\Provider\DateTimeProviderInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
 
@@ -19,9 +19,9 @@ class EveryMinuteIsDueChecker implements IsDueCheckerInterface
     private const PRIORITY = 0;
 
     public function __construct(
-        private ?DateTimeProviderInterface $dateTimeProvider = null,
+        private readonly ?DateTimeProviderInterface $dateTimeProvider = null,
     ) {
-        if (null === $dateTimeProvider) {
+        if (!$dateTimeProvider instanceof DateTimeProviderInterface) {
             trigger_deprecation(
                 'synolia/sylius-scheduler-command-plugin',
                 '3.9',
@@ -42,7 +42,7 @@ class EveryMinuteIsDueChecker implements IsDueCheckerInterface
      */
     public function isDue(CommandInterface $command, ?\DateTimeInterface $dateTime = null): bool
     {
-        if (null === $dateTime) {
+        if (!$dateTime instanceof \DateTimeInterface) {
             $dateTime = $this->dateTimeProvider?->now() ?? new \DateTime();
         }
 

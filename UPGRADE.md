@@ -7,7 +7,7 @@
 
 Also, for old existing schedules in your database, please remove the log file extension in column `logFilePrefix`.
 
-## from 3.6 to 3.7
+## from 3.8 to 3.9
 
 * The constructors of `Synolia\SyliusSchedulerCommandPlugin\Checker\EveryMinuteIsDueChecker` and `Synolia\SyliusSchedulerCommandPlugin\Checker\SoftLimitThresholdIsDueChecker` has been modified, a new argument has been added :
 
