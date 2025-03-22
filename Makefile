@@ -69,6 +69,7 @@ install-sylius:
 	${CONSOLE} sylius:fixtures:load default -n
 	${YARN} install
 	${YARN} build
+	${CONSOLE} assets:install -n
 	${CONSOLE} cache:clear
 
 phpunit-configure:
