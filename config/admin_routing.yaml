@@ -6,9 +6,6 @@ synolia_admin_commands:
         grid: synolia_admin_commands
         except: ['show']
         permission: true
-        vars:
-            index:
-                icon: 'box'
     type: sylius.resource
 
 synolia_admin_scheduled_commands:
@@ -19,9 +16,6 @@ synolia_admin_scheduled_commands:
         grid: synolia_admin_scheduled_commands
         except: ['update', 'show']
         permission: true
-        vars:
-            index:
-                icon: 'box'
     type: sylius.resource
 
 controllers:
