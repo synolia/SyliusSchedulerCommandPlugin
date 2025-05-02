@@ -1,30 +1,30 @@
 {% if schedulerCommand.state == 'waiting' %}
-    <span class="ui grey label">
-        <i class="calendar alternate icon"></i>
+    <span class="badge text-bg-light">
+        {{ ux_icon('tabler:calendar') }}
         {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
     </span>
 {% endif %}
 {% if schedulerCommand.state == 'in_progress' %}
-    <span class="ui blue label">
-        <i class="sync icon"></i>
+    <span class="badge text-bg-azure">
+        {{ ux_icon('tabler:refresh') }}
         {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
     </span>
 {% endif %}
 {% if schedulerCommand.state == 'finished' %}
-    <span class="ui green label">
-        <i class="checkmark icon"></i>
+    <span class="badge text-bg-success">
+        {{ ux_icon('tabler:check') }}
         {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
     </span>
 {% endif %}
 {% if schedulerCommand.state == 'error' %}
-    <span class="ui red label">
-        <i class="bell icon"></i>
+    <span class="badge text-bg-danger">
+        {{ ux_icon('tabler:bell') }}
         {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
     </span>
 {% endif %}
 {% if schedulerCommand.state == 'termination' %}
-    <span class="ui orange label">
-        <i class="bell icon"></i>
+    <span class="badge text-bg-warning">
+        {{ ux_icon('tabler:bell') }}
         {{ ('synolia.ui.statuses.' ~ schedulerCommand.state)|trans }}
     </span>
 {% endif %}

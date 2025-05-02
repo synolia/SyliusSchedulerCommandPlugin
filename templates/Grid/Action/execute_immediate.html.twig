@@ -1,5 +1,5 @@
-{% import '@SyliusUi/Macro/buttons.html.twig' as buttons %}
+{% import '@SyliusAdmin/shared/helper/button.html.twig' as buttons %}
 
 {% set path = options.link.url|default(path(options.link.route, options.link.parameters)) %}
 
-{{ buttons.default(path, action.label, null, 'sync', 'primary') }}
+{{ buttons.default({url: path, text: action.label|trans, icon: 'tabler:refresh', class: 'btn-primary'}) }}

@@ -1,22 +1,20 @@
-{% extends '@SyliusAdmin/layout.html.twig' %}
-
-{% import '@SyliusUi/Macro/headers.html.twig' as headers %}
+{% extends '@SyliusAdmin/shared/layout/base.html.twig' %}
+{% import '@SyliusAdmin/shared/helper/header.html.twig' as headers %}
 
 {% block title %}{{ 'synolia.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}) }} {{ parent() }}{% endblock %}
 
-{% block content %}
-    {{ headers.default('synolia.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}), 'cogs') }}
+{% block body %}
+    {{ headers.default(1, 'synolia.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}), 'tabler:settings') }}
 
-    <div class="ui input">
-        <input id="grep" type="text" placeholder="Search...">
+    <div class="my-3">
+        <input type="search" class="form-control" id="grep" placeholder="Search" aria-label="Search">
     </div>
 
-    <pre id="results">
-        <div class="ui active centered inline loader"></div>
+    <pre id="results" class="text-bg-light text-center">
+        <span class="loader m-auto"></span>
     </pre>
 
-    {{ sylius_template_event('synolia.admin.command.logs.stylesheets') }}
-
+    {% hook 'synolia.admin.command.logs.stylesheets' %}
     <script type="text/javascript">
         {% autoescape 'js' %}
         /* <![CDATA[ */
@@ -25,6 +23,5 @@
         /* ]]> */
         {% endautoescape %}
     </script>
-
-    {{ sylius_template_event('synolia.admin.command.logs.javascripts') }}
+    {% hook 'synolia.admin.command.logs.javascripts' %}
 {% endblock %}

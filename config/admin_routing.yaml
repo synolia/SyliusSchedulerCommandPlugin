@@ -1,7 +1,7 @@
 synolia_admin_commands:
     resource: |
         alias: synolia.command
-        templates: "@SyliusAdmin\\Crud"
+        templates: "@SyliusAdmin\\shared\\crud"
         section: admin
         grid: synolia_admin_commands
         except: ['show']
@@ -11,7 +11,7 @@ synolia_admin_commands:
 synolia_admin_scheduled_commands:
     resource: |
         alias: synolia.scheduled_command
-        templates: "@SyliusAdmin\\Crud"
+        templates: "@SyliusAdmin\\shared\\crud"
         section: admin
         grid: synolia_admin_scheduled_commands
         except: ['update', 'show']
@@ -20,6 +20,6 @@ synolia_admin_scheduled_commands:
 
 controllers:
     resource:
-        path: ../../Controller/
+        path: ../src/Controller/
         namespace: Synolia\SyliusSchedulerCommandPlugin\Controller
     type: attribute

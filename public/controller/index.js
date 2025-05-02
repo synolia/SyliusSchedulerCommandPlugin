@@ -1,90 +1,85 @@
-$(document).ready(function () {
-  //Last know size of the file
-  var lastSize = 0;
-  //Grep keyword
-  var grep = "";
-  //Should the Grep be inverted?
-  var invert = 0;
-  //Last known document height
-  var documentHeight = 0;
-  //Last known scroll position
-  var scrollPosition = 0;
-  //Should we scroll to the bottom?
-  var scroll = false;
+(function() {
+  let lastSize = 0;
+  let grep = "";
+  let invert = 0;
+  let documentHeight = 0;
+  let scrollPosition = 0;
+  let scroll = false;
 
-  //Close the settings dialog after a user hits enter in the textarea
-  $('#grep').keyup(function (e) {
-    if (e.keyCode === 13) {
+  const grepInput = document.getElementById("grep");
+  const results = document.getElementById("results");
+  const floatElements = document.querySelectorAll(".float");
+
+  // Handle "Enter" keyup in #grep
+  grepInput.addEventListener("keyup", function (e) {
+    if (e.key === "Enter") {
       lastSize = 0;
-      grep = $(this).val();
-      $('#results').html('');
+      grep = this.value;
+      results.innerHTML = "";
     }
   });
-  //Focus on the textarea
-  $("#grep").focus();
-  //Settings button into a nice looking button with a theme
-  //Settings button opens the settings dialog
-  $("#grepKeyword").click(function () {
-    $("#settings").dialog('open');
-    $("#grepKeyword").removeClass('ui-state-focus');
-  });
-  $(".file").click(function (e) {
-    $("#results").text("");
-    lastSize = 0;
-  });
 
-  //Set up an interval for updating the log. Change updateTime in the PHPTail constructor to change this
-  var updateLog = setInterval(function () {
-    //This function queries the server for updates.
-    $.getJSON(sy_route + '?refresh=1&lastsize=' + lastSize + '&grep-keywords=' + grep + '&invert=' + invert, function (data) {
-      lastSize = data.size;
-      $("#current").text(data.file);
-      $.each(data.data, function (key, value) {
-        $("#results").prepend('' + value + '<br/>');
-      });
-      if (scroll) {
-        scrollToBottom();
-      }
-      if (data.data.length < 1) {
-        $("#results .loader").remove();
-      }
-    })
-      .fail(function (jqXHR) {
-        $("#results").append(jqXHR.responseText);
+  // Focus on #grep input
+  grepInput.focus();
+  // Periodic log update
+  const updateLog = setInterval(function () {
+    fetch(`${sy_route}?refresh=1&lastsize=${lastSize}&grep-keywords=${grep}&invert=${invert}`)
+      .then(response => response.json())
+      .then(data => {
+        lastSize = data.size;
+        data.data.forEach(value => {
+          const entry = document.createElement("div");
+          entry.innerHTML = value + "<br/>";
+          results.prepend(entry);
+        });
+
+        if (scroll) {
+          scrollToBottom();
+        }
+
+        if (data.data.length < 1) {
+          const loader = results.querySelector(".loader");
+          if (loader) loader.remove();
+        }
+      })
+      .catch(error => {
+        results.innerHTML += error.message;
         clearInterval(updateLog);
       });
   }, sy_updateTime);
 
-  //Some window scroll event to keep the menu at the top
-  $(window).scroll(function (e) {
-    if ($(window).scrollTop() > 0) {
-      $('.float').css({
-        position: 'fixed',
-        top: '0',
-        left: 'auto',
-      });
-    } else {
-      $('.float').css({
-        position: 'static',
-      });
-    }
+  // Fix float element on scroll
+  window.addEventListener("scroll", function () {
+    const scrollTop = window.scrollY;
+    floatElements.forEach(el => {
+      if (scrollTop > 0) {
+        el.style.position = "fixed";
+        el.style.top = "0";
+        el.style.left = "auto";
+      } else {
+        el.style.position = "static";
+      }
+    });
+
+    documentHeight = document.documentElement.scrollHeight;
+    scrollPosition = window.innerHeight + window.scrollY;
+    scroll = documentHeight <= scrollPosition;
   });
-  //If window is resized should we scroll to the bottom?
-  $(window).resize(function () {
+
+  // Scroll to bottom on resize if needed
+  window.addEventListener("resize", function () {
     if (scroll) {
       scrollToBottom();
     }
   });
-  //Handle if the window should be scrolled down or not
-  $(window).scroll(function () {
-    documentHeight = $(document).height();
-    scrollPosition = $(window).height() + $(window).scrollTop();
-    scroll = documentHeight <= scrollPosition;
-  });
-  scrollToBottom();
-});
 
-//This function scrolls to the bottom
-function scrollToBottom() {
-  $("html, body").animate({ scrollTop: $(document).height() }, "fast");
-}
+  scrollToBottom();
+
+  // Scroll to bottom function
+  function scrollToBottom() {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth"
+    });
+  }
+})();

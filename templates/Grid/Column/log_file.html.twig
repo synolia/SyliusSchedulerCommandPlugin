@@ -1,11 +1,11 @@
 {% if schedulerCommand.logFile is not null and schedulerCommand.logFile is not empty %}
-    <div class="ui buttons">
-        <a class="ui labeled icon button" href="javascript:void(0);" data-href="{{ viewUrl }}" onclick="fireLog(event)">
-            <i class="icon play"></i>
+    <div class="btn-group">
+        <a class="btn btn-primary" href="javascript:void(0);" data-href="{{ viewUrl }}" onclick="fireLog(event)">
+            {{ ux_icon('tabler:play') }}
             {{ 'synolia.ui.live_view'|trans }}
         </a>
-        <a class="ui labeled icon button blue" href="{{ url }}">
-            <i class="icon download"></i>
+        <a class="btn btn-blue" href="{{ url }}">
+            {{ ux_icon('tabler:download') }}
             {{ 'synolia.ui.download'|trans }} - {{ size|format_bytes }}
         </a>
     </div>
