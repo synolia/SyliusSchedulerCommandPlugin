@@ -10,6 +10,7 @@ use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\Command;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
@@ -20,38 +21,15 @@ use Webmozart\Assert\Assert;
 
 final class ScheduledCommandContext implements Context
 {
-    /** @var SharedStorageInterface */
-    private $sharedStorage;
-
-    /** @var CurrentPageResolverInterface */
-    private $currentPageResolver;
-
-    /** @var NotificationCheckerInterface */
-    private $notificationChecker;
-
-    /** @var IndexPageInterface */
-    private $indexPage;
-
-    /** @var ScheduledCommandRepositoryInterface */
-    private $scheduledCommandRepository;
-
-    /** @var \Symfony\Contracts\Translation\TranslatorInterface */
-    private $translator;
-
     public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CurrentPageResolverInterface $currentPageResolver,
-        NotificationCheckerInterface $notificationChecker,
-        IndexPageInterface $indexPage,
-        ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        TranslatorInterface $translator,
+        private SharedStorageInterface $sharedStorage,
+        private CurrentPageResolverInterface $currentPageResolver,
+        #[Autowire('@sylius.behat.notification_checker.admin')]
+        private NotificationCheckerInterface $notificationChecker,
+        private IndexPageInterface $indexPage,
+        private ScheduledCommandRepositoryInterface $scheduledCommandRepository,
+        private TranslatorInterface $translator,
     ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->currentPageResolver = $currentPageResolver;
-        $this->notificationChecker = $notificationChecker;
-        $this->indexPage = $indexPage;
-        $this->scheduledCommandRepository = $scheduledCommandRepository;
-        $this->translator = $translator;
     }
 
     /**
