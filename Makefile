@@ -16,7 +16,7 @@ PLUGIN_NAME=synolia/sylius-scheduler-command-plugin
 ### DEVELOPMENT
 ### ¯¯¯¯¯¯¯¯¯¯¯
 
-install: sylius ## Install Plugin on Sylius [SYLIUS_VERSION=1.12.0] [SYMFONY_VERSION=6.1] [PHP_VERSION=8.1]
+install: sylius ## Install Plugin on Sylius [SYLIUS_VERSION=2.0] [SYMFONY_VERSION=7.2] [PHP_VERSION=8.2]
 .PHONY: install
 
 reset: ## Remove dependencies
