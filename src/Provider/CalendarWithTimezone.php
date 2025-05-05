@@ -7,12 +7,12 @@ namespace Synolia\SyliusSchedulerCommandPlugin\Provider;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
-use Sylius\Calendar\Provider\DateTimeProviderInterface;
+use Psr\Clock\ClockInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-#[AsAlias(DateTimeProviderInterface::class)]
-final class CalendarWithTimezone implements DateTimeProviderInterface
+#[AsAlias(ClockInterface::class)]
+final class CalendarWithTimezone implements ClockInterface
 {
     public function __construct(
         #[Autowire(param: 'env(SYNOLIA_SCHEDULER_PLUGIN_TIMEZONE)')]
@@ -23,7 +23,7 @@ final class CalendarWithTimezone implements DateTimeProviderInterface
     /**
      * @throws Exception
      */
-    public function now(): \DateTimeInterface
+    public function now(): DateTimeImmutable
     {
         $timezone = $this->timezone ?? date_default_timezone_get();
 

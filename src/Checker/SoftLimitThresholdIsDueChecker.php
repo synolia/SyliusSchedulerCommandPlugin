@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\Checker;
 
 use Cron\CronExpression;
-use Sylius\Calendar\Provider\DateTimeProviderInterface;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
@@ -23,21 +23,12 @@ class SoftLimitThresholdIsDueChecker implements IsDueCheckerInterface
 
     public function __construct(
         private readonly ScheduledCommandRepositoryInterface $scheduledCommandRepository,
-        private readonly ?DateTimeProviderInterface $dateTimeProvider = null,
+        private readonly ?ClockInterface $dateTimeProvider = null,
         /**
          * Threshold in minutes
          */
         private readonly int $threshold = 5,
     ) {
-        if (!$dateTimeProvider instanceof DateTimeProviderInterface) {
-            trigger_deprecation(
-                'synolia/sylius-scheduler-command-plugin',
-                '3.9',
-                'Not passing a service that implements "%s" as a 1st argument of "%s" constructor is deprecated and will be prohibited in 4.0.',
-                DateTimeProviderInterface::class,
-                self::class,
-            );
-        }
     }
 
     /**
