@@ -1,0 +1,18 @@
+sylius_twig_hooks:
+    hooks:
+        'synolia.admin.command.logs.javascripts':
+            js:
+                priority: 0
+                template: '@SynoliaSyliusSchedulerCommandPlugin/Controller/js.html.twig'
+        'synolia.admin.command.logs.stylesheets':
+            css:
+                priority: 0
+                template: '@SynoliaSyliusSchedulerCommandPlugin/Controller/css.html.twig'
+        'sylius_admin.scheduled_command.index#javascripts':
+            js:
+                priority: 0
+                template: '@SynoliaSyliusSchedulerCommandPlugin/Grid/Column/js.html.twig'
+        'sylius_admin.scheduled_command.index':
+            modal:
+                priority: 0
+                template: '@SynoliaSyliusSchedulerCommandPlugin/Controller/modal.html.twig'

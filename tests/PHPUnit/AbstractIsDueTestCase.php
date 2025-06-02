@@ -48,7 +48,7 @@ abstract class AbstractIsDueTestCase extends KernelTestCase
         return $command;
     }
 
-    public function isDueUsingCronExpressionDataProvider(): \Generator
+    public static function isDueUsingCronExpressionDataProvider(): \Generator
     {
         yield 'Every minute - now' => ['* * * * *', new \DateTime(), true];
         yield 'Every minute - now minus 1 minute' => ['* * * * *', (new \DateTime())->sub(new DateInterval('PT1M')), true];
@@ -59,7 +59,7 @@ abstract class AbstractIsDueTestCase extends KernelTestCase
         yield 'At 1AM - now plus 1 minute' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', '2021-08-01 01:01'), false];
     }
 
-    public function isDueWithoutScheduledHistoryDataProvider(): \Generator
+    public static function isDueWithoutScheduledHistoryDataProvider(): \Generator
     {
         $today = new \DateTime();
 
@@ -75,7 +75,7 @@ abstract class AbstractIsDueTestCase extends KernelTestCase
         yield 'Without history, at 1AM 2021-08-01 01:06' => ['0 1 * * *', \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:06', $today->format('Y-m-d'))), false];
     }
 
-    public function isDueWithScheduledHistoryDataProvider(): \Generator
+    public static function isDueWithScheduledHistoryDataProvider(): \Generator
     {
         $today = new \DateTime();
 

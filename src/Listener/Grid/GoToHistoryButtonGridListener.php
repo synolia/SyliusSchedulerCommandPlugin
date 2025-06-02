@@ -29,8 +29,8 @@ final class GoToHistoryButtonGridListener
         $action = Action::fromNameAndType('go_to_history', 'link');
         $action->setLabel('synolia.menu.admin.main.configuration.scheduler_command_history');
         $action->setOptions([
-            'class' => 'blue',
-            'icon' => 'clock',
+            'class' => 'btn-ghost-azure',
+            'icon' => 'tabler:clock',
             'link' => [
                 'route' => 'synolia_admin_scheduled_command_index',
                 'parameters' => [],

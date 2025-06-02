@@ -1,0 +1,27 @@
+{% extends '@SyliusAdmin/shared/layout/base.html.twig' %}
+{% import '@SyliusAdmin/shared/helper/header.html.twig' as headers %}
+
+{% block title %}{{ 'synolia.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}) }} {{ parent() }}{% endblock %}
+
+{% block body %}
+    {{ headers.default(1, 'synolia.ui.live_view_of_scheduled_command'|trans({'%scheduledCommandName%': scheduledCommand.name|e}), 'tabler:settings') }}
+
+    <div class="my-3">
+        <input type="search" class="form-control" id="grep" placeholder="Search" aria-label="Search">
+    </div>
+
+    <pre id="results" class="text-bg-light text-center">
+        <span class="loader m-auto"></span>
+    </pre>
+
+    {% hook 'synolia.admin.command.logs.stylesheets' %}
+    <script type="text/javascript">
+        {% autoescape 'js' %}
+        /* <![CDATA[ */
+        var sy_updateTime = {{ updateTime }};
+        var sy_route = "{{ route }}";
+        /* ]]> */
+        {% endautoescape %}
+    </script>
+    {% hook 'synolia.admin.command.logs.javascripts' %}
+{% endblock %}

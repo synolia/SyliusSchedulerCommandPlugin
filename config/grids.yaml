@@ -27,7 +27,7 @@ sylius_grid:
                     sortable: ~
                     label: synolia.ui.scheduled_command.enabled
                     options:
-                        template: "@SyliusUi/Grid/Field/enabled.html.twig"
+                        template: "@SyliusUi/grid/field/enabled.html.twig"
             sorting:
                 name: asc
                 command: asc

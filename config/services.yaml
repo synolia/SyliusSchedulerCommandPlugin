@@ -11,5 +11,5 @@ services:
         autoconfigure: true
 
     Synolia\SyliusSchedulerCommandPlugin\:
-        resource: '../../*'
-        exclude: '../../{Entity,Migrations,SynoliaSyliusSchedulerCommandPlugin.php}'
+        resource: '../src/*'
+        exclude: '../src/{Entity,Migrations,SynoliaSyliusSchedulerCommandPlugin.php}'

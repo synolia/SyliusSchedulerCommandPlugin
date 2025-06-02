@@ -14,11 +14,11 @@
         "ext-json": "*",
         "ext-intl": "*",
         "dragonmantank/cron-expression": "^3.4",
-        "sylius/sylius": "^1.12",
-        "symfony/framework-bundle": "^5.4|^6.0",
-        "symfony/lock": "^6.4",
+        "sylius/sylius": "^2.0",
+        "symfony/framework-bundle": "^5.4|^6.0|^7.0",
+        "symfony/lock": "^6.4|^7.0",
         "symfony/polyfill-intl-icu": "^1.26",
-        "symfony/process": "^6.4",
+        "symfony/process": "^6.4|^7.0",
         "symfony/service-contracts": "^3.5",
         "webmozart/assert": "^1.11"
     },
@@ -73,10 +73,11 @@
         "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "symfony/thanks": true,
+            "ergebnis/composer-normalize": true,
+            "php-http/discovery": true,
             "phpro/grumphp": true,
             "phpstan/extension-installer": true,
-            "ergebnis/composer-normalize": true
+            "symfony/thanks": true
         }
     },
     "scripts": {

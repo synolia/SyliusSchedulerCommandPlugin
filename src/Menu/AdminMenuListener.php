@@ -16,6 +16,7 @@ final class AdminMenuListener
         $newSubmenu = $menu
             ->addChild('scheduler')
             ->setLabel('synolia.menu.admin.main.configuration.scheduler_command')
+            ->setLabelAttribute('icon', 'tabler:list')
         ;
         $newSubmenu
             ->addChild('scheduler-command', [
@@ -23,7 +24,6 @@ final class AdminMenuListener
             ])
             ->setAttribute('type', 'link')
             ->setLabel('synolia.menu.admin.main.configuration.scheduler_command')
-            ->setLabelAttribute('icon', 'list')
         ;
         $newSubmenu
             ->addChild('scheduler-command-history', [
@@ -31,7 +31,6 @@ final class AdminMenuListener
             ])
             ->setAttribute('type', 'link')
             ->setLabel('synolia.menu.admin.main.configuration.scheduler_command_history')
-            ->setLabelAttribute('icon', 'clock')
         ;
     }
 }

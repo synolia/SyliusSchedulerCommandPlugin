@@ -7,8 +7,8 @@ CONSOLE=cd ${TEST_DIRECTORY} && php bin/console -e test
 COMPOSER=cd ${TEST_DIRECTORY} && composer
 YARN=cd ${TEST_DIRECTORY} && yarn
 
-SYLIUS_VERSION=1.14.0
-SYMFONY_VERSION=6.4
+SYLIUS_VERSION=2.0
+SYMFONY_VERSION=7.2
 PHP_VERSION=8.2
 PLUGIN_NAME=synolia/sylius-scheduler-command-plugin
 
@@ -16,7 +16,7 @@ PLUGIN_NAME=synolia/sylius-scheduler-command-plugin
 ### DEVELOPMENT
 ### ¯¯¯¯¯¯¯¯¯¯¯
 
-install: sylius ## Install Plugin on Sylius [SYLIUS_VERSION=1.12.0] [SYMFONY_VERSION=6.1] [PHP_VERSION=8.1]
+install: sylius ## Install Plugin on Sylius [SYLIUS_VERSION=2.0] [SYMFONY_VERSION=7.2] [PHP_VERSION=8.2]
 .PHONY: install
 
 reset: ## Remove dependencies
@@ -63,7 +63,7 @@ install-plugin:
 	cp -r ${INSTALL_DIRECTORY} tests
 
 install-sylius:
-	${CONSOLE} doctrine:database:create -n
+	${CONSOLE} doctrine:database:create -n --if-not-exists
 	${CONSOLE} doctrine:migrations:migrate -n
 	${CONSOLE} messenger:setup-transports -n
 	${CONSOLE} sylius:fixtures:load default -n

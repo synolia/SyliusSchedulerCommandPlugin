@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Attribute\Route;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\CommandInterface;
@@ -36,7 +37,9 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 
         $this->executeFromCron($scheduledCommand);
 
-        $request->getSession()->getFlashBag()->add('success', \sprintf(
+        /** @var Session $session */
+        $session = $request->getSession();
+        $session->getFlashBag()->add('success', \sprintf(
             'Command "%s" as been planned for execution.',
             $scheduledCommand->getName(),
         ));

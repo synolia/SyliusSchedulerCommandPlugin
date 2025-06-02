@@ -29,8 +29,8 @@ final class GoToCommandsButtonGridListener
         $action = Action::fromNameAndType('go_to_commands', 'link');
         $action->setLabel('synolia.menu.admin.main.configuration.scheduler_command');
         $action->setOptions([
-            'class' => 'blue',
-            'icon' => 'list',
+            'class' => 'btn-ghost-azure',
+            'icon' => 'tabler:list',
             'link' => [
                 'route' => 'synolia_admin_command_index',
                 'parameters' => [],

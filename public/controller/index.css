@@ -1,0 +1,19 @@
+#results {
+    padding: 5px;
+    overflow-y: scroll;
+    height: calc(100% - 150px);
+}
+
+#log-modal .description,
+#log-modal > .content,
+#log-modal #content {
+    height: 100%;
+}
+
+#results .loader:before {
+    border-color: rgba(0,0,0,.1);
+}
+
+#results .loader:after {
+    border-color: #767676 transparent transparent;
+}

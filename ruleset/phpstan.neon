@@ -12,12 +12,4 @@ parameters:
     ignoreErrors:
         - identifier: missingType.iterableValue
         - identifier: missingType.generics
-        - '/Parameter #1 \$configuration of method Symfony\Component\DependencyInjection\Extension\Extension::processConfiguration\(\) expects Symfony\Component\Config\Definition\ConfigurationInterface, Symfony\Component\Config\Definition\ConfigurationInterface\|null given./'
-        - '#^Method [\w\\]+Type::render\(\) has parameter \$[\w]+ with no typehint specified.$#'
-        - '#Variable method call on Synolia\\SyliusSchedulerCommandPlugin\\Entity\\ScheduledCommand.#'
-        - '#Cannot call method [a-zA-Z0-9]+\(\) on Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null.#'
-        - # caused by check if process is running in a while loop
-            message: "#^Negated boolean expression is always false\\.$#"
-            count: 1
-            path: ../src/Runner/ScheduleCommandRunner.php
-        - "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
+        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::[a-zA-Z0-9]+\(\).#'

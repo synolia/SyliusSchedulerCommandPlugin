@@ -1,8 +1,6 @@
 services:
-
     Sylius\Behat\Service\SharedStorageInterface: '@sylius.behat.shared_storage'
     Sylius\Behat\Service\Resolver\CurrentPageResolverInterface: '@sylius.behat.current_page_resolver'
-    Sylius\Behat\Service\NotificationCheckerInterface: '@sylius.behat.notification_checker'
 
     synolia_sylius_scheduler_command_plugin.behat.page.admin.scheduled_command.index:
         class: Tests\Synolia\SyliusSchedulerCommandPlugin\Behat\Page\Admin\SchedulerCommand\IndexPage

@@ -104,7 +104,7 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
         );
     }
 
-    public function scheduleStateDataProvider(): \Generator
+    public static function scheduleStateDataProvider(): \Generator
     {
         yield [[ScheduledCommandStateEnum::FINISHED], ScheduledCommandStateEnum::FINISHED];
         yield [[ScheduledCommandStateEnum::WAITING], ScheduledCommandStateEnum::WAITING];
