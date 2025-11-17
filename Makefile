@@ -43,7 +43,8 @@ else
 	${COMPOSER_ROOT} create-project sylius/sylius-standard ${TEST_DIRECTORY} "~${SYLIUS_VERSION}" --no-install --no-scripts
 endif
 	${COMPOSER} config allow-plugins true
-	jq '.config.audit."ignore-unreachable" = false' composer.json > tmp.json && mv tmp.json composer.json
+	# CVE are deliberately ignored
+	${COMPOSER} config audit.ignore CVE-2025-31481 CVE-2025-31485 PKSA-gs8r-6kz6-pp56 PKSA-gnn4-pxdg-q76m PKSA-4g5g-4rkv-myqs
 ifeq ($(shell [[ $(SYLIUS_VERSION) == *dev ]] && echo true ),true)
 	${COMPOSER} require sylius/sylius:"${SYLIUS_VERSION}"
 else
