@@ -25,7 +25,7 @@ final class BytesFormatterExtension extends AbstractExtension
         }
 
         try {
-            $number = floor(log($bytes, 1024));
+            $number = (int) floor(log($bytes, 1024));
 
             return round($bytes / (1024 ** $number), [0, 2, 2, 2, 3][$number]) . ['B', 'kB', 'MB', 'GB', 'TB'][$number];
         } catch (\Throwable) {
