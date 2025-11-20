@@ -34,7 +34,7 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 
         $scheduledCommand = $this->scheduledCommandPlanner->plan($command);
 
-        $this->executeFromCron($scheduledCommand);
+        $this->launchSubprocess($scheduledCommand);
 
         $request->getSession()->getFlashBag()->add('success', \sprintf(
             'Command "%s" as been planned for execution.',
