@@ -35,7 +35,7 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
 
         $scheduledCommand = $this->scheduledCommandPlanner->plan($command);
 
-        $this->executeFromCron($scheduledCommand);
+        $this->launchSubprocess($scheduledCommand);
 
         /** @var Session $session */
         $session = $request->getSession();
@@ -47,20 +47,12 @@ class ScheduledCommandExecuteImmediateController extends AbstractController
         return $this->redirectToRoute('synolia_admin_command_index');
     }
 
-    public function executeFromCron(ScheduledCommandInterface $scheduledCommand): int
+    private function launchSubprocess(ScheduledCommandInterface $scheduledCommand): void
     {
         $process = Process::fromShellCommandline($this->getCommandLine($scheduledCommand));
         $process->setTimeout($scheduledCommand->getTimeout());
         $process->setIdleTimeout($scheduledCommand->getIdleTimeout());
-        $process->run();
-        $result = $process->getExitCode();
-        $scheduledCommand->setCommandEndTime(new \DateTime());
-
-        if (null === $result) {
-            $result = 0;
-        }
-
-        return $result;
+        $process->start();
     }
 
     private function getCommandLine(ScheduledCommandInterface $scheduledCommand): string

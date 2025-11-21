@@ -116,8 +116,8 @@ final class SynoliaSchedulerRunCommand extends Command
 
     private function runScheduledCommand(SymfonyStyle $io, ScheduledCommandInterface $scheduledCommand): void
     {
-        /** prevent update during running time */
-        $this->scheduledCommandRepository->find($scheduledCommand->getId());
+        /** Fetch the object in case Connexion has been closed between two scheduled Command */
+        $scheduledCommand = $this->scheduledCommandRepository->find($scheduledCommand->getId());
 
         $this->executeCommand($scheduledCommand, $io);
     }
@@ -161,12 +161,6 @@ final class SynoliaSchedulerRunCommand extends Command
 
         $scheduledCommand->setLastReturnCode($result);
         $this->entityManager->flush();
-
-        /*
-         * This clear() is necessary to avoid conflict between commands
-         * and to be sure that none entity are managed before entering in a new command
-         */
-        $this->entityManager->clear();
 
         unset($command);
         gc_collect_cycles();
