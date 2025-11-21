@@ -15,7 +15,7 @@
         "ext-intl": "*",
         "dragonmantank/cron-expression": "^3.4",
         "sylius/sylius": "^2.0",
-        "symfony/framework-bundle": "^5.4|^6.0|^7.0",
+        "symfony/framework-bundle": "^5.4|^6.4|^7.0",
         "symfony/lock": "^6.4|^7.0",
         "symfony/polyfill-intl-icu": "^1.26",
         "symfony/process": "^6.4|^7.0",
@@ -36,7 +36,6 @@
         "friends-of-behat/symfony-extension": "^2.4",
         "friends-of-behat/variadic-extension": "^1.5",
         "friendsoftwig/twigcs": "6.4.0",
-        "j13k/yaml-lint": "^1.1",
         "php-parallel-lint/php-parallel-lint": "^1.4",
         "phpmd/phpmd": "^2.15.0",
         "phpro/grumphp": "^2.9",
@@ -52,11 +51,13 @@
         "slevomat/coding-standard": "^8.7",
         "squizlabs/php_codesniffer": "^3.11",
         "sylius-labs/coding-standard": "^4.3",
-        "symfony/browser-kit": "^6.4",
-        "symfony/debug-bundle": "^6.4",
-        "symfony/dotenv": "^6.4",
-        "symfony/intl": "^6.4",
-        "symfony/web-profiler-bundle": "^6.4",
+        "sylius/test-application": "^2.1.0@alpha",
+        "symfony/apache-pack": "*",
+        "symfony/browser-kit": "^6.4 || ^7.0",
+        "symfony/debug-bundle": "^6.4 || ^7.0",
+        "symfony/dotenv": "^6.4 || ^7.0",
+        "symfony/intl": "^6.4 || ^7.0",
+        "symfony/web-profiler-bundle": "^6.4|| ^7.0",
         "symplify/easy-coding-standard": "^12.5"
     },
     "suggest": {
@@ -65,8 +66,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Synolia\\SyliusSchedulerCommandPlugin\\": "src/",
-            "Tests\\Synolia\\SyliusSchedulerCommandPlugin\\": "tests/"
+            "Synolia\\SyliusSchedulerCommandPlugin\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Synolia\\SyliusSchedulerCommandPlugin\\": ["tests/", "tests/TestApplication/src/"]
         }
     },
     "config": {
@@ -77,10 +82,43 @@
             "php-http/discovery": true,
             "phpro/grumphp": true,
             "phpstan/extension-installer": true,
+            "symfony/flex": true,
+            "symfony/runtime": true,
             "symfony/thanks": true
         }
     },
     "scripts": {
-        "fix-ecs": "ecs check -c ruleset/ecs.php --fix --ansi --clear-cache"
+        "ecs": "ecs check -c ruleset/ecs.php --ansi --clear-cache",
+        "fix-ecs": "@ecs --fix",
+        "phpmd": "phpmd src ansi ruleset/.php_md.xml",
+        "phpstan": "phpstan analyse src -c ruleset/phpstan.neon",
+        "phpunit": "phpunit tests/PHPUnit --colors=always",
+        "tests": [
+            "@ecs",
+            "@phpmd",
+            "@phpstan",
+            "@phpunit"
+        ],
+        "test-application:install": [
+            "vendor/bin/console doctrine:database:drop --force --if-exists -n",
+            "vendor/bin/console doctrine:database:create -n",
+            "vendor/bin/console doctrine:migration:migrate -n",
+            "vendor/bin/console sylius:payment:generate-key -n",
+            "vendor/bin/console sylius:fixtures:load -n",
+            "yarn --cwd vendor/sylius/test-application install --force",
+            "yarn --cwd vendor/sylius/test-application build",
+            "vendor/bin/console assets:install --symlink -n vendor/sylius/test-application/public",
+            "cp tests/TestApplication/public/.htaccess vendor/sylius/test-application/public"
+        ],
+        "test-application:front": [
+            "yarn --cwd vendor/sylius/test-application install --force",
+            "yarn --cwd vendor/sylius/test-application build"
+        ]
+    },
+    "extra": {
+        "public-dir": "vendor/sylius/test-application/public",
+        "symfony": {
+            "require": "^6.4"
+        }
     }
 }
