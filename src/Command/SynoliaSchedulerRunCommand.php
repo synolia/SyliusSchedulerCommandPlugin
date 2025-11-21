@@ -118,7 +118,9 @@ final class SynoliaSchedulerRunCommand extends Command
     {
         /** Fetch the object in case Connexion has been closed between two scheduled Command */
         $scheduledCommand = $this->scheduledCommandRepository->find($scheduledCommand->getId());
-
+        if (null === $scheduledCommand) {
+            return;
+        }
         $this->executeCommand($scheduledCommand, $io);
     }
 

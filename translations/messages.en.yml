@@ -1,5 +1,6 @@
 synolia:
     ui:
+        command: Scheduled command
         commands: Scheduled commands
         scheduled_commands: Scheduled commands history
         scheduled_command:

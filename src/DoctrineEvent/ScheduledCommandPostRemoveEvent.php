@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Synolia\SyliusSchedulerCommandPlugin\DoctrineEvent;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostRemoveEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -27,10 +27,9 @@ class ScheduledCommandPostRemoveEvent implements EventSubscriber
         ];
     }
 
-    public function postRemove(LifecycleEventArgs $eventArgs): void
+    public function postRemove(PostRemoveEventArgs $eventArgs): void
     {
-        $scheduledCommand = $eventArgs->getEntity();
-
+        $scheduledCommand = $eventArgs->getObject();
         if (!$scheduledCommand instanceof ScheduledCommandInterface) {
             return;
         }
