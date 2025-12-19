@@ -1,5 +1,6 @@
 sylius_grid:
     grids:
+        # Grid of commands (that will be scheduled)
         synolia_admin_commands:
             driver:
                 options:
@@ -58,6 +59,15 @@ sylius_grid:
                 main:
                     create:
                         type: create
+                    history:
+                        type: link
+                        label: synolia.menu.admin.main.configuration.scheduler_command_history
+                        options:
+                            class: 'btn-ghost-azure'
+                            icon: 'tabler:clock'
+                            link:
+                                route: 'synolia_admin_scheduled_command_index'
+                                parameters: {}
                 item:
                     execute:
                         type: schedule_command_execute_immediate
@@ -74,6 +84,7 @@ sylius_grid:
                 bulk:
                     delete:
                         type: delete
+        # Grid of scheduled commands (historical)
         synolia_admin_scheduled_commands:
             driver:
                 options:
@@ -130,6 +141,15 @@ sylius_grid:
                     create:
                         type: create
                         label: synolia.ui.launch_a_command
+                    list:
+                        type: link
+                        label: synolia.menu.admin.main.configuration.scheduler_command
+                        options:
+                            class: 'btn-ghost-azure'
+                            icon: 'tabler:list'
+                            link:
+                                route: 'synolia_admin_command_index'
+                                parameters: {}
                 item:
                     delete:
                         type: delete
