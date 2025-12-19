@@ -70,9 +70,11 @@ sylius_grid:
                                 parameters: {}
                 item:
                     execute:
-                        type: schedule_command_execute_immediate
+                        type: link
                         label: synolia.ui.scheduled_command.execute_immediate
                         options:
+                            icon: 'tabler:refresh'
+                            class: 'btn-primary'
                             link:
                                 route: execute_immediate_schedule
                                 parameters:
@@ -158,5 +160,4 @@ sylius_grid:
                         type: delete
     templates:
         action:
-            schedule_command_execute_immediate: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/execute_immediate.html.twig"
             link: "@SynoliaSyliusSchedulerCommandPlugin/Grid/Action/link.html.twig"

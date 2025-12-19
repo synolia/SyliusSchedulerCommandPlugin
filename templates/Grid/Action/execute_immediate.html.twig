@@ -1,5 +1,0 @@
-{% import '@SyliusAdmin/shared/helper/button.html.twig' as buttons %}
-
-{% set path = options.link.url|default(path(options.link.route, options.link.parameters)) %}
-
-{{ buttons.default({url: path, text: action.label|trans, icon: 'tabler:refresh', class: 'btn-primary'}) }}
