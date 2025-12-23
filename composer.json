@@ -11,8 +11,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "ext-json": "*",
         "ext-intl": "*",
+        "ext-json": "*",
         "dragonmantank/cron-expression": "^3.4",
         "sylius/sylius": "^2.0",
         "symfony/framework-bundle": "^5.4|^6.4|^7.0|^8.0",

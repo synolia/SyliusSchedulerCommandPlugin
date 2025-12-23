@@ -3,13 +3,13 @@
 From the plugin root directory, run the following commands:
 
 ```bash
-$ make install -e SYLIUS_VERSION=XX SYMFONY_VERSION=YY PHP_VERSION=ZZ
+$ make install -e SYLIUS_VERSION=XX SYMFONY_VERSION=YY
 ```
 
-Default values : XX=2.0 and YY=7.2 and ZZ=8.2
+Default values : XX=2.1 and YY=6.4
 
 To be able to setup the plugin database, remember to configure you database credentials
-in `install/Application/.env.local` and `install/Application/.env.test.local`.
+in `tests/TestApplication/.env.local` and `tests/TestApplication/.env.test.local`.
 
 To reset test environment:
 ```bash
@@ -39,11 +39,11 @@ $ make reset
 - Using `test` environment:
 
     ```bash
-    $ (cd tests/Application && bin/console server:run -d public -e test)
+    $ symfony server:start -d -e test
     ```
 
 - Using `dev` environment:
 
     ```bash
-    $ (cd tests/Application && bin/console server:run -d public -e dev)
+    $ symfony server:start -d -e dev
     ```
