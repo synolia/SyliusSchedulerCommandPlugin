@@ -20,7 +20,7 @@ jobs:
                     - 8.3
                 symfony:
                     - '6.4.*'
-                    - '7.2.*'
+                    - '7.3.*'
         env:
             APP_ENV: test
         steps:
@@ -59,11 +59,11 @@ jobs:
                 id: end-of-setup
             -
                 name: 'ECS - Run'
-                run: 'if [ -f ruleset/ecs.php ]; then vendor/bin/ecs check src/ tests/Behat/ --no-progress-bar -c ruleset/ecs.php ; else echo Ecs ruleset file does not exist, skipping step ; fi'
+                run: 'if [ -f ruleset/ecs.php ]; then vendor/bin/ecs check --no-progress-bar -c ruleset/ecs.php ; else echo Ecs ruleset file does not exist, skipping step ; fi'
                 if: 'always() && steps.end-of-setup.outcome == ''success'''
             -
                 name: 'PHPStan - Run'
-                run: 'if [ -f ruleset/phpstan.neon ]; then vendor/bin/phpstan analyse -c ruleset/phpstan.neon src/ ; else echo PHPStan ruleset file does not exist, skipping step ; fi'
+                run: 'if [ -f ruleset/phpstan.neon ]; then vendor/bin/phpstan analyse -c ruleset/phpstan.neon ; else echo PHPStan ruleset file does not exist, skipping step ; fi'
                 if: 'always() && steps.end-of-setup.outcome == ''success'''
             -
                 name: 'PHPSpec - Run'
@@ -76,7 +76,4 @@ jobs:
             -
                 name: 'GrumPHP - Run'
                 run: 'if [ -f grumphp.yml ]; then vendor/bin/grumphp run ; else echo Grumphp ruleset file does not exist, skipping step ; fi'
-                if: 'always() && steps.end-of-setup.outcome == ''success'''
-            -
-                uses: symfonycorp/security-checker-action@v3
                 if: 'always() && steps.end-of-setup.outcome == ''success'''

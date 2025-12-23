@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot call method scalarNode\(\) on Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php

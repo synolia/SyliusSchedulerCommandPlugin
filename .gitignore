@@ -13,3 +13,7 @@
 /.phpunit.result.cache
 
 /.idea/
+
+/tests/TestApplication/.env.local
+/tests/TestApplication/.env.*.local
+/var/
