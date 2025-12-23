@@ -68,6 +68,10 @@
         cp -R vendor/synolia/sylius-scheduler-command-plugin/install/Application/config/packages/* config/packages/
         cp -R vendor/synolia/sylius-scheduler-command-plugin/install/Application/config/routes/* config/routes/
 
+6. Installing assets (JS and CSS) fot the plugin
+
+        bin/console assets:install
+
 ## Usage
 
 * Log into admin panel
@@ -112,6 +116,12 @@ Execute scheduled commands.
 **Run one scheduled command :** php bin/console synolia:scheduler-run --only-one
 
 **Run a specific scheduled command :** php bin/console synolia:scheduler-run --id=5
+
+Is it possible to choose the timezone of the command execution by setting the `SYNOLIA_SCHEDULER_PLUGIN_TIMEZONE` environment variable, example: 
+
+```
+SYNOLIA_SCHEDULER_PLUGIN_TIMEZONE=Europe/Paris
+```
 
 ### synolia:scheduler:purge-history
 
