@@ -25,7 +25,7 @@ jobs:
                     - 6.4
                     - 7.4
                 node:
-                    - 20.x
+                    - 22.x
                 exclude:
                     -
                         php: 8.2
