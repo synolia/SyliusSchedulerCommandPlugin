@@ -43,10 +43,13 @@
 
 ## Requirements
 
-|        | Version |
-|:-------|:--------|
-| PHP    | ^8.2    |
-| Sylius | ^1.12   |
+|         | Version        |
+|:--------|:---------------|
+| PHP     | ^8.2           |
+| Sylius  | ^2.0           |
+| Symfony | 6.4, 7.4, 8.x  |
+
+Symfony 8 requires Sylius 2.3 and PHP 8.4.
 
 ## Installation
 

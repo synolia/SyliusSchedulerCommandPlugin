@@ -24,18 +24,16 @@ jobs:
                 symfony:
                     - 6.4
                     - 7.4
+                    - 8.1
                 node:
                     - 22.x
                 exclude:
                     -
                         php: 8.2
                         sylius: 2.3.0
-                include:
                     -
-                        php: 8.4
-                        sylius: 2.3.0
+                        sylius: 2.2.0
                         symfony: 8.1
-                        node: 22.x
         env:
             APP_ENV: test
             package-name: synolia/sylius-scheduler-command-plugin

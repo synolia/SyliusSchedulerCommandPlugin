@@ -18,12 +18,17 @@ jobs:
                 php:
                     - 8.2
                     - 8.3
+                    - 8.4
                 symfony:
                     - '6.4.*'
                     - '7.4.*'
-                include:
+                    - '8.1.*'
+                exclude:
                     -
-                        php: 8.4
+                        php: 8.2
+                        symfony: '8.1.*'
+                    -
+                        php: 8.3
                         symfony: '8.1.*'
         env:
             APP_ENV: test
