@@ -186,7 +186,7 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
     private function createCommandTester(): CommandTester
     {
         $application = new Application(static::$kernel);
-        $command = $application->find(PurgeScheduledCommandCommand::getDefaultName());
+        $command = $application->find('synolia:scheduler:purge-history');
 
         return new CommandTester($command);
     }

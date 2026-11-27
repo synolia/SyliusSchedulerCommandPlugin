@@ -21,6 +21,10 @@ jobs:
                 symfony:
                     - '6.4.*'
                     - '7.4.*'
+                include:
+                    -
+                        php: 8.4
+                        symfony: '8.1.*'
         env:
             APP_ENV: test
         steps:
