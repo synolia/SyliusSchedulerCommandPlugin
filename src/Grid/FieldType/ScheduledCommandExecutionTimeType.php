@@ -19,7 +19,7 @@ class ScheduledCommandExecutionTimeType implements FieldTypeInterface
     /**
      * @inheritdoc
      */
-    public function render(Field $field, $scheduleCommand, array $options): string
+    public function render(Field $field, mixed $scheduleCommand, array $options): string
     {
         if ($scheduleCommand->getExecutedAt() === null) {
             return '';
