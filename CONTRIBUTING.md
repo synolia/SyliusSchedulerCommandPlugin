@@ -6,7 +6,7 @@ From the plugin root directory, run the following commands:
 $ make install -e SYLIUS_VERSION=XX SYMFONY_VERSION=YY
 ```
 
-Default values : XX=2.1 and YY=6.4
+Default values : XX=2.2.0 and YY=6.4. Symfony 8 (YY=8.1) requires XX=2.3.0 and PHP 8.4.
 
 To be able to setup the plugin database, remember to configure you database credentials
 in `tests/TestApplication/.env.local` and `tests/TestApplication/.env.test.local`.
