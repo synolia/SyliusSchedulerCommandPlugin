@@ -39,12 +39,12 @@ final class LogViewerController extends AbstractController
             return new JsonResponse('', Response::HTTP_NO_CONTENT);
         }
 
-        if ((bool) $request->get('refresh')) {
+        if ($request->query->getBoolean('refresh')) {
             $result = $this->logDataRetriever->getLog(
                 $this->logsDir . \DIRECTORY_SEPARATOR . $scheduleCommand->getLogFile(),
-                (int) $request->get('lastsize'),
-                (string) $request->get('grep-keywords'),
-                (bool) $request->get('invert'),
+                $request->query->getInt('lastsize'),
+                $request->query->getString('grep-keywords'),
+                $request->query->getBoolean('invert'),
             );
 
             return new JsonResponse([

@@ -25,7 +25,10 @@ final class EmptyLogsController extends AbstractController
     #[Route('/scheduled-commands/empty-logs', name: 'sylius_admin_scheduler_empty_logs', defaults: ['_sylius' => ['permission' => true, 'repository' => ['method' => 'findById', 'arguments' => ['$ids']]]], methods: ['GET|PUT'])]
     public function emptyLogs(Request $request): Response
     {
-        $commandIds = $request->get('ids');
+        $commandIds = $request->query->all('ids');
+        if ([] === $commandIds) {
+            $commandIds = $request->request->all('ids');
+        }
 
         foreach ($commandIds as $commandId) {
             $command = $this->scheduledCommandRepository->find($commandId);
