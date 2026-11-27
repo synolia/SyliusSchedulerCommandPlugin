@@ -26,7 +26,7 @@ final readonly class ScheduledCommandUrlType implements FieldTypeInterface
     /**
      * @inheritdoc
      */
-    public function render(Field $field, $scheduleCommand, array $options): string
+    public function render(Field $field, mixed $scheduleCommand, array $options): string
     {
         $size = 0;
 

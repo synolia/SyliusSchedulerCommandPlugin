@@ -20,7 +20,7 @@ final readonly class ScheduledCommandStateType implements FieldTypeInterface
     /**
      * @inheritdoc
      */
-    public function render(Field $field, $scheduleCommand, array $options): string
+    public function render(Field $field, mixed $scheduleCommand, array $options): string
     {
         return $this->twig->render($options['template'], [
             'schedulerCommand' => $scheduleCommand,

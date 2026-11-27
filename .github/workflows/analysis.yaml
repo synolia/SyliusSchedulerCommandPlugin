@@ -20,7 +20,7 @@ jobs:
                     - 8.3
                 symfony:
                     - '6.4.*'
-                    - '7.3.*'
+                    - '7.4.*'
         env:
             APP_ENV: test
         steps:

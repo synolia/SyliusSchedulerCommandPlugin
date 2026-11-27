@@ -39,7 +39,7 @@
         "slevomat/coding-standard": "^8.7",
         "squizlabs/php_codesniffer": "^3.11",
         "sylius-labs/coding-standard": "^4.3",
-        "sylius/test-application": "~2.0.0@alpha",
+        "sylius/test-application": "^2.2@alpha",
         "symfony/apache-pack": "*",
         "symfony/browser-kit": "^6.4 || ^7.0",
         "symfony/debug-bundle": "^6.4 || ^7.0",
