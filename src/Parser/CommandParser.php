@@ -35,7 +35,7 @@ class CommandParser implements CommandParserInterface
             if (in_array($namespace, $this->excludedNamespaces, true)) {
                 continue;
             }
-            $commandsList[$namespace][$command->getName()] = $name;
+            $commandsList[$namespace][$name] = $name;
         }
 
         return $commandsList;
