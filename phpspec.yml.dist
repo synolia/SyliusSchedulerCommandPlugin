@@ -1,4 +1,0 @@
-suites:
-    main:
-        namespace: Synolia\SyliusSchedulerCommandPlugin
-        psr4_prefix: Synolia\SyliusSchedulerCommandPlugin

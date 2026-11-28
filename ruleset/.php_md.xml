@@ -60,6 +60,5 @@
     </rule>
 
     <exclude-pattern>src/Migrations/*</exclude-pattern>
-    <exclude-pattern>spec/*</exclude-pattern>
     <exclude-pattern>tests/*</exclude-pattern>
 </ruleset>

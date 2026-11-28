@@ -9,7 +9,6 @@ parameters:
         - ../src/DependencyInjection/Configuration.php?
         - ../src/Migrations?
         - ../tests/TestApplication?
-        - ../spec
 
     ignoreErrors:
         - identifier: missingType.iterableValue
