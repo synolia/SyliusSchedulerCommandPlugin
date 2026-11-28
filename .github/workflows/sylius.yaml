@@ -19,25 +19,23 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php:
-                    - 8.2
-                    - 8.4
-                sylius:
-                    - 2.2.0
-                    - 2.3.0
-                symfony:
-                    - 6.4
-                    - 7.4
-                    - 8.1
-                node:
-                    - 22.x
-                exclude:
-                    -
-                        php: 8.2
-                        sylius: 2.3.0
-                    -
-                        sylius: 2.2.0
-                        symfony: 8.1
+                # Sylius 2.2: PHP >= 8.2, Symfony 7.4 only
+                # Sylius 2.3: PHP >= 8.3, Symfony 7.4 / 8.x (Symfony 8 requires PHP >= 8.4)
+                # Symfony 8.0 is not tested: end of life since July 2026, every 8.0 release is blocked by a security advisory
+                # Node rotates so that each Node version is tested with each Sylius version
+                include:
+                    - { sylius: 2.2.0, symfony: '7.4', php: '8.2', node: 22.x }
+                    - { sylius: 2.2.0, symfony: '7.4', php: '8.3', node: 24.x }
+                    - { sylius: 2.2.0, symfony: '7.4', php: '8.4', node: 26.x }
+                    - { sylius: 2.2.0, symfony: '7.4', php: '8.5', node: 22.x }
+                    - { sylius: 2.2.0, symfony: '7.4', php: '8.6', node: 24.x }
+                    - { sylius: 2.3.0, symfony: '7.4', php: '8.3', node: 22.x }
+                    - { sylius: 2.3.0, symfony: '7.4', php: '8.4', node: 24.x }
+                    - { sylius: 2.3.0, symfony: '7.4', php: '8.5', node: 26.x }
+                    - { sylius: 2.3.0, symfony: '7.4', php: '8.6', node: 26.x }
+                    - { sylius: 2.3.0, symfony: '8.1', php: '8.4', node: 22.x }
+                    - { sylius: 2.3.0, symfony: '8.1', php: '8.5', node: 24.x }
+                    - { sylius: 2.3.0, symfony: '8.1', php: '8.6', node: 26.x }
         env:
             APP_ENV: test
         steps:

@@ -43,13 +43,12 @@
 
 ## Requirements
 
-|         | Version        |
-|:--------|:---------------|
-| PHP     | ^8.2           |
-| Sylius  | ^2.0           |
-| Symfony | 6.4, 7.4, 8.x  |
-
-Symfony 8 requires Sylius 2.3 and PHP 8.4.
+|         | Version                                            |
+|:--------|:---------------------------------------------------|
+| PHP     | ^8.2 (8.3+ for Sylius 2.3, 8.4+ for Symfony 8)     |
+| Sylius  | ^2.2                                               |
+| Symfony | ^7.4 \|\| ^8.0 (Symfony 8 requires Sylius 2.3)     |
+| Node    | 22, 24 or 26 (Sylius 2.3 requires ^22.13 or >= 24) |
 
 ## Installation
 
@@ -69,11 +68,6 @@ Symfony 8 requires Sylius 2.3 and PHP 8.4.
 4. (optional) Showing humanized cron expression
 
         composer require lorisleiva/cron-translator
-
-5. Till `symfony/recipes-contrib` is updated for the v3, you must add `sylius_scheduler_command.yaml` from `install/Application/config/{packages,routes}` to your project by respecting the same folder architecture.
-
-        cp -R vendor/synolia/sylius-scheduler-command-plugin/install/Application/config/packages/* config/packages/
-        cp -R vendor/synolia/sylius-scheduler-command-plugin/install/Application/config/routes/* config/routes/
 
 ## Usage
 
@@ -175,7 +169,7 @@ services:
 The plugin is developed and tested with the [Sylius Test Application](https://github.com/Sylius/TestApplication):
 
 ```shell
-make install    # optionally: make install -e SYLIUS_VERSION=2.2.0 SYMFONY_VERSION=7.4
+make install    # optionally: make install -e SYLIUS_VERSION=2.3.0 SYMFONY_VERSION=8.1
 make phpunit
 make serve      # or: APP_ENV=test symfony server:start -d
 ```

@@ -17,3 +17,9 @@ Also, for old existing schedules in your database, please remove the log file ex
         private ?DateTimeProviderInterface $dateTimeProvider = null,
     )
     ```
+
+## from 4.0 to 4.1
+
+### Requirements
+* Symfony 6.4 is no longer supported: the minimum required version is now Symfony 7.4 (`^7.4 || ^8.0`).
+* Sylius 2.0 and 2.1 are no longer supported: the minimum required version is now Sylius 2.2.

@@ -22,9 +22,6 @@ grumphp:
         ecs:
             config: 'ruleset/ecs.php'
             no-progress-bar: true
-        twigcs:
-            path: 'src/'
-            severity: error
         phpcs:
             standard: "ruleset"
             warning_severity: 0

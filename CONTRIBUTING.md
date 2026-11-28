@@ -20,7 +20,7 @@ To test against specific Sylius and Symfony versions (as the CI does), run:
 $ make install -e SYLIUS_VERSION=XX SYMFONY_VERSION=YY
 ```
 
-e.g. `SYLIUS_VERSION=2.2.0 SYMFONY_VERSION=7.4`. Symfony 8 (YY=8.1) requires XX=2.3.0 and PHP 8.4.
+e.g. `SYLIUS_VERSION=2.3.0 SYMFONY_VERSION=8.1`. Symfony 8 requires Sylius 2.3 and PHP 8.4.
 
 It installs Composer dependencies and the frontend assets of the test application,
 then creates the database, runs the migrations and loads the fixtures (`test` environment by default).
