@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Checker;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Synolia\SyliusSchedulerCommandPlugin\Checker\EveryMinuteIsDueChecker;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTestCase;
@@ -18,9 +19,7 @@ class EveryMinuteIsDueCheckerTest extends AbstractIsDueTestCase
         $this->everyMinuteIsDueChecker = static::getContainer()->get(EveryMinuteIsDueChecker::class);
     }
 
-    /**
-     * @dataProvider isDueUsingCronExpressionDataProvider
-     */
+    #[DataProvider('isDueUsingCronExpressionDataProvider')]
     public function testIsDue(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +54,7 @@ final class EmptyLogsControllerTest extends KernelTestCase
         parent::tearDown();
     }
 
-    /** @dataProvider methodProvider */
+    #[DataProvider('methodProvider')]
     public function testEmptiesTheLogFilesOfTheGivenIds(string $method): void
     {
         $request = Request::create('/scheduled-commands/empty-logs', $method, ['ids' => [(string) $this->scheduledCommand->getId()]]);

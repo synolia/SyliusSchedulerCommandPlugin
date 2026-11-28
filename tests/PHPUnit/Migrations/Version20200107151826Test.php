@@ -11,6 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Exception\AbortMigration;
 use Doctrine\Migrations\Version\Version;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Synolia\SyliusSchedulerCommandPlugin\Migrations\Version20200107151826;
@@ -20,7 +21,7 @@ final class Version20200107151826Test extends KernelTestCase
     /** AbstractPlatform::getName() is deprecated in DBAL 3 and removed in DBAL 4. */
     private const PLATFORM_NAME_DEPRECATION = 'https://github.com/doctrine/dbal/issues/4749';
 
-    /** @dataProvider directionProvider */
+    #[DataProvider('directionProvider')]
     public function testRunsOnMysqlWithoutIdentifyingThePlatformByName(callable $migrate, string $expectedSql): void
     {
         $migration = $this->getRegisteredMigration();
@@ -38,7 +39,7 @@ final class Version20200107151826Test extends KernelTestCase
         self::assertStringContainsString($expectedSql, $migration->getSql()[0]->getStatement());
     }
 
-    /** @dataProvider directionProvider */
+    #[DataProvider('migrateProvider')]
     public function testAbortsOnNonMysqlPlatform(callable $migrate): void
     {
         // The test application only provides a MySQL connection: build the migration on an in-memory SQLite one.
@@ -57,6 +58,13 @@ final class Version20200107151826Test extends KernelTestCase
     {
         yield 'up' => [static fn (AbstractMigration $migration) => $migration->up(new Schema()), 'CREATE TABLE scheduled_command'];
         yield 'down' => [static fn (AbstractMigration $migration) => $migration->down(new Schema()), 'DROP TABLE scheduled_command'];
+    }
+
+    public static function migrateProvider(): iterable
+    {
+        foreach (self::directionProvider() as $direction => [$migrate]) {
+            yield $direction => [$migrate];
+        }
     }
 
     private function getRegisteredMigration(): AbstractMigration

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Voter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
 use Synolia\SyliusSchedulerCommandPlugin\Voter\IsDueVoterInterface;
 use Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\AbstractIsDueTestCase;
@@ -19,9 +20,7 @@ class IsDueVoterTest extends AbstractIsDueTestCase
         $this->voter = static::getContainer()->get(IsDueVoterInterface::class);
     }
 
-    /**
-     * @dataProvider isDueWithScheduledHistoryDataProvider
-     */
+    #[DataProvider('isDueWithScheduledHistoryDataProvider')]
     public function testIsDueWithScheduledHistory(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
@@ -33,7 +32,6 @@ class IsDueVoterTest extends AbstractIsDueTestCase
         $scheduledCommand = new ScheduledCommand();
         $reflectionClass = new \ReflectionClass($scheduledCommand);
         $reflectionProperty = $reflectionClass->getProperty('createdAt');
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($scheduledCommand, $lastCommandDateTime);
         $this->entityManager->persist($scheduledCommand);
         $scheduledCommand->setOwner($command);
@@ -43,9 +41,7 @@ class IsDueVoterTest extends AbstractIsDueTestCase
         $this->assertEquals($expectedResult, $this->voter->isDue($command, $currentDateTime));
     }
 
-    /**
-     * @dataProvider isDueWithoutScheduledHistoryDataProvider
-     */
+    #[DataProvider('isDueWithoutScheduledHistoryDataProvider')]
     public function testIsDueWithoutScheduledHistory(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
@@ -56,9 +52,7 @@ class IsDueVoterTest extends AbstractIsDueTestCase
         $this->assertEquals($expectedResult, $this->voter->isDue($command, $currentDateTime));
     }
 
-    /**
-     * @dataProvider isDueUsingCronExpressionDataProvider
-     */
+    #[DataProvider('isDueUsingCronExpressionDataProvider')]
     public function testIsDueUsingCronExpression(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
