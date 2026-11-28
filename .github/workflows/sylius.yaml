@@ -3,14 +3,18 @@ name: Install & Test
     push:
         branches:
             - main
+            - master
         paths-ignore:
-            - README.md
+            - '**.md'
     pull_request:
         paths-ignore:
-            - README.md
+            - '**.md'
+concurrency:
+    group: '${{ github.workflow }}-${{ github.ref }}'
+    cancel-in-progress: true
 jobs:
     sylius:
-        name: 'PHP ${{ matrix.php }} Sylius ${{ matrix.sylius }} Symfony ${{ matrix.symfony }}'
+        name: 'PHP ${{ matrix.php }} Sylius ${{ matrix.sylius }} Symfony ${{ matrix.symfony }} Node ${{ matrix.node }}'
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
@@ -36,7 +40,6 @@ jobs:
                         symfony: 8.1
         env:
             APP_ENV: test
-            package-name: synolia/sylius-scheduler-command-plugin
         steps:
             -
                 name: 'Setup PHP'
@@ -49,59 +52,53 @@ jobs:
                     coverage: none
             -
                 name: 'Setup Node'
-                uses: actions/setup-node@v3
+                uses: actions/setup-node@v7
                 with:
                     node-version: '${{ matrix.node }}'
             -
-                uses: actions/checkout@v3
+                uses: actions/checkout@v7
             -
                 name: 'Composer - Get Cache Directory'
                 id: composer-cache
-                run: 'echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT'
+                run: 'echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"'
             -
                 name: 'Composer - Set cache'
-                uses: actions/cache@v3
-                id: cache-composer
+                uses: actions/cache@v6
                 with:
                     path: '${{ steps.composer-cache.outputs.dir }}'
                     key: 'php-${{ matrix.php }}-sylius-${{ matrix.sylius }}-symfony-${{ matrix.symfony }}-composer-${{ hashFiles(''**/composer.json'') }}'
                     restore-keys: 'php-${{ matrix.php }}-sylius-${{ matrix.sylius }}-symfony-${{ matrix.symfony }}-composer-'
-            -
-                name: 'Composer - Create cache directory'
-                run: 'mkdir -p /home/runner/.composer/cache'
-                if: 'steps.cache-composer.outputs.cache-hit != ''true'''
             -
                 name: 'Composer - Github Auth'
                 run: 'composer config -g github-oauth.github.com ${{ github.token }}'
             -
                 name: 'Yarn - Get cache directory'
                 id: yarn-cache
-                run: 'echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT'
+                run: 'echo "dir=$(yarn cache dir 2>/dev/null || npx --yes yarn@1.22.22 cache dir)" >> "$GITHUB_OUTPUT"'
             -
                 name: 'Yarn - Set Cache'
-                uses: actions/cache@v3
+                uses: actions/cache@v6
                 with:
                     path: '${{ steps.yarn-cache.outputs.dir }}'
-                    key: 'node-${{ matrix.node }}-yarn-${{ hashFiles(''**/package.json **/yarn.lock'') }}'
-                    restore-keys: "node-${{ matrix.node }}-yarn-\n"
+                    key: 'node-${{ matrix.node }}-sylius-${{ matrix.sylius }}-yarn-${{ hashFiles(''**/package.json'') }}'
+                    restore-keys: 'node-${{ matrix.node }}-sylius-${{ matrix.sylius }}-yarn-'
             -
-                name: 'Install Sylius-Standard and Plugin'
-                run: 'make install -e SYLIUS_VERSION=${{ matrix.sylius }} SYMFONY_VERSION=${{ matrix.symfony }} PHP_VERSION=${{ matrix.php }}'
-                id: end-of-setup-sylius
+                name: 'Install plugin with Sylius Test Application'
+                run: 'make install -e SYLIUS_VERSION=${{ matrix.sylius }} SYMFONY_VERSION=${{ matrix.symfony }}'
             -
                 name: 'Doctrine Schema Validate - Run'
                 run: 'vendor/bin/console doctrine:schema:validate --skip-sync'
-                if: 'always() && steps.end-of-setup-sylius.outcome == ''success'''
+            -
+                name: 'Lint container'
+                run: 'vendor/bin/console lint:container'
             -
                 name: 'Run PHPUnit'
                 run: 'make phpunit'
-                if: 'always() && steps.end-of-setup-sylius.outcome == ''success'''
-
         services:
             mariadb:
-                image: 'mariadb:10.4.11'
+                image: 'mariadb:10.11'
                 ports:
                     - '3306:3306'
                 env:
-                    MYSQL_ALLOW_EMPTY_PASSWORD: true
-                options: '--health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3'
+                    MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'true'
+                options: '--health-cmd="mariadb-admin ping" --health-interval=5s --health-timeout=2s --health-retries=10'

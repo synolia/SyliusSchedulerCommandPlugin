@@ -2,6 +2,7 @@
 /composer.lock -merge
 
 /.github export-ignore
+/bin export-ignore
 /features export-ignore
 /ruleset export-ignore
 /spec export-ignore

@@ -40,7 +40,6 @@
         "squizlabs/php_codesniffer": "^3.11",
         "sylius-labs/coding-standard": "^4.3",
         "sylius/test-application": "^2.2@alpha",
-        "symfony/apache-pack": "*",
         "symfony/browser-kit": "^6.4 || ^7.0 || ^8.0",
         "symfony/debug-bundle": "^6.4 || ^7.0 || ^8.0",
         "symfony/dotenv": "^6.4 || ^7.0 || ^8.0",
@@ -59,7 +58,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Synolia\\SyliusSchedulerCommandPlugin\\": ["tests/", "tests/TestApplication/src/"]
+            "Tests\\Synolia\\SyliusSchedulerCommandPlugin\\": "tests/"
         }
     },
     "config": {
@@ -87,27 +86,18 @@
             "@phpstan",
             "@phpunit"
         ],
-        "test-application:install": [
-            "vendor/bin/console doctrine:database:drop --force --if-exists -n",
-            "vendor/bin/console doctrine:database:create -n",
-            "vendor/bin/console doctrine:migration:migrate -n",
-            "vendor/bin/console sylius:payment:generate-key -n",
-            "vendor/bin/console sylius:fixtures:load -n",
-            "yarn --cwd vendor/sylius/test-application install --force",
-            "yarn --cwd vendor/sylius/test-application build",
-            "vendor/bin/console assets:install --symlink -n vendor/sylius/test-application/public",
-            "cp tests/TestApplication/public/.htaccess vendor/sylius/test-application/public"
+        "post-install-cmd": [
+            "php bin/create_node_symlink.php"
         ],
-        "test-application:front": [
-            "yarn --cwd vendor/sylius/test-application install --force",
-            "yarn --cwd vendor/sylius/test-application build"
+        "post-update-cmd": [
+            "php bin/create_node_symlink.php"
+        ],
+        "post-create-project-cmd": [
+            "php bin/create_node_symlink.php"
         ]
     },
     "extra": {
-        "public-dir": "vendor/sylius/test-application/public",
-        "symfony": {
-            "require": "^6.4"
-        }
+        "public-dir": "vendor/sylius/test-application/public"
     },
     "conflict": {
         "sylius/test-application": "v2.0.0-ALPHA.1"

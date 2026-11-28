@@ -1,19 +1,17 @@
 /vendor/
-/node_modules/
+/node_modules
 /composer.lock
+/var/
 
 /etc/build/*
 !/etc/build/.gitignore
 
-/tests/Application/
-/install/Application/*.local
-
-/behat.yml
-/phpspec.yml
 /.phpunit.result.cache
-
-/.idea/
+/phpunit.xml
+/phpspec.yml
 
 /tests/TestApplication/.env.local
 /tests/TestApplication/.env.*.local
-/var/
+
+# JetBrains IDE
+/.idea/

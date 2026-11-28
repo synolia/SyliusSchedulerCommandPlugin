@@ -1,17 +1,16 @@
 imports:
     - { resource: "@SynoliaSyliusSchedulerCommandPlugin/config/config.yaml" }
 
-# Uncomment if need to override entities with trait for example
+# Entity overrides: put the entities in tests/TestApplication/src/Entity (namespace Tests\<Vendor>\<Plugin>\TestApplication\Entity)
+# and declare them in the sylius_* resources configuration.
 #doctrine:
 #    orm:
-#        entity_managers:
-#            default:
-#                mappings:
-#                    TestApplication:
-#                        is_bundle: false
-#                        type: attribute
-#                        dir: '%kernel.project_dir%/../../../tests/TestApplication/src/Entity'
-#                        prefix: Tests\Synolia\SyliusSchedulerCommandPlugin
+#        mappings:
+#            TestApplication:
+#                is_bundle: false
+#                type: attribute
+#                dir: '%kernel.project_dir%/../../../tests/TestApplication/src/Entity'
+#                prefix: Tests\Synolia\SyliusSchedulerCommandPlugin\TestApplication\Entity
 
 sylius_fixtures:
     suites:

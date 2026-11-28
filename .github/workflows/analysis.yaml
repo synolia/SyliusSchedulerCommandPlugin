@@ -3,11 +3,15 @@ name: Analysis
     push:
         branches:
             - main
+            - master
         paths-ignore:
-            - README.md
+            - '**.md'
     pull_request:
         paths-ignore:
-            - README.md
+            - '**.md'
+concurrency:
+    group: '${{ github.workflow }}-${{ github.ref }}'
+    cancel-in-progress: true
 jobs:
     analysis:
         name: 'PHP ${{ matrix.php }} Symfony ${{ matrix.symfony }}'
@@ -34,7 +38,7 @@ jobs:
             APP_ENV: test
         steps:
             -
-                uses: actions/checkout@v3
+                uses: actions/checkout@v7
             -
                 name: 'Setup PHP'
                 uses: shivammathur/setup-php@v2
@@ -45,20 +49,23 @@ jobs:
             -
                 name: 'Composer - Get Cache Directory'
                 id: composer-cache
-                run: 'echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT'
+                run: 'echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"'
             -
                 name: 'Composer - Set cache'
-                uses: actions/cache@v3
+                uses: actions/cache@v6
                 with:
                     path: '${{ steps.composer-cache.outputs.dir }}'
                     key: 'php-${{ matrix.php }}-symfony-${{ matrix.symfony }}-composer-${{ hashFiles(''**/composer.json'') }}'
-                    restore-keys: "php-${{ matrix.php }}-symfony-${{ matrix.symfony }}-composer-\n"
+                    restore-keys: 'php-${{ matrix.php }}-symfony-${{ matrix.symfony }}-composer-'
             -
-                name: 'Composer - Validate composer.json and composer.lock'
+                name: 'Composer - Validate composer.json'
                 run: 'composer validate --strict'
             -
                 name: 'Composer - Github Auth'
                 run: 'composer config -g github-oauth.github.com ${{ github.token }}'
+            -
+                name: 'Composer - Install Symfony Flex globally'
+                run: 'composer global config --no-plugins allow-plugins.symfony/flex true && composer global require --no-progress --no-scripts --no-plugins symfony/flex'
             -
                 name: 'Composer - Restrict Symfony version'
                 run: 'composer config extra.symfony.require "${{ matrix.symfony }}"'
@@ -68,11 +75,11 @@ jobs:
                 id: end-of-setup
             -
                 name: 'ECS - Run'
-                run: 'if [ -f ruleset/ecs.php ]; then vendor/bin/ecs check --no-progress-bar -c ruleset/ecs.php ; else echo Ecs ruleset file does not exist, skipping step ; fi'
+                run: 'if [ -f ruleset/ecs.php ]; then vendor/bin/ecs check src/ --no-progress-bar -c ruleset/ecs.php ; else echo Ecs ruleset file does not exist, skipping step ; fi'
                 if: 'always() && steps.end-of-setup.outcome == ''success'''
             -
                 name: 'PHPStan - Run'
-                run: 'if [ -f ruleset/phpstan.neon ]; then vendor/bin/phpstan analyse -c ruleset/phpstan.neon ; else echo PHPStan ruleset file does not exist, skipping step ; fi'
+                run: 'if [ -f ruleset/phpstan.neon ]; then vendor/bin/phpstan analyse -c ruleset/phpstan.neon src/ ; else echo PHPStan ruleset file does not exist, skipping step ; fi'
                 if: 'always() && steps.end-of-setup.outcome == ''success'''
             -
                 name: 'PHPSpec - Run'
@@ -80,9 +87,15 @@ jobs:
                 if: 'always() && steps.end-of-setup.outcome == ''success'''
             -
                 name: 'PHPMD - Run'
-                run: 'if [ -f ruleset/.php_md.xml ]; then vendor/bin/phpmd src ansi ruleset/.php_md.xml ; else echo PHPMD config file does not exist, skipping step ; fi'
+                run: |
+                    if [ ! -f ruleset/.php_md.xml ]; then echo PHPMD config file does not exist, skipping step; exit 0; fi
+                    if vendor/bin/phpmd --version | grep -q 'PHPMD 3'; then vendor/bin/phpmd analyze src --format ansi --ruleset ruleset/.php_md.xml; else vendor/bin/phpmd src ansi ruleset/.php_md.xml; fi
                 if: 'always() && steps.end-of-setup.outcome == ''success'''
             -
                 name: 'GrumPHP - Run'
                 run: 'if [ -f grumphp.yml ]; then vendor/bin/grumphp run ; else echo Grumphp ruleset file does not exist, skipping step ; fi'
                 if: 'always() && steps.end-of-setup.outcome == ''success'''
+            -
+                uses: symfonycorp/security-checker-action@v5
+                if: 'always() && steps.end-of-setup.outcome == ''success'''
+                continue-on-error: true
