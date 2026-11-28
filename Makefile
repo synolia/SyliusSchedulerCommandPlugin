@@ -64,7 +64,8 @@ frontend:
 	php bin/create_node_symlink.php
 	$(YARN) install
 	$(YARN) build
-	$(CONSOLE) assets:install
+	# Explicit target: without it, a "public/" folder at the plugin root (bundle assets) would be used as target
+	$(CONSOLE) assets:install $(TEST_APP_DIR)/public
 .PHONY: frontend
 
 database:
