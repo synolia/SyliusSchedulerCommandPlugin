@@ -8,7 +8,7 @@ grumphp:
         jsonlint:
             detect_key_conflicts: true
         phplint:
-            exclude: ['vendor', 'tests/Application/*']
+            exclude: ['vendor']
             triggered_by: ['php']
         phpmd:
             exclude: ['migrations']

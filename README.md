@@ -172,7 +172,17 @@ services:
 
 ## Development
 
-See [How to contribute](CONTRIBUTING.md).
+The plugin is developed and tested with the [Sylius Test Application](https://github.com/Sylius/TestApplication):
+
+```shell
+make install    # optionally: make install -e SYLIUS_VERSION=2.2.0 SYMFONY_VERSION=7.4
+make phpunit
+make serve      # or: APP_ENV=test symfony server:start -d
+```
+
+Use `vendor/bin/console` to run Symfony commands against the test application.
+
+See [How to contribute](CONTRIBUTING.md) for more details (database configuration, versions, ...).
 
 ## License
 
