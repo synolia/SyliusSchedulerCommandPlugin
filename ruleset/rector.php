@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\SetList;
-use Rector\Symfony\Set\SymfonySetList;
 
 return RectorConfig::configure()
     ->withPaths([
-        \dirname(__DIR__) . '/src',
-        \dirname(__DIR__) . '/tests/PHPUnit',
+        dirname(__DIR__) . '/src',
+        dirname(__DIR__) . '/tests/PHPUnit',
     ])
     ->withPHPStanConfigs([__DIR__ . '/phpstan.neon'])
     ->withPhpSets(php82: true)
@@ -21,12 +20,5 @@ return RectorConfig::configure()
         symfonyConfigs: true,
     )
     ->withTypeCoverageLevel(0)
-    ->withSets([
-        SymfonySetList::SYMFONY_60,
-        SymfonySetList::SYMFONY_61,
-        SymfonySetList::SYMFONY_62,
-        SymfonySetList::SYMFONY_63,
-        SymfonySetList::SYMFONY_64,
-        SetList::CODE_QUALITY,
-        SetList::DEAD_CODE,
-    ]);
+    // Symfony rules matching the installed Symfony version (versioned SymfonySetList constants were removed in Rector 2.x)
+    ->withComposerBased(symfony: true);

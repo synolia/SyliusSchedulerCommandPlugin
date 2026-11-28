@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class CronExpressionHumanizer implements HumanizerInterface
 {
+    private const LANGUAGE_CODE_LENGTH = 2;
+
     public function __construct(
         private readonly LocaleContextInterface $localeContext,
         #[Autowire(param: 'env(bool:SYNOLIA_SCHEDULER_PLUGIN_TIMEFORMAT_24H)')]
@@ -38,11 +40,11 @@ class CronExpressionHumanizer implements HumanizerInterface
         try {
             $locale = $this->localeContext->getLocaleCode();
 
-            if (\strlen($locale) === 2) {
+            if (\strlen($locale) === self::LANGUAGE_CODE_LENGTH) {
                 return $locale;
             }
 
-            return mb_substr($locale, 0, 2);
+            return mb_substr($locale, 0, self::LANGUAGE_CODE_LENGTH);
         } catch (LocaleNotFoundException) {
             return 'en';
         }

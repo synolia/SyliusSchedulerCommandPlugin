@@ -37,17 +37,6 @@ abstract class AbstractIsDueTestCase extends KernelTestCase
         parent::tearDown();
     }
 
-    protected function setupCommand(string $cronExpression): CommandInterface
-    {
-        $command = new Command();
-        $command
-            ->setCronExpression($cronExpression)
-        ;
-        $this->entityManager->persist($command);
-
-        return $command;
-    }
-
     public static function isDueUsingCronExpressionDataProvider(): \Generator
     {
         yield 'Every minute - now' => ['* * * * *', new \DateTime(), true];
@@ -263,5 +252,16 @@ abstract class AbstractIsDueTestCase extends KernelTestCase
             \DateTime::createFromFormat('Y-m-d H:i', \sprintf('%s 01:07', $today->format('Y-m-d'))),
             false,
         ];
+    }
+
+    protected function setupCommand(string $cronExpression): CommandInterface
+    {
+        $command = new Command();
+        $command
+            ->setCronExpression($cronExpression)
+        ;
+        $this->entityManager->persist($command);
+
+        return $command;
     }
 }

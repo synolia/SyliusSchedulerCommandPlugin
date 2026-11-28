@@ -16,11 +16,6 @@ class SoftLimitThresholdIsDueChecker implements IsDueCheckerInterface
 {
     private const PRIORITY = -100;
 
-    public static function getDefaultPriority(): int
-    {
-        return self::PRIORITY;
-    }
-
     public function __construct(
         private readonly ScheduledCommandRepositoryInterface $scheduledCommandRepository,
         private readonly ?ClockInterface $dateTimeProvider = null,
@@ -29,6 +24,11 @@ class SoftLimitThresholdIsDueChecker implements IsDueCheckerInterface
          */
         private readonly int $threshold = 5,
     ) {
+    }
+
+    public static function getDefaultPriority(): int
+    {
+        return self::PRIORITY;
     }
 
     /**

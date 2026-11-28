@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Checker;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Synolia\SyliusSchedulerCommandPlugin\Checker\SoftLimitThresholdIsDueChecker;
 use Synolia\SyliusSchedulerCommandPlugin\Components\Exceptions\Checker\IsNotDueException;
 use Synolia\SyliusSchedulerCommandPlugin\Entity\ScheduledCommand;
@@ -19,9 +20,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTestCase
         $this->softLimitThresholdIsDueChecker = static::getContainer()->get(SoftLimitThresholdIsDueChecker::class);
     }
 
-    /**
-     * @dataProvider isDueWithScheduledHistoryDataProvider
-     */
+    #[DataProvider('isDueWithScheduledHistoryDataProvider')]
     public function testIsDueWithScheduledHistory(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
@@ -33,7 +32,6 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTestCase
         $scheduledCommand = new ScheduledCommand();
         $reflectionClass = new \ReflectionClass($scheduledCommand);
         $reflectionProperty = $reflectionClass->getProperty('createdAt');
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($scheduledCommand, $lastCommandDateTime);
         $this->entityManager->persist($scheduledCommand);
         $scheduledCommand->setOwner($command);
@@ -47,9 +45,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTestCase
         $this->assertEquals($expectedResult, $this->softLimitThresholdIsDueChecker->isDue($command, $currentDateTime));
     }
 
-    /**
-     * @dataProvider isDueWithoutScheduledHistoryDataProvider
-     */
+    #[DataProvider('isDueWithoutScheduledHistoryDataProvider')]
     public function testIsDueWithoutScheduledHistory(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,
@@ -64,9 +60,7 @@ class SoftLimitThresholdIsDueCheckerTest extends AbstractIsDueTestCase
         $this->assertEquals($expectedResult, $this->softLimitThresholdIsDueChecker->isDue($command, $currentDateTime));
     }
 
-    /**
-     * @dataProvider isDueUsingCronExpressionDataProvider
-     */
+    #[DataProvider('isDueUsingCronExpressionDataProvider')]
     public function testIsDueUsingCronExpression(
         string $cronExpression,
         \DateTimeInterface $currentDateTime,

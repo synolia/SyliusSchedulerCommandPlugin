@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -85,7 +86,7 @@ final class PurgeScheduledCommandCommandTest extends KernelTestCase
         );
     }
 
-    /** @dataProvider scheduleStateDataProvider */
+    #[DataProvider('scheduleStateDataProvider')]
     public function testExecuteWithStateArgument(array $states, string $expected): void
     {
         $commandTester = $this->createCommandTester();

@@ -29,6 +29,9 @@ final class SynoliaSchedulerRunCommand extends Command
 {
     use LockableTrait;
 
+    /** Exit code of a process killed by SIGTERM (128 + 15) */
+    private const SIGTERM_EXIT_CODE = 143;
+
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ScheduleCommandRunnerInterface $scheduleCommandRunner,
@@ -202,7 +205,7 @@ final class SynoliaSchedulerRunCommand extends Command
 
     private function getStateForResult(int $returnResultCode): string
     {
-        if ($returnResultCode === 143) {
+        if ($returnResultCode === self::SIGTERM_EXIT_CODE) {
             return ScheduledCommandStateEnum::TERMINATION;
         }
 

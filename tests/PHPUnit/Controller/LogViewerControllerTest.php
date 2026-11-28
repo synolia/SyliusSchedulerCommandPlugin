@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,7 +50,7 @@ final class LogViewerControllerTest extends KernelTestCase
         parent::tearDown();
     }
 
-    /** @dataProvider refreshQueryProvider */
+    #[DataProvider('refreshQueryProvider')]
     public function testRefreshReadsItsOptionsFromTheQueryString(array $query, array $expectedLines): void
     {
         $request = Request::create('/scheduled-commands/get-log.json', 'GET', $query);

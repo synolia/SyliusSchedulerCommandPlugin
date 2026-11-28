@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Synolia\SyliusSchedulerCommandPlugin\PHPUnit\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -18,7 +19,7 @@ final class ValidationMappingTest extends TestCase
 {
     use CollectDeprecationsTrait;
 
-    /** @dataProvider callbackConstraintProvider */
+    #[DataProvider('callbackConstraintProvider')]
     public function testCallbackConstraintIsConfiguredWithNamedOptions(
         string $class,
         string $property,

@@ -1,7 +1,247 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Cannot call method scalarNode\(\) on Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null\.$#'
-			identifier: method.nonObject
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: ../src/Command/PurgeScheduledCommandCommand.php
+
+		-
+			message: '#^Parameter \#1 \$purgeAll of method Synolia\\SyliusSchedulerCommandPlugin\\Command\\PurgeScheduledCommandCommand\:\:getScheduledHistory\(\) expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Command/PurgeScheduledCommandCommand.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../src/Command/PurgeScheduledCommandCommand.php
+
+		-
+			message: '#^Parameter \#3 \$states of method Synolia\\SyliusSchedulerCommandPlugin\\Command\\PurgeScheduledCommandCommand\:\:getScheduledHistory\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Command/PurgeScheduledCommandCommand.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: ../src/Command/SynoliaSchedulerRunCommand.php
+
+		-
+			message: '#^Cannot access offset ''arguments'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''command'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''cronExpression'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''enabled'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''executeImmediately'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''idle_timeout'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''logFilePrefix'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''name'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''priority'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Cannot access offset ''timeout'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$arguments of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setArguments\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$command of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setCommand\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$cronExpression of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setCronExpression\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$enabled of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setEnabled\(\) expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$executeImmediately of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setExecuteImmediately\(\) expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$logFile of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setLogFilePrefix\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setName\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$priority of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setPriority\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$timeout of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setIdleTimeout\(\) expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Parameter \#1 \$timeout of method Synolia\\SyliusSchedulerCommandPlugin\\Entity\\CommandInterface\:\:setTimeout\(\) expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Fixture/SchedulerCommandFixture.php
+
+		-
+			message: '#^Binary operation "\-" between mixed and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandExecutionTimeType.php
+
+		-
+			message: '#^Cannot call method getCommandEndTime\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandExecutionTimeType.php
+
+		-
+			message: '#^Cannot call method getExecutedAt\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: ../src/Grid/FieldType/ScheduledCommandExecutionTimeType.php
+
+		-
+			message: '#^Cannot call method getTimestamp\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: ../src/Grid/FieldType/ScheduledCommandExecutionTimeType.php
+
+		-
+			message: '#^Cannot call method getCronExpression\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandHumanReadableExpressionType.php
+
+		-
+			message: '#^Parameter \#1 \$expression of method Synolia\\SyliusSchedulerCommandPlugin\\Humanizer\\HumanizerInterface\:\:humanize\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandHumanReadableExpressionType.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Twig\\Environment\:\:render\(\) expects string\|Twig\\TemplateWrapper, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandHumanReadableExpressionType.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Twig\\Environment\:\:render\(\) expects string\|Twig\\TemplateWrapper, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandStateType.php
+
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandUrlType.php
+
+		-
+			message: '#^Cannot call method getId\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: ../src/Grid/FieldType/ScheduledCommandUrlType.php
+
+		-
+			message: '#^Cannot call method getLogFile\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandUrlType.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Twig\\Environment\:\:render\(\) expects string\|Twig\\TemplateWrapper, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Grid/FieldType/ScheduledCommandUrlType.php
+
+		-
+			message: '#^Method Synolia\\SyliusSchedulerCommandPlugin\\Humanizer\\CronExpressionHumanizer\:\:humanize\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Humanizer/CronExpressionHumanizer.php
+
+		-
+			message: '#^Method Synolia\\SyliusSchedulerCommandPlugin\\Repository\\ScheduledCommandRepository\:\:findAllHavingState\(\) should return iterable but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Repository/ScheduledCommandRepository.php
+
+		-
+			message: '#^Method Synolia\\SyliusSchedulerCommandPlugin\\Repository\\ScheduledCommandRepository\:\:findAllSinceXDaysWithState\(\) should return iterable but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Repository/ScheduledCommandRepository.php
+
+		-
+			message: '#^Method Synolia\\SyliusSchedulerCommandPlugin\\Repository\\ScheduledCommandRepository\:\:findLastCreatedCommand\(\) should return Synolia\\SyliusSchedulerCommandPlugin\\Entity\\ScheduledCommandInterface\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Repository/ScheduledCommandRepository.php

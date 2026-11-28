@@ -1,16 +1,18 @@
 includes:
     - phpstan-baseline.neon
+
 parameters:
-    level: 8
+    level: max
     reportUnmatchedIgnoredErrors: false
+    treatPhpDocTypesAsCertain: false
     paths:
         - ../src
+    bootstrapFiles:
+        - ../vendor/autoload.php
     excludePaths:
-        - ../src/DependencyInjection/Configuration.php?
-        - ../src/Migrations?
-        - ../tests/TestApplication?
-
+        - ../bin
+        - ../tests
     ignoreErrors:
         - identifier: missingType.iterableValue
         - identifier: missingType.generics
-        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::[a-zA-Z0-9]+\(\).#'
+        # Plugin-specific ignores (with a comment explaining why) go below this line

@@ -1,24 +1,27 @@
-<?xml version='1.0' encoding="UTF-8"?>
-<ruleset name="Mess Detector Rules"
+<?xml version="1.0"?>
+<ruleset name="Synolia Sylius plugin PHPMD rule set"
          xmlns="http://pmd.sf.net/ruleset/1.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
-         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
-
-    <description>Mess Detector Rules</description>
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
+                       http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="
+                       http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>
+        Synolia Sylius plugin PHPMD rule set
+    </description>
 
     <rule ref="rulesets/codesize.xml">
-        <exclude name="CyclomaticComplexity"/>
         <exclude name="ExcessiveParameterList"/>
-    </rule>
-    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
-        <properties>
-            <property name="reportLevel" value="15"/>
-        </properties>
+        <exclude name="CyclomaticComplexity"/>
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessiveParameterList">
         <properties>
             <property name="minimum" value="15"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <property name="reportLevel" value="15"/>
         </properties>
     </rule>
 
@@ -28,8 +31,8 @@
     <rule ref="rulesets/naming.xml">
         <exclude name="ShortVariable"/>
         <exclude name="LongVariable"/>
-        <exclude name="ShortMethodName"/>
         <exclude name="LongClassName"/>
+        <exclude name="ShortMethodName"/>
     </rule>
     <rule ref="rulesets/naming.xml/ShortVariable">
         <properties>
@@ -48,17 +51,19 @@
             <property name="maximum" value="50"/>
         </properties>
     </rule>
-    <rule ref="rulesets/design.xml/NumberOfChildren">
-        <properties>
-            <property name="minimum" value="50"/>
-        </properties>
-    </rule>
     <rule ref="rulesets/naming.xml/LongClassName">
         <properties>
             <property name="maximum" value="60"/>
         </properties>
     </rule>
+    <rule ref="rulesets/design.xml/NumberOfChildren">
+        <properties>
+            <property name="minimum" value="50"/>
+        </properties>
+    </rule>
 
     <exclude-pattern>src/Migrations/*</exclude-pattern>
+    <exclude-pattern>migrations/*</exclude-pattern>
+    <exclude-pattern>spec/*</exclude-pattern>
     <exclude-pattern>tests/*</exclude-pattern>
 </ruleset>
